@@ -9,13 +9,15 @@ class Order extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'user_id',
-        'layanan',
-        'tanggal',
-        'alamat',
-        'status'
-    ];
+  protected $fillable = [
+    'user_id',
+    'service_id',
+    'schedule',
+    'status',
+    'total'
+];
+
+
 
     protected $casts = [
         'tanggal' => 'date'

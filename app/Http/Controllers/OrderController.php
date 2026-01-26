@@ -3,38 +3,38 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use App\Models\Order;
 
 class OrderController extends Controller
 {
     public function create()
     {
-        return view('customer.order');
+        return view('customer.order-create');
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'layanan' => 'required',
-            'tanggal' => 'required|date',
-            'alamat' => 'required'
+            'service_id' => 'required|exists:services,id',
+            'schedule'   => 'required|date',
         ]);
 
         Order::create([
-            'user_id' => Auth::id(),
-            'layanan' => $request->layanan,
-            'tanggal' => $request->tanggal,
-            'alamat' => $request->alamat,
-            'status' => 'pending'
+            'user_id'    => auth()->id(),
+            'service_id' => $request->service_id,
+            'schedule'   => $request->schedule,
+            'status'     => 'pending',
+            'total'      => 0
         ]);
 
-        return redirect()->route('customer.dashboard')->with('success', 'Pesanan berhasil dibuat!');
+        return redirect()->route('dashboard')
+            ->with('success', 'Pesanan berhasil dibuat!');
     }
-    public function history()
-{
-    $orders = \App\Models\Order::where('user_id', Auth::id())->get();
-    return view('customer.history', compact('orders'));
-}
 
+    public function history()
+    {
+        $orders = auth()->user()->orders()->latest()->get();
+        return view('customer.order-history', compact('orders'));
+    }
+    
 }

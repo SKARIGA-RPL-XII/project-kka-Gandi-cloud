@@ -1,41 +1,31 @@
-<script type="module">
-    import { createIcons, Home, Building, ShowerHead } from "lucide";
-    createIcons();
-</script>
-
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="csrf-token" content="{{ csrf_token() }}">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>@yield('title') | GOCLEAN</title>
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body { display:flex; margin:0; font-family:Inter,sans-serif; background:#0f172a; color:white; }
+        .sidebar { width:240px; background:#1e293b; height:100vh; padding:20px; }
+        .sidebar a { display:block; color:#cbd5e1; padding:10px 0; text-decoration:none; font-weight:500; }
+        .sidebar a:hover { color:white; }
+        .content { flex:1; background:#f1f5f9; color:black; padding:25px; }
+    </style>
+</head>
+<body>
 
-        <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+<div class="sidebar">
+    <h2 style="color:white;margin-bottom:20px;">GOCLEAN</h2>
+    <a href="{{ route('customer.dashboard') }}"><i class="fas fa-home"></i> Dashboard</a>
+    <a href="{{ route('order.create') }}"><i class="fas fa-plus-circle"></i> Buat Pesanan</a>
+    <a href="{{ route('order.history') }}"><i class="fas fa-history"></i> Riwayat Pesanan</a>
+    <a href="{{ route('profile.edit') }}"><i class="fas fa-user"></i> Profil</a>
+</div>
 
-        <!-- Scripts -->
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
-    </head>
-    <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-100">
-            @include('layouts.navigation')
+<div class="content">
+    @yield('content')
+</div>
 
-            <!-- Page Heading -->
-            @isset($header)
-                <header class="bg-white shadow">
-                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                        {{ $header }}
-                    </div>
-                </header>
-            @endisset
-
-            <!-- Page Content -->
-            <main>
-                {{ $slot }}
-            </main>
-        </div>
-    </body>
+</body>
 </html>

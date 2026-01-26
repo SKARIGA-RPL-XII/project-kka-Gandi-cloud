@@ -203,7 +203,7 @@ body{
     width:60px;
     height:60px;
     margin:0 auto 15px;
-    background:linear-gradient(135deg,#667eea,#764ba2);
+    background:linear-gradient(135deg,#00ff9d,#00c853);
     border-radius:50%;
     display:flex;
     align-items:center;
@@ -241,7 +241,7 @@ body{
     padding:12px 24px;
     border:none;
     border-radius:10px;
-    background:linear-gradient(135deg,#667eea,#764ba2);
+    background:linear-gradient(135deg,#00ff9d,#00c853);
     color:white;
     font-weight:600;
     cursor:pointer;
@@ -307,6 +307,33 @@ body{
 .status.proses{background:#dbeafe;color:#2563eb;}
 .status.selesai{background:#d1fae5;color:#059669;}
 .status.batal{background:#fee2e2;color:#dc2626;}
+
+@media (max-width: 768px){
+    .sidebar {
+        width: 200px;
+    }
+
+    .container {
+        margin-left: 200px;
+    }
+
+    .services-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 540px){
+    .sidebar{
+        display:none;
+    }
+    .container{
+        margin-left:0;
+    }
+    .nav{
+        padding:0 15px;
+    }
+}
+
 </style>
 </head>
 <body>

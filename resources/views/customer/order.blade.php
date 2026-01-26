@@ -1,44 +1,36 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>Form Pesanan | GOCLEAN</title>
-<style>
-body{font-family:'Inter',sans-serif;background:#f4f9ff;padding:25px;}
-.card{background:white;padding:20px;border-radius:12px;box-shadow:0 5px 15px rgba(0,0,0,.05);max-width:500px;margin:auto;}
-input,select,textarea{width:100%;padding:10px;margin-bottom:10px;border:1px solid #ccc;border-radius:6px;}
-.btn{padding:10px 18px;border:none;background:#1A73E8;color:white;font-weight:600;border-radius:8px;cursor:pointer;}
-</style>
-</head>
-<body>
+@extends('customer.layouts.app')
 
-<div class="card">
-    <h3>Form Pemesanan</h3>
+@section('title', 'Buat Pesanan')
+
+@section('content')
+<div class="container p-4 max-w-lg mx-auto">
 
     @if(session('success'))
-        <p style="color:green;">{{ session('success') }}</p>
+        <div class="bg-green-500 text-white p-2 mb-3">{{ session('success') }}</div>
     @endif
 
-    <form action="{{ route('order.store') }}" method="POST">
-        @csrf
+    <div class="bg-white shadow p-4 rounded">
+        <form method="POST" action="{{ route('order.store') }}">
+            @csrf
 
-        <label>Layanan</label>
-        <select name="layanan" required>
-            <option value="">-- Pilih Layanan --</option>
-            <option value="Bersih Rumah">Bersih Rumah</option>
-            <option value="Cuci Sofa">Cuci Sofa</option>
-            <option value="Cuci Karpet">Cuci Karpet</option>
-        </select>
+            <label>Layanan</label>
+            <select name="layanan" class="w-full border p-2 rounded mb-2">
+                <option>Cleaning Room</option>
+                <option>Cleaning House</option>
+                <option>Cleaning Office</option>
+            </select>
 
-        <label>Tanggal Pelayanan</label>
-        <input type="date" name="tanggal" required>
+            <label>Tanggal</label>
+            <input type="date" name="tanggal" class="w-full border p-2 rounded mb-2">
 
-        <label>Alamat</label>
-        <textarea name="alamat" rows="3" required></textarea>
+            <label>Alamat</label>
+            <textarea name="alamat" class="w-full border p-2 rounded mb-2"></textarea>
 
-        <button class="btn">Kirim Pesanan</button>
-    </form>
+            <button class="bg-blue-600 text-white w-full p-2 rounded">
+                Pesan Sekarang
+            </button>
+        </form>
+    </div>
+
 </div>
-
-</body>
-</html>
+@endsection

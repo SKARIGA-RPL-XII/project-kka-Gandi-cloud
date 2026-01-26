@@ -39,10 +39,9 @@ Route::middleware(['auth', 'staff'])->group(function () {
 });
 
 // Order routes for customers
-Route::middleware(['auth', 'customer'])->group(function () {
-    Route::get('/order', [App\Http\Controllers\OrderController::class, 'create'])->name('order.create');
-    Route::post('/order', [App\Http\Controllers\OrderController::class, 'store'])->name('order.store');
-    Route::get('/customer/history', [App\Http\Controllers\OrderController::class, 'history'])->name('order.history');
-});
+use App\Http\Controllers\OrderController;
+
+Route::get('/order/create', [OrderController::class, 'create'])->name('order.create');
+Route::post('/order/store', [OrderController::class, 'store'])->name('order.store');
 
 require __DIR__.'/auth.php';
