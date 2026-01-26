@@ -50,7 +50,7 @@
         }
         button {
             width:100%;
-            background:linear-gradient(135deg,#a200ff,#048eb8);
+            background:linear-gradient(135deg,#00bd09,#51d6ff);
             border:none;
             padding:12px;
             color:white;

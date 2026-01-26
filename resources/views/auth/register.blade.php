@@ -76,12 +76,13 @@ a{color:#1A73E8;text-decoration:none;font-size:14px;}
         <input type="email" name="email" placeholder="Email" required>
         <input type="password" name="password" placeholder="Password" required>
         <input type="password" name="password_confirmation" placeholder="Konfirmasi Password" required>
-<label for="role">Daftar sebagai</label>
-    <select id="role" name="role" required class="block mt-1 w-full">
+ <label style="margin-top:12px; font-size:14px; font-weight:500;">Daftar sebagai</label>
+    <select name="role" required>
         <option value="customer">Customer</option>
         <option value="staff">Staff</option>
         <option value="admin">Admin</option>
     </select>
+
         <button type="submit">Daftar</button>
 
         <p style="margin-top:15px;font-size:14px;">Sudah punya akun?
