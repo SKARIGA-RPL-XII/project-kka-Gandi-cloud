@@ -88,11 +88,11 @@
         <h2><i class="fas fa-sparkles"></i> GOCLEAN</h2>
     </div>
     <div class="sidebar-nav">
-        <a href="#" class="active"><i class="fas fa-home"></i> Dashboard</a>
-        <a href="#"><i class="fas fa-plus-circle"></i> Buat Pesanan</a>
-        <a href="#"><i class="fas fa-history"></i> Histori Pesanan</a>
-        <a href="#"><i class="fas fa-user"></i> Profil</a>
-        <a href="#"><i class="fas fa-headset"></i> Bantuan</a>
+        <a href="/customer/test"><i class="fas fa-home"></i> Dashboard</a>
+        <a href="/order/create"><i class="fas fa-plus-circle"></i> Buat Pesanan</a>
+        <a href="/order/history"><i class="fas fa-history"></i> Histori Pesanan</a>
+        <a href="/profile"><i class="fas fa-user"></i> Profil</a>
+        <a href="/help"><i class="fas fa-headset"></i> Bantuan</a>
     </div>
 </div>
 
@@ -177,7 +177,7 @@
         <div class="card">
             <div class="flex">
                 <h4><i class="fas fa-tasks"></i> Pesanan Aktif</h4>
-                <a href="#" class="btn">+ Buat Pesanan Baru</a>
+                <a href="/order/create" class="btn">+ Buat Pesanan Baru</a>
             </div>
 
             @if($orders->whereIn('status', ['pending', 'proses'])->count() == 0)

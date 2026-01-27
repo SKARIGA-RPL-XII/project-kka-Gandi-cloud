@@ -3,38 +3,57 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Order;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
-    public function create()
-    {
-        return view('customer.order-create');
-    }
+  public function history()
+{
+    $orders = DB::table('orders')
+        ->where('user_id', Auth::id())
+        ->orderBy('id', 'desc')
+        ->get();
+
+    return view('customer.order-history', compact('orders'));
+}
 
     public function store(Request $request)
     {
         $request->validate([
-            'service_id' => 'required|exists:services,id',
-            'schedule'   => 'required|date',
+            'layanan' => 'required|string',
+            'tanggal' => 'required|date',
+            'alamat' => 'required|string',
         ]);
 
-        Order::create([
-            'user_id'    => auth()->id(),
-            'service_id' => $request->service_id,
-            'schedule'   => $request->schedule,
-            'status'     => 'pending',
-            'total'      => 0
-        ]);
+        DB::table('orders')->insert([
+    'user_id'    => Auth::id(),
+    'service_id' => $request->service_id,
+    'schedule'   => $request->schedule,
+    'total'      => 100000,
+    'status'     => 'pending',
+    'created_at' => now(),
+    'updated_at' => now(),
+]);
 
-        return redirect()->route('dashboard')
-            ->with('success', 'Pesanan berhasil dibuat!');
-    }
 
-    public function history()
-    {
-        $orders = auth()->user()->orders()->latest()->get();
-        return view('customer.order-history', compact('orders'));
+        return redirect('/customer/test')->with('success', 'Pesanan berhasil dibuat!');
     }
-    
+}
+public function history()
+{
+    $orders = DB::table('orders')
+        ->where('user_id', Auth::id())
+        ->orderBy('id', 'desc')
+        ->get();
+ DB::table('orders')->insert([
+    'user_id'    => Auth::id(),
+    'service_id' => $request->service_id,
+    'schedule'   => $request->schedule,
+    'total'      => 100000,
+    'status'     => 'pending',
+    'created_at' => now(),
+    'updated_at' => now(),
+]);
+    return view('customer.order-history', compact('orders'));
 }

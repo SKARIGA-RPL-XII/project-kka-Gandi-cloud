@@ -25,7 +25,9 @@
             <i class="fas fa-sign-in-alt"></i> Login
         </a>
         
-       
+        <a href="{{ route('register') }}" class="btn btn-outline">
+            <i class="fas fa-user-plus"></i> Daftar
+        </a>
     </div>
 </body>
 </html>

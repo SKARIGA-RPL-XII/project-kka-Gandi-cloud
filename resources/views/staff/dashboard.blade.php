@@ -68,13 +68,13 @@
                 </div>
                 <div class="flex space-x-2">
                     @if($order->status == 'pending')
-                        <form action="{{ route('staff.order.accept', $order->id) }}" method="POST" style="display:inline;">
+                        <form action="/staff/order/{{ $order->id }}/accept" method="POST" style="display:inline;">
                             @csrf
                             <button class="bg-green-500 text-white px-3 py-1 rounded text-sm hover:bg-green-600">
                                 Terima
                             </button>
                         </form>
-                        <form action="{{ route('staff.order.reject', $order->id) }}" method="POST" style="display:inline;">
+                        <form action="/staff/order/{{ $order->id }}/reject" method="POST" style="display:inline;">
                             @csrf
                             <button class="bg-red-500 text-white px-3 py-1 rounded text-sm hover:bg-red-600">
                                 Tolak

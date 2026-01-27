@@ -73,6 +73,12 @@
         @csrf
         <h2 style="margin:0 0 15px 0;">Login</h2>
 
+        @if(session('success'))
+            <div class="alert">
+                <i class="fas fa-check-circle"></i> {{ session('success') }}
+            </div>
+        @endif
+
         <input type="email" name="email" placeholder="Email" required>
         <input type="password" name="password" placeholder="Password" required>
 
