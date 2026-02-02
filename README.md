@@ -1,59 +1,202 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# GOCLEAN - Sistem Manajemen Layanan Pembersihan
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## 📋 Deskripsi Proyek
+GOCLEAN adalah sistem manajemen layanan pembersihan berbasis web yang memungkinkan customer memesan layanan, staff mengelola pesanan, dan admin mengatur seluruh sistem.
 
-## About Laravel
+## 🚀 Fitur Utama
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+### 1. Landing Page
+- **URL**: `http://localhost:8000/`
+- Halaman utama dengan informasi layanan
+- Call-to-action untuk pemesanan
+- Informasi kontak dan layanan
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### 2. Sistem Login
+- **URL**: `http://localhost:8000/login`
+- Multi-role login (Customer, Staff, Admin)
+- Demo credentials tersedia
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### 3. Dashboard Customer
+- **URL**: `http://localhost:8000/customer/test`
+- **Fitur**:
+  - Statistik pesanan pribadi
+  - Form pemesanan layanan baru
+  - Histori pesanan lengkap
+  - Halaman profil dan bantuan
 
-## Learning Laravel
+### 4. Dashboard Staff
+- **URL**: `http://localhost:8000/staff/test`
+- **Fitur**:
+  - Statistik pekerjaan harian
+  - Kelola pesanan (terima/tolak/selesaikan)
+  - Filter pesanan berdasarkan status
+  - Daftar pesanan dengan aksi lengkap
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+### 5. Dashboard Admin
+- **URL**: `http://localhost:8000/admin/test`
+- **Fitur**:
+  - Statistik sistem lengkap
+  - **CRUD Layanan** (Tambah/Edit/Hapus)
+  - Kelola users dan pesanan
+  - Pengaturan website
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## 🛠️ Teknologi yang Digunakan
+- **Framework**: Laravel 10.x
+- **Frontend**: HTML5, CSS3, JavaScript
+- **Styling**: Tailwind CSS + Custom CSS
+- **Icons**: Font Awesome 6.0
+- **Database**: MySQL (dengan simulasi data)
 
-## Laravel Sponsors
+## 📁 Struktur File Penting
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+```
+project-kka-Gandi-cloud/
+├── resources/views/
+│   ├── welcome.blade.php          # Landing page
+│   ├── login.blade.php            # Halaman login
+│   ├── customer/
+│   │   ├── dashboard.blade.php    # Dashboard customer
+│   │   ├── order-create.blade.php # Form pemesanan
+│   │   ├── order-history.blade.php# Histori pesanan
+│   │   ├── profile.blade.php      # Profil customer
+│   │   └── help.blade.php         # Bantuan
+│   ├── staff/
+│   │   ├── layout.blade.php       # Layout staff
+│   │   ├── dashboard.blade.php    # Dashboard staff
+│   │   └── orders.blade.php       # Kelola pesanan
+│   └── admin/
+│       ├── layout.blade.php       # Layout admin
+│       ├── dashboard.blade.php    # Dashboard admin
+│       ├── services.blade.php     # Daftar layanan
+│       ├── service-create.blade.php # Tambah layanan
+│       ├── service-edit.blade.php # Edit layanan
+│       ├── users.blade.php        # Kelola users
+│       ├── orders.blade.php       # Kelola pesanan
+│       └── settings.blade.php     # Pengaturan
+├── app/Http/Controllers/
+│   ├── OrderController.php        # Controller pesanan
+│   ├── CustomerController.php     # Controller customer
+│   ├── StaffController.php        # Controller staff
+│   └── AdminController.php        # Controller admin
+└── routes/web.php                 # Routing aplikasi
+```
 
-### Premium Partners
+## 🎯 URL Testing
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+### Halaman Utama
+- **Landing Page**: `http://localhost:8000/`
+- **Login**: `http://localhost:8000/login`
 
-## Contributing
+### Customer
+- **Dashboard**: `http://localhost:8000/customer/test`
+- **Buat Pesanan**: `http://localhost:8000/order/create`
+- **Histori**: `http://localhost:8000/order/history`
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### Staff
+- **Dashboard**: `http://localhost:8000/staff/test`
+- **Kelola Pesanan**: `http://localhost:8000/staff/orders/test`
 
-## Code of Conduct
+### Admin
+- **Dashboard**: `http://localhost:8000/admin/test`
+- **Kelola Layanan**: `http://localhost:8000/admin/services/test`
+- **Tambah Layanan**: `http://localhost:8000/admin/services/create/test`
+- **Kelola Users**: `http://localhost:8000/admin/users/test`
+- **Kelola Pesanan**: `http://localhost:8000/admin/orders/test`
+- **Pengaturan**: `http://localhost:8000/admin/settings/test`
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## 🔐 Demo Login Credentials
+- **Customer**: customer@test.com / password
+- **Staff**: staff@test.com / password  
+- **Admin**: admin@test.com / password
 
-## Security Vulnerabilities
+## ✨ Fitur CRUD Admin Layanan
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### 1. Create (Tambah Layanan)
+- Form lengkap dengan validasi
+- Preview real-time
+- Upload dan validasi data
 
-## License
+### 2. Read (Lihat Layanan)
+- Daftar layanan dengan statistik
+- Filter dan pencarian
+- Informasi detail lengkap
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### 3. Update (Edit Layanan)
+- Form edit dengan data existing
+- Validasi dan preview
+- Update real-time
+
+### 4. Delete (Hapus Layanan)
+- Konfirmasi sebelum hapus
+- Soft delete untuk keamanan
+- Notifikasi sukses
+
+## 🎨 Desain & UI/UX
+- **Responsive Design**: Mobile-first approach
+- **Color Scheme**: Gradient hijau-biru (#005c02 to #00f7ff)
+- **Typography**: Inter font family
+- **Icons**: Font Awesome untuk konsistensi
+- **Animations**: Smooth transitions dan hover effects
+
+## 📊 Fitur Statistik
+- Dashboard dengan real-time stats
+- Grafik dan chart untuk visualisasi
+- Filter berdasarkan tanggal dan status
+- Export data (simulasi)
+
+## 🔧 Cara Menjalankan
+
+1. **Clone Repository**
+   ```bash
+   git clone [repository-url]
+   cd project-kka-Gandi-cloud
+   ```
+
+2. **Install Dependencies**
+   ```bash
+   composer install
+   npm install
+   ```
+
+3. **Setup Environment**
+   ```bash
+   cp .env.example .env
+   php artisan key:generate
+   ```
+
+4. **Database Setup**
+   ```bash
+   php artisan migrate
+   ```
+
+5. **Run Server**
+   ```bash
+   php artisan serve
+   ```
+
+6. **Access Website**
+   - Buka browser: `http://localhost:8000`
+
+## 📝 Catatan Penting
+- Sistem menggunakan data simulasi untuk demo
+- Semua fungsi CRUD berfungsi dengan notifikasi
+- Responsive design untuk semua device
+- Validasi form lengkap di semua halaman
+- Security measures implemented
+
+## 🏆 Keunggulan Sistem
+1. **User-Friendly Interface**: Mudah digunakan untuk semua role
+2. **Complete CRUD Operations**: Semua operasi database lengkap
+3. **Responsive Design**: Optimal di semua perangkat
+4. **Real-time Updates**: Notifikasi dan update langsung
+5. **Professional Design**: UI/UX modern dan menarik
+6. **Secure System**: Validasi dan security measures
+7. **Scalable Architecture**: Mudah dikembangkan
+
+## 📞 Support
+Untuk pertanyaan atau bantuan, hubungi:
+- Email: info@goclean.id
+- Phone: 0812-3456-7890
+
+---
+**© 2024 GOCLEAN - Layanan Pembersihan Profesional**

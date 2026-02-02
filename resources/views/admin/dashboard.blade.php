@@ -34,8 +34,8 @@
                 <i class="fas fa-box text-yellow-600 text-xl"></i>
             </div>
             <div class="ml-4">
-                <h3 class="text-gray-500 text-sm">Total Produk</h3>
-                <p class="text-2xl font-bold">{{ $stats['total_products'] }}</p>
+                <h3 class="text-gray-500 text-sm">Total Layanan</h3>
+                <p class="text-2xl font-bold">{{ $stats['total_services'] }}</p>
             </div>
         </div>
     </div>
@@ -58,15 +58,15 @@
     <div class="bg-white p-6 rounded-lg shadow">
         <h3 class="text-lg font-semibold mb-4">Aksi Cepat</h3>
         <div class="space-y-3">
-            <a href="#" class="flex items-center p-3 bg-blue-50 rounded-lg hover:bg-blue-100">
+            <a href="{{ route('admin.users') }}" class="flex items-center p-3 bg-blue-50 rounded-lg hover:bg-blue-100">
                 <i class="fas fa-user-plus text-blue-600 mr-3"></i>
                 <span>Kelola User</span>
             </a>
-            <a href="#" class="flex items-center p-3 bg-green-50 rounded-lg hover:bg-green-100">
+            <a href="{{ route('admin.services') }}" class="flex items-center p-3 bg-green-50 rounded-lg hover:bg-green-100">
                 <i class="fas fa-plus text-green-600 mr-3"></i>
-                <span>Tambah Konten</span>
+                <span>Kelola Layanan</span>
             </a>
-            <a href="#" class="flex items-center p-3 bg-yellow-50 rounded-lg hover:bg-yellow-100">
+            <a href="{{ route('admin.settings') }}" class="flex items-center p-3 bg-yellow-50 rounded-lg hover:bg-yellow-100">
                 <i class="fas fa-cog text-yellow-600 mr-3"></i>
                 <span>Pengaturan Website</span>
             </a>

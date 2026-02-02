@@ -113,6 +113,18 @@
     </div>
 
     <div class="wrapper">
+        @if(session('success'))
+            <div style="background:#d1fae5;color:#065f46;padding:15px;border-radius:12px;margin-bottom:20px;border:1px solid #a7f3d0;">
+                <i class="fas fa-check-circle"></i> {{ session('success') }}
+            </div>
+        @endif
+        
+        @if(session('error'))
+            <div style="background:#fee2e2;color:#dc2626;padding:15px;border-radius:12px;margin-bottom:20px;border:1px solid #fecaca;">
+                <i class="fas fa-exclamation-circle"></i> {{ session('error') }}
+            </div>
+        @endif
+        
         <div class="hero-section">
             <div class="hero-content">
                 <h1>Selamat Datang di GO CLEAN! 🧽</h1>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Histori Pesanan | GOCLEAN</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body{margin:0;font-family:'Inter',sans-serif;background:#f8fafc;display:flex;}
+        .sidebar{width:280px;background:linear-gradient(135deg,#005c02 0%,#00f7ff 100%);height:100vh;box-shadow:0 10px 30px rgba(0,0,0,.1);padding:0;position:fixed;overflow-y:auto;}
+        .sidebar-header{padding:30px 25px;text-align:center;border-bottom:1px solid rgba(255,255,255,.1);}
+        .sidebar h2{color:white;font-size:24px;font-weight:700;margin:0;text-shadow:0 2px 4px rgba(0,0,0,.3);}
+        .sidebar-nav{padding:20px 0;}
+        .sidebar a{display:flex;align-items:center;padding:15px 25px;color:rgba(255,255,255,.8);text-decoration:none;font-size:15px;transition:.3s;border-left:3px solid transparent;}
+        .sidebar a:hover, .sidebar a.active{background:rgba(255,255,255,.1);color:white;border-left-color:#fff;}
+        .sidebar a i{width:20px;margin-right:12px;font-size:16px;}
+        .container{flex:1;margin-left:280px;}
+        .nav{height:70px;background:white;color:#333;display:flex;align-items:center;justify-content:space-between;padding:0 30px;box-shadow:0 2px 10px rgba(0,0,0,.05);}
+        .nav-title{font-size:20px;font-weight:600;color:#2d3748;}
+        .wrapper{padding:30px;}
+        .card{background:white;border-radius:16px;padding:25px;box-shadow:0 4px 20px rgba(0,0,0,.06);margin-bottom:20px;}
+        .order-item{display:flex;align-items:center;justify-content:space-between;padding:20px;border:1px solid #f1f5f9;border-radius:12px;margin-bottom:15px;transition:.3s;}
+        .order-item:hover{box-shadow:0 4px 15px rgba(0,0,0,.08);}
+        .order-info{flex:1;}
+        .order-info h4{font-size:18px;font-weight:600;margin:0 0 8px 0;color:#1f2937;}
+        .order-info p{font-size:14px;color:#6b7280;margin:0 0 5px 0;}
+        .order-meta{display:flex;gap:20px;font-size:13px;color:#9ca3af;}
+        .status{padding:6px 12px;border-radius:20px;font-size:12px;font-weight:500;text-transform:uppercase;}
+        .status.pending{background:#fef3c7;color:#d97706;}
+        .status.proses{background:#dbeafe;color:#2563eb;}
+        .status.selesai{background:#d1fae5;color:#059669;}
+        .status.batal{background:#fee2e2;color:#dc2626;}
+        .price{font-size:18px;font-weight:700;color:#059669;}
+        .empty-state{text-align:center;padding:60px 20px;}
+        .empty-state i{font-size:64px;color:#d1d5db;margin-bottom:20px;}
+        .empty-state h3{font-size:20px;font-weight:600;color:#374151;margin:0 0 10px 0;}
+        .empty-state p{color:#6b7280;margin:0 0 25px 0;}
+        .btn{padding:12px 24px;border:none;border-radius:10px;background:linear-gradient(135deg,#00ff9d,#00c853);color:white;font-weight:600;cursor:pointer;transition:.3s;font-size:14px;text-decoration:none;display:inline-block;}
+        .btn:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(0,255,157,.3);}
+    </style>
+</head>
+<body>
+
+<div class="sidebar">
+    <div class="sidebar-header">
+        <h2><i class="fas fa-sparkles"></i> GOCLEAN</h2>
+    </div>
+    <div class="sidebar-nav">
+        <a href="/customer/test"><i class="fas fa-home"></i> Dashboard</a>
+        <a href="/order/create"><i class="fas fa-plus-circle"></i> Buat Pesanan</a>
+        <a href="/order/history" class="active"><i class="fas fa-history"></i> Histori Pesanan</a>
+        <a href="/profile"><i class="fas fa-user"></i> Profil</a>
+        <a href="/help"><i class="fas fa-headset"></i> Bantuan</a>
+    </div>
+</div>
+
+<div class="container">
+    <div class="nav">
+        <div class="nav-title">Histori Pesanan</div>
+    </div>
+
+    <div class="wrapper">
+        <div class="card">
+            <h3 style="font-size:24px;font-weight:700;margin:0 0 20px 0;color:#1f2937;">
+                <i class="fas fa-history"></i> Riwayat Pesanan Anda
+            </h3>
+
+            @if($orders->count() == 0)
+                <div class="empty-state">
+                    <i class="fas fa-clipboard-list"></i>
+                    <h3>Belum Ada Pesanan</h3>
+                    <p>Anda belum pernah membuat pesanan. Mulai dengan membuat pesanan pertama Anda!</p>
+                    <a href="/order/create" class="btn">
+                        <i class="fas fa-plus"></i> Buat Pesanan Pertama
+                    </a>
+                </div>
+            @else
+                @foreach($orders as $order)
+                <div class="order-item">
+                    <div class="order-info">
+                        <h4>{{ $order->layanan }}</h4>
+                        <p>{{ $order->alamat }}</p>
+                        <div class="order-meta">
+                            <span><i class="fas fa-calendar"></i> {{ date('d M Y', strtotime($order->tanggal)) }}</span>
+                            <span><i class="fas fa-clock"></i> {{ date('d M Y H:i', strtotime($order->created_at)) }}</span>
+                            @if(isset($order->payment_method))
+                                <span><i class="fas fa-credit-card"></i> {{ $order->payment_method }}</span>
+                            @endif
+                        </div>
+                    </div>
+                    <div style="text-align:right;">
+                        <div class="price">Rp {{ number_format($order->total ?? 0, 0, ',', '.') }}</div>
+                        <div style="margin-top:8px;">
+                            <span class="status {{ $order->status }}">{{ ucfirst($order->status) }}</span>
+                        </div>
+                    </div>
+                </div>
+                @endforeach
+            @endif
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

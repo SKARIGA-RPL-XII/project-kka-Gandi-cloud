@@ -8,20 +8,20 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         body{margin:0;font-family:'Inter',sans-serif;background:#f8fafc;display:flex;}
-        .sidebar{width:280px;background:linear-gradient(135deg,#005c02 0%,#00f7ff 100%);height:100vh;box-shadow:0 10px 30px rgba(0,0,0,.1);padding:0;position:fixed;overflow-y:auto;}
+        .sidebar{width:280px;background:linear-gradient(135deg,#005c02 0%,#00f7ff 100%);height:100vh;position:fixed;}
         .sidebar-header{padding:30px 25px;text-align:center;border-bottom:1px solid rgba(255,255,255,.1);}
-        .sidebar h2{color:white;font-size:24px;font-weight:700;margin:0;text-shadow:0 2px 4px rgba(0,0,0,.3);}
+        .sidebar h2{color:white;font-size:24px;font-weight:700;margin:0;}
         .sidebar-nav{padding:20px 0;}
-        .sidebar a{display:flex;align-items:center;padding:15px 25px;color:rgba(255,255,255,.8);text-decoration:none;font-size:15px;transition:.3s;border-left:3px solid transparent;}
-        .sidebar a:hover, .sidebar a.active{background:rgba(255,255,255,.1);color:white;border-left-color:#fff;}
-        .sidebar a i{width:20px;margin-right:12px;font-size:16px;}
+        .sidebar a{display:flex;align-items:center;padding:15px 25px;color:rgba(255,255,255,.8);text-decoration:none;transition:.3s;}
+        .sidebar a:hover, .sidebar a.active{background:rgba(255,255,255,.1);color:white;}
+        .sidebar a i{margin-right:12px;}
         
         .container{flex:1;margin-left:280px;}
-        .nav{height:70px;background:white;color:#333;display:flex;align-items:center;justify-content:space-between;padding:0 30px;box-shadow:0 2px 10px rgba(0,0,0,.05);}
+        .nav{height:70px;background:white;display:flex;align-items:center;justify-content:space-between;padding:0 30px;}
         .nav-title{font-size:20px;font-weight:600;color:#2d3748;}
         
         .wrapper{padding:30px;}
-        .card{background:white;padding:30px;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,.06);margin-bottom:20px;}
+        .card{background:white;padding:30px;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,.06);}
         .order-item{display:flex;align-items:center;gap:15px;padding:20px;border:1px solid #f1f5f9;border-radius:12px;margin-bottom:15px;}
         .order-icon{width:50px;height:50px;border-radius:8px;background:linear-gradient(135deg,#667eea,#764ba2);display:flex;align-items:center;justify-content:center;color:white;font-size:20px;}
         .order-info{flex:1;}
@@ -88,12 +88,6 @@
                     <p>24 Januari 2024 • Jl. Gatot Subroto No. 789</p>
                 </div>
                 <span class="status pending">Pending</span>
-            </div>
-            
-            <div style="text-align:center;margin-top:30px;">
-                <a href="/order/create" style="display:inline-block;padding:12px 24px;background:linear-gradient(135deg,#00ff9d,#00c853);color:white;text-decoration:none;border-radius:8px;font-weight:600;">
-                    <i class="fas fa-plus"></i> Buat Pesanan Baru
-                </a>
             </div>
         </div>
     </div>

@@ -22,7 +22,7 @@
         <ul class="flex flex-col space-y-1">
 
             <li>
-                <a href="/admin/dashboard"
+                <a href="/admin/test"
                    class="flex items-center px-6 py-3 text-white/90 hover:bg-white/10 hover:text-white transition @if(request()->is('admin/dashboard')) bg-white/10 border-l-4 border-white text-white font-medium @endif">
                     <i class="fa fa-tachometer-alt w-6 text-center mr-3"></i>
                     <span>Dashboard</span>
@@ -30,24 +30,32 @@
             </li>
 
             <li>
-                <a href="/admin/content"
-                   class="flex items-center px-6 py-3 text-white/90 hover:bg-white/10 hover:text-white transition @if(request()->is('admin/content')) bg-white/10 border-l-4 border-white text-white font-medium @endif">
-                    <i class="fa fa-file-alt w-6 text-center mr-3"></i>
-                    <span>Kelola Konten</span>
+                <a href="/admin/services/test"
+                   class="flex items-center px-6 py-3 text-white/90 hover:bg-white/10 hover:text-white transition @if(request()->is('admin/services*')) bg-white/10 border-l-4 border-white text-white font-medium @endif">
+                    <i class="fa fa-broom w-6 text-center mr-3"></i>
+                    <span>Kelola Layanan</span>
                 </a>
             </li>
 
             <li>
-                <a href="/admin/analytics"
-                   class="flex items-center px-6 py-3 text-white/90 hover:bg-white/10 hover:text-white transition @if(request()->is('admin/analytics')) bg-white/10 border-l-4 border-white text-white font-medium @endif">
-                    <i class="fa fa-chart-bar w-6 text-center mr-3"></i>
-                    <span>Analytics</span>
+                <a href="/admin/users/test"
+                   class="flex items-center px-6 py-3 text-white/90 hover:bg-white/10 hover:text-white transition @if(request()->is('admin/users')) bg-white/10 border-l-4 border-white text-white font-medium @endif">
+                    <i class="fa fa-users w-6 text-center mr-3"></i>
+                    <span>Kelola Users</span>
                 </a>
             </li>
 
             <li>
-                <a href="/admin/settings"
-                   class="flex items-center px-6 py-3 text-white/90 hover:bg-white/10 hover:text-white transition">
+                <a href="/admin/orders/test"
+                   class="flex items-center px-6 py-3 text-white/90 hover:bg-white/10 hover:text-white transition @if(request()->is('admin/orders')) bg-white/10 border-l-4 border-white text-white font-medium @endif">
+                    <i class="fa fa-shopping-cart w-6 text-center mr-3"></i>
+                    <span>Kelola Pesanan</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="/admin/settings/test"
+                   class="flex items-center px-6 py-3 text-white/90 hover:bg-white/10 hover:text-white transition @if(request()->is('admin/settings')) bg-white/10 border-l-4 border-white text-white font-medium @endif">
                     <i class="fa fa-cog w-6 text-center mr-3"></i>
                     <span>Pengaturan</span>
                 </a>
@@ -65,7 +73,14 @@
             <h1 class="text-xl font-semibold">@yield('title')</h1>
             <div class="flex items-center space-x-3">
                 <span class="text-gray-700">Selamat datang, Admin</span>
-                <button class="bg-red-500 text-white px-3 py-1.5 rounded">Logout</button>
+                <form action="{{ route('logout') }}" method="POST" class="inline">
+    @csrf
+    <button type="submit"
+        class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
+        Logout
+    </button>
+</form>
+
             </div>
         </header>
 

@@ -64,7 +64,7 @@
                 <div>
                     <p class="font-medium">{{ $order->customer_name }}</p>
                     <p class="text-sm text-gray-600">{{ $order->layanan }}</p>
-                    <p class="text-xs text-gray-500">{{ date('d/m/Y', strtotime($order->tanggal)) }}</p>
+                    <p class="text-xs text-gray-500">{{ date('d/m/Y', strtotime($order->tanggal ?? $order->created_at)) }}</p>
                 </div>
                 <div class="flex space-x-2">
                     @if($order->status == 'pending')
@@ -81,7 +81,7 @@
                             </button>
                         </form>
                     @elseif($order->status == 'proses')
-                        <form action="{{ route('staff.order.complete', $order->id) }}" method="POST" style="display:inline;">
+                        <form action="/staff/order/{{ $order->id }}/complete" method="POST" style="display:inline;">
                             @csrf
                             <button class="bg-blue-500 text-white px-3 py-1 rounded text-sm hover:bg-blue-600">
                                 Selesai
@@ -101,15 +101,15 @@
     <div class="bg-white p-6 rounded-lg shadow">
         <h3 class="text-lg font-semibold mb-4">Aksi Cepat</h3>
         <div class="space-y-3">
-            <a href="#" class="flex items-center p-3 bg-blue-50 rounded-lg hover:bg-blue-100">
+            <a href="/staff/orders/test" class="flex items-center p-3 bg-blue-50 rounded-lg hover:bg-blue-100">
                 <i class="fas fa-list text-blue-600 mr-3"></i>
                 <span>Lihat Semua Pesanan</span>
             </a>
-            <a href="#" class="flex items-center p-3 bg-green-50 rounded-lg hover:bg-green-100">
+            <a href="/staff/orders/test?status=proses" class="flex items-center p-3 bg-green-50 rounded-lg hover:bg-green-100">
                 <i class="fas fa-tasks text-green-600 mr-3"></i>
                 <span>Pekerjaan Aktif</span>
             </a>
-            <a href="#" class="flex items-center p-3 bg-yellow-50 rounded-lg hover:bg-yellow-100">
+            <a href="/staff/orders/test?status=selesai" class="flex items-center p-3 bg-yellow-50 rounded-lg hover:bg-yellow-100">
                 <i class="fas fa-history text-yellow-600 mr-3"></i>
                 <span>Riwayat Pekerjaan</span>
             </a>
