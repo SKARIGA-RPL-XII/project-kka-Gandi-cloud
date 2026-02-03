@@ -4,15 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Tentang Kami - GOCLEAN</title>
-
-    <!-- Font & Icon -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-
     <style>
-        /* Reset */
         * {
             margin: 0;
             padding: 0;
@@ -21,19 +16,18 @@
 
         body {
             font-family: 'Inter', sans-serif;
+            line-height: 1.6;
             color: #333;
         }
 
         .container {
             max-width: 1200px;
-            margin: auto;
+            margin: 0 auto;
             padding: 0 20px;
         }
 
-        /* ================= HEADER ================= */
-
-        .header {
-            background: linear-gradient(135deg, #1f2937, #1a232f);
+         .header {
+            background: linear-gradient(135deg, #1f2937 0%, #1a232f 100%);
             color: white;
             padding: 1rem 0;
             position: fixed;
@@ -55,8 +49,8 @@
         }
 
         .nav-links {
-            list-style: none;
             display: flex;
+            list-style: none;
             gap: 2rem;
         }
 
@@ -64,27 +58,28 @@
             color: white;
             text-decoration: none;
             font-weight: 500;
-            transition: 0.3s;
+            transition: .3s;
         }
 
         .nav-links a:hover {
             color: #00ff9d;
         }
 
-        /* Button */
-
         .btn {
-            padding: 0.6rem 1.4rem;
+            padding: 0.7rem 1.5rem;
+            border: none;
             border-radius: 8px;
             font-weight: 600;
+            cursor: pointer;
+            transition: .3s;
             text-decoration: none;
-            transition: 0.3s;
             display: inline-block;
         }
 
         .btn-outline {
             border: 2px solid white;
             color: white;
+            background: transparent;
         }
 
         .btn-outline:hover {
@@ -92,164 +87,218 @@
             color: #005c02;
         }
 
-        /* ================= HERO ================= */
-
         .hero {
-            background: linear-gradient(135deg, #005c02, #00f7ff);
+            background: linear-gradient(135deg, #005c02 0%, #00f7ff 100%);
             color: white;
-            text-align: center;
             padding: 8rem 0 4rem;
-            margin-top: 70px;
+            text-align: center;
         }
 
         .hero h1 {
             font-size: 3rem;
-            margin-bottom: 0.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
         }
 
-        .hero p {
-            opacity: 0.9;
-        }
-
-        /* ================= ABOUT ================= */
-
-        .about {
-            background: #f8fafc;
+        .content {
             padding: 4rem 0;
+            background: #f8fafc;
         }
 
-        .about-box {
+        .about-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .about-card {
             background: white;
-            padding: 3rem;
+            padding: 2rem;
             border-radius: 16px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, .06);
             text-align: center;
-            max-width: 800px;
-            margin: auto;
         }
 
-        .about-box h2 {
+        .about-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1rem;
+            background: linear-gradient(135deg, #00ff9d, #00c853);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+        }
+
+        .about-card h3 {
+            font-size: 1.5rem;
             margin-bottom: 1rem;
             color: #1f2937;
         }
 
-        .about-box p {
+        .about-card p {
             color: #6b7280;
-            font-size: 1.1rem;
-            line-height: 1.8;
-            margin-bottom: 1rem;
         }
 
-        /* ================= FOOTER ================= */
+        .team {
+            background: white;
+            padding: 4rem 0;
+        }
 
-        .footer {
-            background: #1f2937;
-            color: white;
-            padding: 2rem 0;
+        .team h2 {
             text-align: center;
-            margin-top: 4rem;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #1f2937;
         }
 
-        .footer p {
-            color: #9ca3af;
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
         }
 
-        /* ================= RESPONSIVE ================= */
-
-        @media (max-width: 768px) {
-
-            .nav-links {
-                display: none;
-            }
-
-            .hero h1 {
-                font-size: 2.3rem;
-            }
-
+        .team-member {
+            text-align: center;
+            padding: 2rem;
         }
 
-        .logo {
+        .team-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            margin: 0 auto 1rem;
             display: flex;
             align-items: center;
-            gap: 10px;
+            justify-content: center;
+            font-size: 3rem;
+            color: white;
         }
 
-        .logo-img {
-            width: 70px;
-            height: 70px;
-            object-fit: contain;
+        .team-member h4 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: #1f2937;
+        }
+
+        .team-member p {
+            color: #6b7280;
+            font-size: 0.9rem;
         }
     </style>
 </head>
 
 <body>
 
-    <!-- ================= HEADER ================= -->
-
     <header class="header">
         <div class="container">
             <nav class="nav">
                 <div class="logo">
-                    <img src="image/logo.jpg" alt="GOCLEAN Logo" class="logo-img">
+                    <i class="fas fa-sparkles"></i> GOCLEAN
                 </div>
-
-
                 <ul class="nav-links">
                     <li><a href="/">Beranda</a></li>
                     <li><a href="/#services">Layanan</a></li>
                     <li><a href="/about">Tentang</a></li>
                     <li><a href="/contact">Kontak</a></li>
                 </ul>
-
-                <a href="login" class="btn btn-outline">Masuk</a>
-
+                <div>
+                    <a href="/login" class="btn btn-outline">Masuk</a>
+                </div>
             </nav>
         </div>
     </header>
 
-
-    <!-- ================= HERO ================= -->
-
     <section class="hero">
         <div class="container">
-            <h1>Tentang Kami</h1>
-            <p>Layanan Pembersihan Profesional</p>
+            <h1>Tentang GOCLEAN</h1>
+            <p>Layanan pembersihan profesional terpercaya sejak 2026</p>
         </div>
     </section>
 
-
-    <!-- ================= ABOUT ================= -->
-
-    <section class="about">
+    <section class="content">
         <div class="container">
-
-            <div class="about-box">
-
-                <h2>Siapa Kami?</h2>
-
-                <p>
-                    GOCLEAN adalah layanan pembersihan profesional yang berdiri sejak 2025
-                    dan berkomitmen memberikan layanan terbaik untuk rumah dan kantor Anda.
-                </p>
-
-                <p>
-                    Kami didukung oleh tim berpengalaman, peralatan modern, serta sistem
-                    pelayanan yang cepat, aman, dan terpercaya.
-                </p>
-
+            <div class="about-grid">
+                <div class="about-card">
+                    <div class="about-icon">
+                        <i class="fas fa-history"></i>
+                    </div>
+                    <h3>Pengalaman</h3>
+                    <p>Lebih dari 4 tahun melayani ribuan pelanggan dengan kepuasan 99%</p>
+                </div>
+                <div class="about-card">
+                    <div class="about-icon">
+                        <i class="fas fa-award"></i>
+                    </div>
+                    <h3>Kualitas</h3>
+                    <p>Standar internasional dengan sertifikasi ISO 9001:2016</p>
+                </div>
+                <div class="about-card">
+                    <div class="about-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>Tim Profesional</h3>
+                    <p>50+ staff terlatih dan berpengalaman di bidang cleaning service</p>
+                </div>
             </div>
 
+            <div style="background:white;padding:3rem;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,.06);">
+                <h2 style="text-align:center;font-size:2rem;margin-bottom:2rem;color:#1f2937;">Visi & Misi</h2>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:3rem;">
+                    <div>
+                        <h3 style="color:#00c853;margin-bottom:1rem;">Visi</h3>
+                        <p>Menjadi perusahaan layanan pembersihan terdepan di Indonesia yang memberikan solusi
+                            kebersihan terbaik untuk rumah dan bisnis.</p>
+                    </div>
+                    <div>
+                        <h3 style="color:#00c853;margin-bottom:1rem;">Misi</h3>
+                        <p>Memberikan layanan pembersihan berkualitas tinggi dengan teknologi modern, harga terjangkau,
+                            dan kepuasan pelanggan sebagai prioritas utama.</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
-
-    <!-- ================= FOOTER ================= -->
-
-    <footer class="footer">
+    <section class="team">
         <div class="container">
-            <p>&copy; 2026 GOCLEAN. All Rights Reserved.</p>
+            <h2>Tim Kami</h2>
+            <div class="team-grid">
+                <div class="team-member">
+                    <div class="team-avatar">
+                        <i class="fas fa-user-tie"></i>
+                    </div>
+                    <h4>Daffa Paundra Gandi</h4>
+                    <p>CEO & Founder</p>
+                </div>
+                <div class="team-member">
+                    <div class="team-avatar">
+                        <i class="fas fa-user-cog"></i>
+                    </div>
+                    <h4>Sari Dewi</h4>
+                    <p>Operations Manager</p>
+                </div>
+                <div class="team-member">
+                    <div class="team-avatar">
+                        <i class="fas fa-user-friends"></i>
+                    </div>
+                    <h4>Budi Santoso</h4>
+                    <p>Customer Service</p>
+                </div>
+                <div class="team-member">
+                    <div class="team-avatar">
+                        <i class="fas fa-user-check"></i>
+                    </div>
+                    <h4>Maya Putri</h4>
+                    <p>Quality Control</p>
+                </div>
+            </div>
         </div>
-    </footer>
+    </section>
 
 </body>
 

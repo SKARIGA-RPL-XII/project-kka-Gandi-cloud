@@ -14,8 +14,8 @@
         <h2 class="text-2xl font-bold text-gray-800 mb-6">Edit Layanan</h2>
 
         @if ($errors->any())
-            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-                <ul class="list-disc list-inside">
+            <div style="background:#fee2e2;color:#dc2626;padding:15px;border-radius:10px;margin-bottom:20px;border:1px solid #fecaca;">
+                <ul style="margin:0;padding-left:20px;">
                     @foreach ($errors->all() as $error)
                         <li>{{ $error }}</li>
                     @endforeach
@@ -24,9 +24,9 @@
         @endif
 
        <form action="{{ route('admin.services.update', $service->id) }}" method="POST">
-
     @csrf
     @method('PUT')
+
 
     <input type="text" name="name" value="{{ $service->name }}">
     <input type="text" name="description" value="{{ $service->description }}">

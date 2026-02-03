@@ -9,7 +9,7 @@
             <option>Semua Role</option>
             <option>Customer</option>
             <option>Staff</option>
-            <option>Admin</option>
+            
         </select>
     </div>
 </div>
@@ -90,13 +90,8 @@
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                         <div class="flex space-x-2">
-                            <button class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-xs">
-                                <i class="fas fa-eye"></i> Detail
-                            </button>
+                           
                             @if($user->role != 'admin')
-                            <button class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded text-xs">
-                                <i class="fas fa-edit"></i> Edit
-                            </button>
                             <button class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-xs" 
                                     onclick="return confirm('Yakin ingin menonaktifkan user ini?')">
                                 <i class="fas fa-ban"></i> Nonaktif

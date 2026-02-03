@@ -145,23 +145,7 @@
                 </div>
             </div>
 
-            <div class="bg-white rounded-lg shadow p-6">
-                <h3 class="text-lg font-semibold text-gray-800 mb-4">Backup & Maintenance</h3>
-                <div class="space-y-3">
-                    <button class="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg text-sm">
-                        <i class="fas fa-download mr-2"></i>
-                        Backup Database
-                    </button>
-                    <button class="w-full bg-yellow-500 hover:bg-yellow-600 text-white py-2 px-4 rounded-lg text-sm">
-                        <i class="fas fa-broom mr-2"></i>
-                        Clear Cache
-                    </button>
-                    <button class="w-full bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-lg text-sm">
-                        <i class="fas fa-sync mr-2"></i>
-                        Update System
-                    </button>
-                </div>
-            </div>
+           
 
             <div class="bg-white rounded-lg shadow p-6">
                 <h3 class="text-lg font-semibold text-gray-800 mb-4">Statistik Hari Ini</h3>

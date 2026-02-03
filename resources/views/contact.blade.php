@@ -4,15 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Kontak Kami - GOCLEAN</title>
-
-    <!-- Font & Icon -->
+    <title>Kontak - GOCLEAN</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-
     <style>
-        /* Reset */
         * {
             margin: 0;
             padding: 0;
@@ -21,19 +16,18 @@
 
         body {
             font-family: 'Inter', sans-serif;
+            line-height: 1.6;
             color: #333;
         }
 
         .container {
             max-width: 1200px;
-            margin: auto;
+            margin: 0 auto;
             padding: 0 20px;
         }
 
-        /* ================= HEADER ================= */
-
-        .header {
-            background: linear-gradient(135deg, #1f2937, #1a232f);
+         .header {
+            background: linear-gradient(135deg, #1f2937 0%, #1a232f 100%);
             color: white;
             padding: 1rem 0;
             position: fixed;
@@ -42,7 +36,6 @@
             z-index: 1000;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
-
         .nav {
             display: flex;
             justify-content: space-between;
@@ -55,8 +48,8 @@
         }
 
         .nav-links {
-            list-style: none;
             display: flex;
+            list-style: none;
             gap: 2rem;
         }
 
@@ -64,33 +57,22 @@
             color: white;
             text-decoration: none;
             font-weight: 500;
-            transition: 0.3s;
+            transition: .3s;
         }
 
         .nav-links a:hover {
             color: #00ff9d;
         }
 
-        /* Button */
-
         .btn {
-            padding: 0.6rem 1.4rem;
+            padding: 0.7rem 1.5rem;
+            border: none;
             border-radius: 8px;
             font-weight: 600;
-            text-decoration: none;
-            transition: 0.3s;
-            display: inline-block;
             cursor: pointer;
-            border: none;
-        }
-
-        .btn-primary {
-            background: #00ff9d;
-            color: #005c02;
-        }
-
-        .btn-primary:hover {
-            background: #00e68a;
+            transition: .3s;
+            text-decoration: none;
+            display: inline-block;
         }
 
         .btn-outline {
@@ -104,195 +86,254 @@
             color: #005c02;
         }
 
-        /* ================= HERO ================= */
-
         .hero {
-            background: linear-gradient(135deg, #005c02, #00f7ff);
+            background: linear-gradient(135deg, #005c02 0%, #00f7ff 100%);
             color: white;
-            text-align: center;
             padding: 8rem 0 4rem;
-            margin-top: 70px;
+            text-align: center;
         }
 
         .hero h1 {
             font-size: 3rem;
-            margin-bottom: 0.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
         }
 
-        .hero p {
-            opacity: 0.9;
-        }
-
-        /* ================= CONTACT ================= */
-
-        .contact {
-            background: #f8fafc;
+        .content {
             padding: 4rem 0;
+            background: #f8fafc;
         }
 
-        .contact-box {
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+        }
+
+        .contact-info {
             background: white;
-            padding: 3rem;
+            padding: 2rem;
             border-radius: 16px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-            max-width: 700px;
-            margin: auto;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, .06);
         }
 
-        .contact-box h2 {
-            text-align: center;
-            margin-bottom: 2rem;
-            color: #1f2937;
+        .contact-form {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, .06);
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background: #f8fafc;
+            border-radius: 10px;
+        }
+
+        .contact-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #00ff9d, #00c853);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            margin-right: 1rem;
         }
 
         .form-group {
-            margin-bottom: 1.2rem;
+            margin-bottom: 1.5rem;
         }
 
         .form-group label {
             display: block;
-            margin-bottom: 6px;
-            font-weight: 500;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 0.5rem;
         }
 
-        .form-group input,
-        .form-group textarea {
+        .form-control {
             width: 100%;
-            padding: 12px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            font-size: 1rem;
+            padding: 0.75rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            transition: .3s;
         }
 
-        .form-group input:focus,
-        .form-group textarea:focus {
+        .form-control:focus {
             outline: none;
             border-color: #00c853;
+            box-shadow: 0 0 0 3px rgba(0, 200, 83, 0.1);
         }
 
-        /* ================= FOOTER ================= */
-
-        .footer {
-            background: #1f2937;
+        .btn-primary {
+            background: linear-gradient(135deg, #00ff9d, #00c853);
             color: white;
-            padding: 2rem 0;
-            text-align: center;
-            margin-top: 4rem;
+            width: 100%;
         }
 
-        .footer p {
-            color: #9ca3af;
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 255, 157, 0.3);
         }
 
-        /* ================= RESPONSIVE ================= */
-
-        @media (max-width: 768px) {
-
-            .nav-links {
-                display: none;
-            }
-
-            .hero h1 {
-                font-size: 2.3rem;
-            }
-
-        }
-
-        .logo {
+        .map {
+            background: #e5e7eb;
+            height: 300px;
+            border-radius: 16px;
             display: flex;
             align-items: center;
-            gap: 10px;
-        }
-
-        .logo-img {
-            width: 70px;
-            height: 70px;
-            object-fit: contain;
+            justify-content: center;
+            color: #6b7280;
+            margin-top: 2rem;
         }
     </style>
 </head>
 
 <body>
 
-    <!-- ================= HEADER ================= -->
-
     <header class="header">
         <div class="container">
             <nav class="nav">
                 <div class="logo">
-                    <img src="image/logo.jpg" alt="GOCLEAN Logo" class="logo-img">
+                    <i class="fas fa-sparkles"></i> GOCLEAN
                 </div>
-
-
                 <ul class="nav-links">
                     <li><a href="/">Beranda</a></li>
                     <li><a href="/#services">Layanan</a></li>
                     <li><a href="/about">Tentang</a></li>
                     <li><a href="/contact">Kontak</a></li>
                 </ul>
-
-                <a href="/login" class="btn btn-outline">Masuk</a>
-
+                <div>
+                    <a href="/login" class="btn btn-outline">Masuk</a>
+                </div>
             </nav>
         </div>
     </header>
 
-
-    <!-- ================= HERO ================= -->
-
     <section class="hero">
         <div class="container">
             <h1>Hubungi Kami</h1>
-            <p>Kami siap membantu Anda</p>
+            <p>Siap melayani kebutuhan kebersihan Anda 24/7</p>
         </div>
     </section>
 
-
-    <!-- ================= CONTACT ================= -->
-
-    <section class="contact">
+    <section class="content">
         <div class="container">
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <h3 style="margin-bottom:2rem;color:#1f2937;">Informasi Kontak</h3>
 
-            <div class="contact-box">
-
-                <h2>Kirim Pesan</h2>
-
-                <form method="post" action="send_mail.php">
-
-                    <div class="form-group">
-                        <label>Nama</label>
-                        <input type="text" name="nama" required>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <div>
+                            <h4>Telepon</h4>
+                            <p>0812-3456-7890</p>
+                            <p>021-1234-5678</p>
+                        </div>
                     </div>
 
-                    <div class="form-group">
-                        <label>Email</label>
-                        <input type="email" name="email" required>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div>
+                            <h4>Email</h4>
+                            <p>info@goclean.id</p>
+                            <p>support@goclean.id</p>
+                        </div>
                     </div>
 
-                    <div class="form-group">
-                        <label>Pesan</label>
-                        <textarea name="pesan" rows="4" required></textarea>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div>
+                            <h4>Alamat</h4>
+                            <p>Jl. Raya Malang No. 123</p>
+                            <p>Malang, Jawa Timur 65141</p>
+                        </div>
                     </div>
 
-                    <button type="submit" class="btn btn-primary" style="width:100%;">
-                        Kirim Pesan
-                    </button>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div>
+                            <h4>Jam Operasional</h4>
+                            <p>Senin - Sabtu: 08:00 - 18:00</p>
+                            <p>Minggu: 09:00 - 15:00</p>
+                        </div>
+                    </div>
+                </div>
 
-                </form>
+                <div class="contact-form">
+                    <h3 style="margin-bottom:2rem;color:#1f2937;">Kirim Pesan</h3>
 
+                    <form>
+                        <div class="form-group">
+                            <label>Nama Lengkap</label>
+                            <input type="text" class="form-control" placeholder="Masukkan nama Anda" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" class="form-control" placeholder="Masukkan email Anda" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Nomor Telepon</label>
+                            <input type="tel" class="form-control" placeholder="Masukkan nomor telepon">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Subjek</label>
+                            <select class="form-control" required>
+                                <option value="">Pilih subjek</option>
+                                <option>Informasi Layanan</option>
+                                <option>Keluhan</option>
+                                <option>Saran</option>
+                                <option>Lainnya</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Pesan</label>
+                            <textarea class="form-control" rows="5" placeholder="Tulis pesan Anda..."
+                                required></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-paper-plane"></i> Kirim Pesan
+                        </button>
+                    </form>
+                </div>
             </div>
 
+            <div class="map">
+                <div style="text-align:center;">
+                    <i class="fas fa-map text-4xl mb-4"></i>
+                    <p>Peta Lokasi Kantor GOCLEAN</p>
+                    <p style="font-size:0.8rem;">Jl. Raya Malang No. 123, Malang, Jawa Timur</p>
+                </div>
+            </div>
         </div>
     </section>
 
-
-    <!-- ================= FOOTER ================= -->
-
-    <footer class="footer">
-        <div class="container">
-            <p>&copy; 2026 GOCLEAN. All Rights Reserved.</p>
-        </div>
-    </footer>
+    <script>
+        document.querySelector('form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            alert('Terima kasih! Pesan Anda telah terkirim. Tim kami akan segera menghubungi Anda.');
+            this.reset();
+        });
+    </script>
 
 </body>
 

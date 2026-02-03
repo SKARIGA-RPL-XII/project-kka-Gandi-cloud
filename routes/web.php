@@ -8,6 +8,29 @@ use App\Http\Controllers\OrderController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
 
+Route::get('/about', function () {
+    return view('about');
+});
+
+Route::get('/contact', function () {
+    return view('contact');
+});
+
+Route::get('/register', function () {
+    return view('auth.register');
+})->name('register');
+
+Route::post('/register/process', function (Request $request) {
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|email',
+        'role' => 'required|in:customer,staff,admin',
+        'password' => 'required|min:8|confirmed'
+    ]);
+    
+    return response()->json(['success' => true]);
+});
+
 Route::get('/login', function () {
     return view('login');
 })->name('login');
@@ -393,5 +416,14 @@ Route::get('/about', function () {
 Route::get('/contact', function () {
     return view('contact');
 });
+Route::prefix('admin')->middleware(['auth'])->group(function () {
+    Route::get('/services', [ServiceController::class, 'index'])->name('admin.services');
+    Route::get('/services/create', [ServiceController::class, 'create'])->name('admin.services.create');
+    Route::post('/services', [ServiceController::class, 'store'])->name('admin.services.store');
 
+    Route::get('/services/{id}/edit', [ServiceController::class, 'edit'])->name('admin.services.edit');
+    Route::put('/services/{id}', [ServiceController::class, 'update'])->name('admin.services.update');
+
+    Route::delete('/services/{id}', [ServiceController::class, 'destroy'])->name('admin.services.delete');
+});
 require __DIR__.'/auth.php';

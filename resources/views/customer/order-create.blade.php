@@ -71,15 +71,15 @@
             <h2 style="font-size:28px;font-weight:700;margin:0 0 10px 0;color:#1f2937;">Buat Pesanan Baru</h2>
             <p style="color:#6b7280;margin:0 0 30px 0;">Isi form di bawah untuk membuat pesanan layanan pembersihan</p>
 
-            @if ($errors->any())
-                <div class="alert alert-danger">
-                    <ul style="margin:0;padding-left:20px;">
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
+        @if ($errors->any())
+            <div style="background:#fee2e2;color:#dc2626;padding:15px;border-radius:10px;margin-bottom:20px;border:1px solid #fecaca;">
+                <ul style="margin:0;padding-left:20px;">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
 
             <form action="{{ route('order.store') }}" method="POST" id="orderForm">
                 @csrf

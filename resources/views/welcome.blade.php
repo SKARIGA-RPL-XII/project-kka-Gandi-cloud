@@ -341,19 +341,18 @@
         <div class="container">
             <nav class="nav">
                 <div class="logo">
-                    <img src="image/logo.jpg" alt="GOCLEAN Logo" class="logo-img">
+                    <i class="fas fa-sparkles"></i> GOCLEAN
                 </div>
 
 
                 <ul class="nav-links">
-                    <li><a href="#home">Beranda</a></li>
-                    <li><a href="#services">Layanan</a></li>
+                    <li><a href="/">Beranda</a></li>
+                    <li><a href="/#services">Layanan</a></li>
                     <li><a href="/about">Tentang</a></li>
                     <li><a href="/contact">Kontak</a></li>
-
-
                 </ul>
                 <div>
+                    <a href="/register" class="btn btn-primary" style="margin-right:10px;">Daftar</a>
                     <a href="/login" class="btn btn-outline">Masuk</a>
                 </div>
             </nav>

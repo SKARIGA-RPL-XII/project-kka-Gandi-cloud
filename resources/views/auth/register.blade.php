@@ -14,6 +14,10 @@
         button{width:100%;background:linear-gradient(135deg,#a200ff,#048eb8);border:none;padding:12px;color:white;border-radius:8px;font-weight:600;font-size:15px;margin-top:20px;cursor:pointer;}
         a{color:#006eff;text-decoration:none;font-size:14px;}
         .alert{background:#d1fae5;color:#059669;padding:15px;border-radius:10px;margin-bottom:20px;border:1px solid #a7f3d0;}
+        .popup{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);display:none;justify-content:center;align-items:center;z-index:1000;}
+        .popup-content{background:white;padding:30px;border-radius:15px;text-align:center;max-width:400px;width:90%;}
+        .popup-content h3{color:#059669;margin:0 0 15px 0;}
+        .popup-content button{background:#059669;border:none;padding:10px 20px;color:white;border-radius:8px;cursor:pointer;}
     </style>
 </head>
 <body>
@@ -24,7 +28,7 @@
 </div>
 
 <div class="right">
-    <form class="card" method="POST" action="{{ route('register') }}">
+    <form class="card" method="POST" action="/register/process" id="registerForm">
         @csrf
         <h2 style="margin:0 0 15px 0;">Daftar Akun</h2>
 
@@ -44,10 +48,43 @@
         <button type="submit">Daftar</button>
 
         <p style="margin-top:15px;font-size:14px;">Sudah punya akun?
-            <a href="{{ route('login') }}">Login sekarang</a>
+            <a href="/login">Login sekarang</a>
         </p>
     </form>
 </div>
+
+<div class="popup" id="successPopup">
+    <div class="popup-content">
+        <h3>✅ Registrasi Berhasil!</h3>
+        <p>Akun Anda telah berhasil dibuat. Silakan login untuk melanjutkan.</p>
+        <button onclick="redirectToLogin()">Login Sekarang</button>
+    </div>
+</div>
+
+<script>
+document.getElementById('registerForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const formData = new FormData(this);
+    const userData = {
+        name: formData.get('name'),
+        email: formData.get('email'),
+        role: formData.get('role')
+    };
+    
+    // Simpan data user ke localStorage
+    localStorage.setItem('newUser', JSON.stringify(userData));
+    
+    // Simulasi registrasi berhasil
+    setTimeout(() => {
+        document.getElementById('successPopup').style.display = 'flex';
+    }, 500);
+});
+
+function redirectToLogin() {
+    window.location.href = '/login';
+}
+</script>
 
 </body>
 </html>
