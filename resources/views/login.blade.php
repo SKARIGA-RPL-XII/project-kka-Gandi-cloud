@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -25,11 +24,11 @@
 
         .login-container {
             background: white;
-            padding: 3rem;
+            padding: 2.5rem;
             border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
             width: 100%;
-            max-width: 400px;
+            max-width: 420px;
         }
 
         .logo {
@@ -38,7 +37,7 @@
         }
 
         .logo h1 {
-            font-size: 2rem;
+            font-size: 2.2rem;
             font-weight: 700;
             color: #005c02;
             margin-bottom: 0.5rem;
@@ -46,7 +45,7 @@
 
         .logo p {
             color: #6b7280;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
         }
 
         .form-group {
@@ -63,11 +62,11 @@
 
         .form-control {
             width: 100%;
-            padding: 0.75rem 1rem;
+            padding: 0.8rem 1rem;
             border: 2px solid #e5e7eb;
-            border-radius: 10px;
-            font-size: 0.9rem;
-            transition: 0.3s;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
         }
 
         .form-control:focus {
@@ -78,20 +77,20 @@
 
         .btn {
             width: 100%;
-            padding: 0.75rem;
+            padding: 0.8rem;
             border: none;
-            border-radius: 10px;
-            background: linear-gradient(135deg, #00ff9d, #00c853);
+            border-radius: 12px;
+            background: linear-gradient(135deg, #00c853, #005c02);
             color: white;
             font-weight: 600;
             cursor: pointer;
-            transition: 0.3s;
+            transition: all 0.3s ease;
             font-size: 1rem;
         }
 
         .btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0, 255, 157, 0.3);
+            box-shadow: 0 8px 25px rgba(0, 200, 83, 0.3);
         }
 
         .role-selector {
@@ -102,15 +101,19 @@
         }
 
         .role-btn {
-            padding: 0.5rem;
+            padding: 0.6rem;
             border: 2px solid #e5e7eb;
-            border-radius: 8px;
+            border-radius: 10px;
             background: white;
             cursor: pointer;
             text-align: center;
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             font-weight: 500;
-            transition: 0.3s;
+            transition: all 0.3s ease;
+        }
+
+        .role-btn:hover {
+            border-color: #00c853;
         }
 
         .role-btn.active {
@@ -121,28 +124,60 @@
 
         .demo-info {
             background: #f8fafc;
-            padding: 1rem;
-            border-radius: 10px;
+            padding: 1.2rem;
+            border-radius: 12px;
             margin-top: 1.5rem;
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             color: #6b7280;
+            border: 1px solid #e5e7eb;
         }
 
         .demo-info h4 {
             color: #374151;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.8rem;
+            font-size: 0.95rem;
+        }
+
+        .demo-info p {
+            margin-bottom: 0.3rem;
+        }
+
+        .register-link {
+            text-align: center;
+            margin-top: 1.5rem;
             font-size: 0.9rem;
+        }
+
+        .register-link a {
+            color: #00c853;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .register-link a:hover {
+            text-decoration: underline;
+        }
+
+        .error-message {
+            background: #fee2e2;
+            color: #dc2626;
+            padding: 0.8rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            display: none;
         }
     </style>
 </head>
 
 <body>
-
     <div class="login-container">
         <div class="logo">
             <h1><i class="fas fa-sparkles"></i> GOCLEAN</h1>
             <p>Masuk ke akun Anda</p>
         </div>
+
+        <div class="error-message" id="errorMessage"></div>
 
         <form id="loginForm">
             <div class="form-group">
@@ -169,11 +204,16 @@
             </button>
         </form>
 
+        <div class="register-link">
+            <p>Belum punya akun? <a href="/register">Daftar sekarang</a></p>
+        </div>
+
         <div class="demo-info">
-            <h4>Demo Login:</h4>
+            <h4><i class="fas fa-info-circle"></i> Demo Login:</h4>
             <p><strong>Customer:</strong> customer@test.com / password</p>
             <p><strong>Staff:</strong> staff@test.com / password</p>
-            <p><strong>Admin:</strong> admin@test.com / password</p>
+            <p><strong>Admin:</strong> admin@goclean.com / goclean</p>
+            <small style="color: #9ca3af; font-style: italic;">*Admin tidak dapat mendaftar, hanya 1 akun tetap</small>
         </div>
     </div>
 
@@ -184,48 +224,66 @@
             selectedRole = role;
             document.querySelectorAll('.role-btn').forEach(btn => btn.classList.remove('active'));
             event.target.classList.add('active');
+            hideError();
+        }
+
+        function showError(message) {
+            const errorDiv = document.getElementById('errorMessage');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+        }
+
+        function hideError() {
+            document.getElementById('errorMessage').style.display = 'none';
         }
 
         document.getElementById('loginForm').addEventListener('submit', function (e) {
             e.preventDefault();
+            hideError();
             
-            const email = document.getElementById('email').value;
+            const email = document.getElementById('email').value.trim();
             const password = document.getElementById('password').value;
             
-            // Check demo credentials atau user yang baru register
+            if (!email || !password) {
+                showError('Email dan password harus diisi!');
+                return;
+            }
+            
             const validUsers = [
                 {email: 'customer@test.com', password: 'password', role: 'customer'},
                 {email: 'staff@test.com', password: 'password', role: 'staff'},
-                {email: 'admin@test.com', password: 'password', role: 'admin'}
+                {email: 'admin@goclean.com', password: 'goclean', role: 'admin'}
             ];
             
-            // Check localStorage untuk user baru register
             const newUser = localStorage.getItem('newUser');
             if (newUser) {
                 const userData = JSON.parse(newUser);
-                validUsers.push({
-                    email: userData.email,
-                    password: 'password', // Default password untuk demo
-                    role: userData.role
-                });
+                if (userData.role === 'customer' || userData.role === 'staff') {
+                    validUsers.push({
+                        email: userData.email,
+                        password: 'password',
+                        role: userData.role
+                    });
+                }
             }
             
-            const user = validUsers.find(u => u.email === email && u.password === password);
+            const user = validUsers.find(u => 
+                u.email === email && 
+                u.password === password && 
+                u.role === selectedRole
+            );
             
             if (user) {
-                if (user.role === 'customer') {
-                    window.location.href = '/customer/test';
-                } else if (user.role === 'staff') {
-                    window.location.href = '/staff/test';
-                } else if (user.role === 'admin') {
-                    window.location.href = '/admin/test';
-                }
+                const redirects = {
+                    'customer': '/customer/test',
+                    'staff': '/staff/test',
+                    'admin': '/admin/test'
+                };
+                window.location.href = redirects[user.role];
             } else {
-                alert('Email atau password salah!');
+                showError('Email, password, atau role tidak sesuai!');
             }
         });
     </script>
-
 </body>
-
 </html>

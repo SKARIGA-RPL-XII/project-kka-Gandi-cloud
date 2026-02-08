@@ -3,16 +3,15 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 
 class StaffMiddleware
 {
-    public function handle($request, Closure $next)
+    public function handle(Request $request, Closure $next)
     {
-        if (!Auth::check() || Auth::user()->role !== 'staff') {
-            abort(403);
+        if (!auth()->check() || auth()->user()->role !== 'staff') {
+            return redirect('/login')->with('error', 'Akses ditolak. Hanya staff yang dapat mengakses halaman ini.');
         }
-
         return $next($request);
     }
 }

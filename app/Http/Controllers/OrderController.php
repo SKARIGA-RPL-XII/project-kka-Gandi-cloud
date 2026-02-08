@@ -103,9 +103,83 @@ class OrderController extends Controller
             return redirect('/order/create')->with('error', 'Data pesanan tidak ditemukan');
         }
         
-        // Simulasi proses pembayaran
+        // Create new order
+        $newOrder = [
+            'id' => rand(1000, 9999),
+            'customer_name' => 'Customer',
+            'layanan' => $orderData['layanan'],
+            'status' => 'pending',
+            'tanggal' => $orderData['tanggal'],
+            'alamat' => $orderData['alamat'],
+            'total' => $orderData['total'],
+            'payment_method' => strtoupper($request->payment_method),
+            'created_at' => now()->toDateTimeString()
+        ];
+        
         session()->forget('order_data');
         
-        return redirect('/customer/test')->with('success', 'Pesanan berhasil dibuat dengan pembayaran ' . strtoupper($request->payment_method) . '! Menunggu konfirmasi dari petugas.');
+        return redirect('/customer/test')
+            ->with('success', 'Pesanan berhasil dibuat! Menunggu konfirmasi dari petugas.')
+            ->with('new_order', $newOrder);
+    }
+    
+    public function generateQRIS(Request $request)
+    {
+        $request->validate([
+            'amount' => 'required|numeric',
+            'order_id' => 'required|string',
+            'customer_name' => 'required|string'
+        ]);
+        
+        // Simulasi generate QRIS
+        // Dalam production, gunakan API payment gateway seperti Midtrans, Xendit, dll
+        $transactionId = 'TRX-' . time() . '-' . rand(1000, 9999);
+        $qrString = "00020101021226670016COM.NOBUBANK.WWW01189360050300000898740214" . $request->order_id . "0303UMI51440014ID.CO.QRIS.WWW0215ID10" . $transactionId . "0303UMI5204481253033605802ID5912GOCLEAN5915Jakarta6304";
+        
+        // Store transaction in session for checking
+        session(['qris_transaction_' . $transactionId => [
+            'status' => 'pending',
+            'amount' => $request->amount,
+            'order_id' => $request->order_id,
+            'created_at' => now()
+        ]]);
+        
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'transaction_id' => $transactionId,
+                'qr_string' => $qrString,
+                'amount' => $request->amount,
+                'expired_at' => now()->addMinutes(15)->toISOString()
+            ]
+        ]);
+    }
+    
+    public function checkPaymentStatus($transactionId)
+    {
+        // Check transaction status
+        $transaction = session('qris_transaction_' . $transactionId);
+        
+        if (!$transaction) {
+            return response()->json([
+                'status' => 'not_found',
+                'message' => 'Transaction not found'
+            ]);
+        }
+        
+        // Simulasi: Auto-paid setelah 10 detik untuk demo
+        $createdAt = $transaction['created_at'];
+        if (now()->diffInSeconds($createdAt) > 10) {
+            session(['qris_transaction_' . $transactionId => array_merge($transaction, ['status' => 'paid'])]);
+            return response()->json([
+                'status' => 'paid',
+                'message' => 'Payment successful'
+            ]);
+        }
+        
+        return response()->json([
+            'status' => $transaction['status'],
+            'message' => 'Waiting for payment'
+        ]);
     }
 }

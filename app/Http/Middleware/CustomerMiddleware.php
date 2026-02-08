@@ -3,17 +3,15 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 
 class CustomerMiddleware
 {
-    public function handle($request, Closure $next)
+    public function handle(Request $request, Closure $next)
     {
-        if (!Auth::check() || Auth::user()->role !== 'customer') {
-            abort(403);
+        if (!auth()->check() || auth()->user()->role !== 'customer') {
+            return redirect('/login')->with('error', 'Akses ditolak. Hanya customer yang dapat mengakses halaman ini.');
         }
-
         return $next($request);
     }
-    
 }

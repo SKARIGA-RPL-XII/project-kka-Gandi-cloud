@@ -3,6 +3,24 @@
 @section('title', 'Dashboard Staff')
 
 @section('content')
+<!-- Success Message -->
+@if(session('success'))
+<div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
+    {{ session('success') }}
+</div>
+@endif
+
+<!-- New Order Notification -->
+<div id="newOrderNotif" class="hidden bg-blue-100 border border-blue-400 text-blue-700 px-4 py-3 rounded mb-4 flex items-center justify-between">
+    <div>
+        <i class="fas fa-bell mr-2"></i>
+        <span id="notifMessage">Pesanan baru masuk!</span>
+    </div>
+    <button onclick="closeNotif()" class="text-blue-700 hover:text-blue-900">
+        <i class="fas fa-times"></i>
+    </button>
+</div>
+
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
     <!-- Stats Cards -->
     <div class="bg-white p-6 rounded-lg shadow">
@@ -12,7 +30,7 @@
             </div>
             <div class="ml-4">
                 <h3 class="text-gray-500 text-sm">Pesanan Pending</h3>
-                <p class="text-2xl font-bold">{{ $stats['pending_orders'] }}</p>
+                <p class="text-2xl font-bold" id="pendingCount">{{ $stats['pending_orders'] }}</p>
             </div>
         </div>
     </div>
@@ -24,7 +42,7 @@
             </div>
             <div class="ml-4">
                 <h3 class="text-gray-500 text-sm">Sedang Dikerjakan</h3>
-                <p class="text-2xl font-bold">{{ $stats['in_progress'] }}</p>
+                <p class="text-2xl font-bold" id="progressCount">{{ $stats['in_progress'] }}</p>
             </div>
         </div>
     </div>
@@ -36,7 +54,7 @@
             </div>
             <div class="ml-4">
                 <h3 class="text-gray-500 text-sm">Selesai Hari Ini</h3>
-                <p class="text-2xl font-bold">{{ $stats['completed_today'] }}</p>
+                <p class="text-2xl font-bold" id="completedCount">{{ $stats['completed_today'] }}</p>
             </div>
         </div>
     </div>
@@ -58,9 +76,9 @@
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
     <div class="bg-white p-6 rounded-lg shadow">
         <h3 class="text-lg font-semibold mb-4">Pesanan Terbaru</h3>
-        <div class="space-y-3">
+        <div class="space-y-3" id="ordersList">
             @forelse($recent_orders as $order)
-            <div class="flex justify-between items-center p-3 border rounded-lg">
+            <div class="flex justify-between items-center p-3 border rounded-lg" data-order-id="{{ $order->id }}">
                 <div>
                     <p class="font-medium">{{ $order->customer_name }}</p>
                     <p class="text-sm text-gray-600">{{ $order->layanan }}</p>
@@ -124,4 +142,31 @@
         </div>
     </div>
 </div>
+
+<script>
+function closeNotif() {
+    document.getElementById('newOrderNotif').classList.add('hidden');
+}
+
+// Check for new orders every 5 seconds
+setInterval(function() {
+    const newOrders = localStorage.getItem('newOrders');
+    if (newOrders) {
+        const orders = JSON.parse(newOrders);
+        if (orders.length > 0) {
+            document.getElementById('newOrderNotif').classList.remove('hidden');
+            document.getElementById('notifMessage').textContent = `${orders.length} pesanan baru masuk!`;
+            
+            // Update stats
+            const pendingCount = orders.filter(o => o.status === 'pending').length;
+            document.getElementById('pendingCount').textContent = pendingCount;
+            
+            // Reload page to show new orders
+            setTimeout(() => {
+                location.reload();
+            }, 2000);
+        }
+    }
+}, 5000);
+</script>
 @endsection

@@ -192,6 +192,10 @@
             color: #6b7280;
             margin-top: 2rem;
         }
+        .map iframe {
+    filter: grayscale(10%);
+}
+
     </style>
 </head>
 
@@ -277,53 +281,41 @@
                 <div class="contact-form">
                     <h3 style="margin-bottom:2rem;color:#1f2937;">Kirim Pesan</h3>
 
-                    <form>
-                        <div class="form-group">
-                            <label>Nama Lengkap</label>
-                            <input type="text" class="form-control" placeholder="Masukkan nama Anda" required>
-                        </div>
+               <form action="{{ route('contact.store') }}" method="POST">
+    @csrf
 
-                        <div class="form-group">
-                            <label>Email</label>
-                            <input type="email" class="form-control" placeholder="Masukkan email Anda" required>
-                        </div>
+    <input name="name" type="text" class="form-control" required>
+    <input name="email" type="email" class="form-control" required>
+    <input name="phone" type="tel" class="form-control">
 
-                        <div class="form-group">
-                            <label>Nomor Telepon</label>
-                            <input type="tel" class="form-control" placeholder="Masukkan nomor telepon">
-                        </div>
+    <select name="subject" class="form-control" required>
+        <option value="">Pilih subjek</option>
+        <option>Saran</option>
+        <option>Keluhan</option>
+        <option>Informasi Layanan</option>
+        <option>Lainnya</option>
+    </select>
 
-                        <div class="form-group">
-                            <label>Subjek</label>
-                            <select class="form-control" required>
-                                <option value="">Pilih subjek</option>
-                                <option>Informasi Layanan</option>
-                                <option>Keluhan</option>
-                                <option>Saran</option>
-                                <option>Lainnya</option>
-                            </select>
-                        </div>
+    <textarea name="message" class="form-control" required></textarea>
 
-                        <div class="form-group">
-                            <label>Pesan</label>
-                            <textarea class="form-control" rows="5" placeholder="Tulis pesan Anda..."
-                                required></textarea>
-                        </div>
+    <button class="btn btn-primary">Kirim Pesan</button>
+</form>
 
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-paper-plane"></i> Kirim Pesan
-                        </button>
-                    </form>
                 </div>
             </div>
 
             <div class="map">
-                <div style="text-align:center;">
-                    <i class="fas fa-map text-4xl mb-4"></i>
-                    <p>Peta Lokasi Kantor GOCLEAN</p>
-                    <p style="font-size:0.8rem;">Jl. Raya Malang No. 123, Malang, Jawa Timur</p>
-                </div>
-            </div>
+    <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d246.98820291724655!2d112.67198627096626!3d-7.9147763641908595!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd62b63f9e27aaf%3A0x705ce543dc7091f9!2sVAMY%20STUDIO!5e0!3m2!1sid!2sid!4v1770380310223!5m2!1sid!2sid"
+        width="100%"
+        height="100%"
+        style="border:0; border-radius:16px;"
+        allowfullscreen=""
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade">
+    </iframe>
+</div>
+
         </div>
     </section>
 

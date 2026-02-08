@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Pembayaran | GOCLEAN</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
@@ -123,11 +124,12 @@
                     <!-- QRIS Section -->
                     <div id="qrisSection" class="qris-section">
                         <h4 style="margin:0 0 15px 0;color:#1f2937;">Scan QR Code untuk Pembayaran</h4>
-                        <div class="qris-code">
-                            <i class="fas fa-qrcode"></i>
+                        <div class="qris-code" id="qrisCodeContainer">
+                            <i class="fas fa-spinner fa-spin"></i>
                         </div>
                         <p style="color:#6b7280;margin:0 0 15px 0;">Scan QR Code di atas dengan aplikasi e-wallet Anda</p>
                         <p style="color:#059669;font-weight:600;margin:0;">Total: Rp {{ number_format($orderData['total'], 0, ',', '.') }}</p>
+                        <p id="qrisStatus" style="margin-top:15px;padding:10px;border-radius:8px;display:none;"></p>
                     </div>
 
                     <button type="submit" class="btn" id="paymentBtn" disabled>
@@ -166,32 +168,24 @@
 
 <script>
 let selectedMethod = null;
+let qrisData = null;
 
 function selectPayment(element, method) {
-    // Remove selected class from all options
     document.querySelectorAll('.payment-option').forEach(opt => opt.classList.remove('selected'));
-    
-    // Add selected class to clicked option
     element.classList.add('selected');
-    
-    // Check the radio button
     element.querySelector('input[type="radio"]').checked = true;
-    
-    // Store selected method
     selectedMethod = method;
     
-    // Show/hide QRIS section
     const qrisSection = document.getElementById('qrisSection');
     if (method === 'qris') {
         qrisSection.style.display = 'block';
+        generateQRIS();
     } else {
         qrisSection.style.display = 'none';
     }
     
-    // Enable payment button
     document.getElementById('paymentBtn').disabled = false;
     
-    // Update button text
     const btn = document.getElementById('paymentBtn');
     if (method === 'qris') {
         btn.innerHTML = '<i class="fas fa-qrcode"></i> Bayar dengan QRIS';
@@ -200,7 +194,77 @@ function selectPayment(element, method) {
     }
 }
 
-// Form submission
+function generateQRIS() {
+    const amount = {{ $orderData['total'] }};
+    const orderId = 'ORD-' + Date.now();
+    
+    // Call QRIS API
+    fetch('/api/generate-qris', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+        },
+        body: JSON.stringify({
+            amount: amount,
+            order_id: orderId,
+            customer_name: 'Customer'
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            qrisData = data.data;
+            displayQRCode(data.data.qr_string);
+            checkPaymentStatus(data.data.transaction_id);
+        } else {
+            showError('Gagal generate QRIS');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showError('Terjadi kesalahan saat generate QRIS');
+    });
+}
+
+function displayQRCode(qrString) {
+    const container = document.getElementById('qrisCodeContainer');
+    container.innerHTML = `<img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(qrString)}" alt="QR Code" style="width:200px;height:200px;">`;
+}
+
+function checkPaymentStatus(transactionId) {
+    const interval = setInterval(() => {
+        fetch(`/api/check-payment-status/${transactionId}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'paid') {
+                clearInterval(interval);
+                showSuccess('Pembayaran berhasil!');
+                setTimeout(() => {
+                    document.getElementById('paymentForm').submit();
+                }, 1500);
+            }
+        })
+        .catch(error => console.error('Error checking status:', error));
+    }, 3000);
+}
+
+function showError(message) {
+    const status = document.getElementById('qrisStatus');
+    status.style.display = 'block';
+    status.style.background = '#fee2e2';
+    status.style.color = '#dc2626';
+    status.textContent = message;
+}
+
+function showSuccess(message) {
+    const status = document.getElementById('qrisStatus');
+    status.style.display = 'block';
+    status.style.background = '#d1fae5';
+    status.style.color = '#059669';
+    status.textContent = message;
+}
+
 document.getElementById('paymentForm').addEventListener('submit', function(e) {
     if (!selectedMethod) {
         e.preventDefault();
@@ -209,19 +273,10 @@ document.getElementById('paymentForm').addEventListener('submit', function(e) {
     }
     
     if (selectedMethod === 'qris') {
-        // Simulasi proses QRIS
         e.preventDefault();
-        
-        // Show loading
         const btn = document.getElementById('paymentBtn');
-        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses Pembayaran...';
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Menunggu Pembayaran...';
         btn.disabled = true;
-        
-        // Simulate payment processing
-        setTimeout(() => {
-            // Submit form after "payment" processed
-            this.submit();
-        }, 2000);
     }
 });
 </script>

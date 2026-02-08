@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,63 +8,72 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
+
 <body class="bg-gray-100 flex">
 
     {{-- SIDEBAR --}}
-   <aside class="w-72 bg-gradient-to-b from-[#005c02] to-[#00f7ff] text-white min-h-screen fixed flex flex-col shadow-lg">
+    <aside
+        class="w-72 bg-gradient-to-b from-[#005c02] to-[#00f7ff] text-white min-h-screen fixed flex flex-col shadow-lg">
 
-    {{-- Header --}}
-    <div class="px-6 py-5 border-b border-white/20">
-        <h2 class="text-2xl font-bold tracking-wide">Admin Dashboard</h2>
-    </div>
+        {{-- Header --}}
+        <div class="px-6 py-5 border-b border-white/20">
+            <h2 class="text-2xl font-bold tracking-wide">Admin Dashboard</h2>
+        </div>
 
-    {{-- Menu --}}
-    <nav class="flex-1 mt-3">
-        <ul class="flex flex-col space-y-1">
+        {{-- Menu --}}
+        <nav class="flex-1 mt-3">
+            <ul class="flex flex-col space-y-1">
 
-            <li>
-                <a href="/admin/test"
-                   class="flex items-center px-6 py-3 text-white/90 hover:bg-white/10 hover:text-white transition @if(request()->is('admin/dashboard')) bg-white/10 border-l-4 border-white text-white font-medium @endif">
-                    <i class="fa fa-tachometer-alt w-6 text-center mr-3"></i>
-                    <span>Dashboard</span>
-                </a>
-            </li>
+                <li>
+                    <a href="/admin/test"
+                        class="flex items-center px-6 py-3 text-white/90 hover:bg-white/10 hover:text-white transition @if(request()->is('admin/dashboard')) bg-white/10 border-l-4 border-white text-white font-medium @endif">
+                        <i class="fa fa-tachometer-alt w-6 text-center mr-3"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
 
-            <li>
-                <a href="/admin/services/test"
-                   class="flex items-center px-6 py-3 text-white/90 hover:bg-white/10 hover:text-white transition @if(request()->is('admin/services*')) bg-white/10 border-l-4 border-white text-white font-medium @endif">
-                    <i class="fa fa-broom w-6 text-center mr-3"></i>
-                    <span>Kelola Layanan</span>
-                </a>
-            </li>
+                <li>
+                    <a href="/admin/services/test"
+                        class="flex items-center px-6 py-3 text-white/90 hover:bg-white/10 hover:text-white transition @if(request()->is('admin/services*')) bg-white/10 border-l-4 border-white text-white font-medium @endif">
+                        <i class="fa fa-broom w-6 text-center mr-3"></i>
+                        <span>Kelola Layanan</span>
+                    </a>
+                </li>
 
-            <li>
-                <a href="/admin/users/test"
-                   class="flex items-center px-6 py-3 text-white/90 hover:bg-white/10 hover:text-white transition @if(request()->is('admin/users')) bg-white/10 border-l-4 border-white text-white font-medium @endif">
-                    <i class="fa fa-users w-6 text-center mr-3"></i>
-                    <span>Kelola Users</span>
-                </a>
-            </li>
+                <li>
+                    <a href="/admin/users/test"
+                        class="flex items-center px-6 py-3 text-white/90 hover:bg-white/10 hover:text-white transition @if(request()->is('admin/users')) bg-white/10 border-l-4 border-white text-white font-medium @endif">
+                        <i class="fa fa-users w-6 text-center mr-3"></i>
+                        <span>Kelola Users</span>
+                    </a>
+                </li>
 
-            <li>
-                <a href="/admin/orders/test"
-                   class="flex items-center px-6 py-3 text-white/90 hover:bg-white/10 hover:text-white transition @if(request()->is('admin/orders')) bg-white/10 border-l-4 border-white text-white font-medium @endif">
-                    <i class="fa fa-shopping-cart w-6 text-center mr-3"></i>
-                    <span>Kelola Pesanan</span>
-                </a>
-            </li>
+                <li>
+                    <a href="/admin/orders/test"
+                        class="flex items-center px-6 py-3 text-white/90 hover:bg-white/10 hover:text-white transition @if(request()->is('admin/orders')) bg-white/10 border-l-4 border-white text-white font-medium @endif">
+                        <i class="fa fa-shopping-cart w-6 text-center mr-3"></i>
+                        <span>Kelola Pesanan</span>
+                    </a>
+                </li>
 
-            <li>
-                <a href="/admin/settings/test"
-                   class="flex items-center px-6 py-3 text-white/90 hover:bg-white/10 hover:text-white transition @if(request()->is('admin/settings')) bg-white/10 border-l-4 border-white text-white font-medium @endif">
-                    <i class="fa fa-cog w-6 text-center mr-3"></i>
-                    <span>Pengaturan</span>
-                </a>
-            </li>
+                <li>
+                    <a href="/admin/settings/test"
+                        class="flex items-center px-6 py-3 text-white/90 hover:bg-white/10 hover:text-white transition @if(request()->is('admin/settings')) bg-white/10 border-l-4 border-white text-white font-medium @endif">
+                        <i class="fa fa-cog w-6 text-center mr-3"></i>
+                        <span>Pengaturan</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/admin/contacts/test"
+                        class="flex items-center px-6 py-3 text-white/90 hover:bg-white/10 hover:text-white transition @if(request()->is('admin/settings')) bg-white/10 border-l-4 border-white text-white font-medium @endif">
+                        <i class="fa fa-cog w-6 text-center mr-3"></i>
+                        <span>Pesan Kontak</span>
+                    </a>
 
-        </ul>
-    </nav>
-</aside>
+                </li>
+            </ul>
+        </nav>
+    </aside>
 
 
     {{-- MAIN --}}
@@ -74,12 +84,11 @@
             <div class="flex items-center space-x-3">
                 <span class="text-gray-700">Selamat datang, Admin</span>
                 <form action="{{ route('logout') }}" method="POST" class="inline">
-    @csrf
-    <button type="submit"
-        class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
-        Logout
-    </button>
-</form>
+                    @csrf
+                    <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
+                        Logout
+                    </button>
+                </form>
 
             </div>
         </header>
@@ -90,13 +99,15 @@
         </section>
     </main>
 </body>
+
 </html>
 
 <style>
-.nav-item {
-    @apply flex items-center px-6 py-3 text-white/80 hover:text-white transition;
-}
-.nav-item.active {
-    @apply bg-white/10 border-l-4 border-white text-white font-semibold;
-}
+    .nav-item {
+        @apply flex items-center px-6 py-3 text-white/80 hover:text-white transition;
+    }
+
+    .nav-item.active {
+        @apply bg-white/10 border-l-4 border-white text-white font-semibold;
+    }
 </style>

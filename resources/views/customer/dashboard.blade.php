@@ -124,6 +124,16 @@
                 <i class="fas fa-exclamation-circle"></i> {{ session('error') }}
             </div>
         @endif
+
+        <script>
+        // Send new order to staff dashboard
+        @if(session('new_order'))
+        const newOrder = @json(session('new_order'));
+        const existingOrders = JSON.parse(localStorage.getItem('newOrders') || '[]');
+        existingOrders.push(newOrder);
+        localStorage.setItem('newOrders', JSON.stringify(existingOrders));
+        @endif
+        </script>
         
         <div class="hero-section">
             <div class="hero-content">
