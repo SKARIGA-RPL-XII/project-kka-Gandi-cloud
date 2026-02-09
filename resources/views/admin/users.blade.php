@@ -1,15 +1,17 @@
 @extends('admin.layout')
-@section('title', 'Kelola Users')
+@section('title', 'Kelola Akun')
 
 @section('content')
 <div class="flex justify-between items-center mb-6">
-    <h2 class="text-2xl font-bold text-gray-800">Kelola Users</h2>
+    <h2 class="text-2xl font-bold text-gray-800">Kelola Akun</h2>
     <div class="flex space-x-2">
-        <select class="px-3 py-2 border border-gray-300 rounded-lg">
-            <option>Semua Role</option>
-            <option>Customer</option>
-            <option>Staff</option>
-            
+        <button class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg" onclick="showAddStaffModal()">
+            <i class="fas fa-user-plus"></i> Tambah Staff
+        </button>
+        <select class="px-3 py-2 border border-gray-300 rounded-lg" onchange="filterUsers(this.value)">
+            <option value="">Semua Role</option>
+            <option value="customer">Customer</option>
+            <option value="staff">Staff</option>
         </select>
     </div>
 </div>
@@ -47,7 +49,7 @@
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
                 @forelse($users as $user)
-                <tr class="hover:bg-gray-50">
+                <tr class="hover:bg-gray-50" data-role="{{ $user->role }}">
                     <td class="px-6 py-4 whitespace-nowrap">
                         <div class="flex items-center">
                             <div class="flex-shrink-0 h-10 w-10">
@@ -84,18 +86,37 @@
                         <div class="text-sm text-gray-500">{{ date('H:i', strtotime($user->created_at)) }}</div>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">
-                        <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
-                            Aktif
-                        </span>
+                        @if($user->is_active)
+                            <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
+                                Aktif
+                            </span>
+                        @else
+                            <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-800">
+                                Nonaktif
+                            </span>
+                        @endif
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                         <div class="flex space-x-2">
-                           
                             @if($user->role != 'admin')
-                            <button class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-xs" 
-                                    onclick="return confirm('Yakin ingin menonaktifkan user ini?')">
-                                <i class="fas fa-ban"></i> Nonaktif
-                            </button>
+                                <button onclick="editUser({{ $user->id }})" class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded text-xs">
+                                    <i class="fas fa-edit"></i> Edit
+                                </button>
+                                
+                                <form action="{{ route('admin.users.toggle', $user->id) }}" method="POST" class="inline">
+                                    @csrf
+                                    <button type="submit" class="bg-{{ $user->is_active ? 'orange' : 'green' }}-500 hover:bg-{{ $user->is_active ? 'orange' : 'green' }}-600 text-white px-3 py-1 rounded text-xs">
+                                        <i class="fas fa-{{ $user->is_active ? 'ban' : 'check' }}"></i> {{ $user->is_active ? 'Nonaktif' : 'Aktifkan' }}
+                                    </button>
+                                </form>
+
+                                <form action="{{ route('admin.users.delete', $user->id) }}" method="POST" class="inline">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button onclick="return confirm('Yakin ingin menghapus user ini?')" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-xs">
+                                        <i class="fas fa-trash"></i> Hapus
+                                    </button>
+                                </form>
                             @endif
                         </div>
                     </td>
@@ -166,4 +187,121 @@
         </div>
     </div>
 </div>
+
+<!-- Modal Tambah Staff -->
+<div id="addStaffModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div class="bg-white rounded-lg p-8 max-w-md w-full mx-4">
+        <div class="flex justify-between items-center mb-6">
+            <h3 class="text-xl font-bold text-gray-800">Tambah Staff Baru</h3>
+            <button onclick="closeAddStaffModal()" class="text-gray-500 hover:text-gray-700">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+        </div>
+        
+        <form action="{{ route('admin.staff.store') }}" method="POST" id="addStaffForm">
+            @csrf
+            <div class="mb-4">
+                <label class="block text-gray-700 font-medium mb-2">Nama Lengkap</label>
+                <input type="text" name="name" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500" required>
+            </div>
+            
+            <div class="mb-4">
+                <label class="block text-gray-700 font-medium mb-2">Email</label>
+                <input type="email" name="email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500" required>
+            </div>
+            
+            <div class="mb-4">
+                <label class="block text-gray-700 font-medium mb-2">Password</label>
+                <input type="password" name="password" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500" required minlength="8">
+                <p class="text-sm text-gray-500 mt-1">Minimal 8 karakter</p>
+            </div>
+            
+            <div class="mb-6">
+                <label class="block text-gray-700 font-medium mb-2">Konfirmasi Password</label>
+                <input type="password" name="password_confirmation" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500" required minlength="8">
+            </div>
+            
+            <div class="flex space-x-3">
+                <button type="button" onclick="closeAddStaffModal()" class="flex-1 bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded-lg font-medium">
+                    Batal
+                </button>
+                <button type="submit" class="flex-1 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-medium">
+                    <i class="fas fa-save"></i> Simpan
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal Edit User -->
+<div id="editUserModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div class="bg-white rounded-lg p-8 max-w-md w-full mx-4">
+        <div class="flex justify-between items-center mb-6">
+            <h3 class="text-xl font-bold text-gray-800">Edit User</h3>
+            <button onclick="closeEditUserModal()" class="text-gray-500 hover:text-gray-700">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+        </div>
+        
+        <form id="editUserForm" method="POST">
+            @csrf
+            @method('PUT')
+            <div class="mb-4">
+                <label class="block text-gray-700 font-medium mb-2">Nama Lengkap</label>
+                <input type="text" name="name" id="edit_name" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500" required>
+            </div>
+            
+            <div class="mb-6">
+                <label class="block text-gray-700 font-medium mb-2">Email</label>
+                <input type="email" name="email" id="edit_email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500" required>
+            </div>
+            
+            <div class="flex space-x-3">
+                <button type="button" onclick="closeEditUserModal()" class="flex-1 bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded-lg font-medium">
+                    Batal
+                </button>
+                <button type="submit" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium">
+                    <i class="fas fa-save"></i> Update
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+function showAddStaffModal() {
+    document.getElementById('addStaffModal').classList.remove('hidden');
+}
+
+function closeAddStaffModal() {
+    document.getElementById('addStaffModal').classList.add('hidden');
+    document.getElementById('addStaffForm').reset();
+}
+
+function editUser(id) {
+    fetch(`/admin/users/${id}/edit`)
+        .then(res => res.json())
+        .then(user => {
+            document.getElementById('edit_name').value = user.name;
+            document.getElementById('edit_email').value = user.email;
+            document.getElementById('editUserForm').action = `/admin/users/${id}`;
+            document.getElementById('editUserModal').classList.remove('hidden');
+        });
+}
+
+function closeEditUserModal() {
+    document.getElementById('editUserModal').classList.add('hidden');
+}
+
+function filterUsers(role) {
+    const rows = document.querySelectorAll('tbody tr[data-role]');
+    rows.forEach(row => {
+        if (role === '' || row.dataset.role === role) {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
+    });
+}
+</script>
 @endsection

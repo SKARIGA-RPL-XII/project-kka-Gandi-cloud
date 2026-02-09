@@ -216,15 +216,6 @@
         </div>
         
         <div class="form-group">
-            <label for="role">Pilih Role</label>
-            <select name="role" id="role" required>
-                <option value="">Pilih Role</option>
-                <option value="customer">Customer</option>
-                <option value="staff">Staff</option>
-            </select>
-        </div>
-        
-        <div class="form-group">
             <label for="password">Password</label>
             <input type="password" name="password" id="password" placeholder="Minimal 8 karakter" required>
         </div>
@@ -244,7 +235,7 @@
 
         <div class="role-note">
             <i class="fas fa-info-circle"></i>
-            <strong>Catatan:</strong> Admin tidak dapat mendaftar. Hanya tersedia 1 akun admin tetap untuk keamanan sistem.
+            <strong>Catatan:</strong> Pendaftaran ini untuk customer. Staff ditambahkan oleh admin dari dashboard.
         </div>
     </form>
 </div>
@@ -275,24 +266,13 @@ document.getElementById('registerForm').addEventListener('submit', function(e) {
     hideError();
     
     const formData = new FormData(this);
-    const role = formData.get('role');
     const password = formData.get('password');
     const confirmPassword = formData.get('password_confirmation');
     const name = formData.get('name').trim();
     const email = formData.get('email').trim();
     
-    if (!name || !email || !role || !password || !confirmPassword) {
+    if (!name || !email || !password || !confirmPassword) {
         showError('Semua field harus diisi!');
-        return;
-    }
-    
-    if (role === 'admin') {
-        showError('Admin tidak dapat mendaftar. Hanya tersedia 1 akun admin tetap.');
-        return;
-    }
-    
-    if (role !== 'customer' && role !== 'staff') {
-        showError('Hanya Customer dan Staff yang dapat mendaftar.');
         return;
     }
     
@@ -322,7 +302,6 @@ document.getElementById('registerForm').addEventListener('submit', function(e) {
         body: JSON.stringify({
             name: name,
             email: email,
-            role: role,
             password: password,
             password_confirmation: confirmPassword
         })

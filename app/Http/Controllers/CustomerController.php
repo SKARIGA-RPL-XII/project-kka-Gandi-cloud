@@ -12,11 +12,17 @@ class CustomerController extends Controller
     {
         $user = Auth::user();
         
-        // Ambil data pesanan dari database
-        $orders = DB::table('orders')
-            ->where('user_id', Auth::id())
-            ->orderBy('created_at', 'desc')
-            ->get();
+        // Cari customer_id dari user_id
+        $customer = \App\Models\Customer::where('user_id', Auth::id())->first();
+        
+        if ($customer) {
+            $orders = \App\Models\Order::where('customer_id', $customer->id)
+                ->with('service')
+                ->orderBy('created_at', 'desc')
+                ->get();
+        } else {
+            $orders = collect();
+        }
         
         return view('customer.dashboard', compact('user', 'orders'));
     }

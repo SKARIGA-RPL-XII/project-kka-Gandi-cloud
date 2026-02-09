@@ -4,7 +4,7 @@
 @section('content')
 <div class="max-w-2xl mx-auto">
     <div class="mb-6">
-        <a href="/admin/services/test" class="text-blue-600 hover:text-blue-800 flex items-center">
+        <a href="{{ route('admin.services') }}" class="text-blue-600 hover:text-blue-800 flex items-center">
             <i class="fas fa-arrow-left mr-2"></i>
             Kembali ke Daftar Layanan
         </a>
@@ -71,32 +71,21 @@
 
                 <div>
                     <label for="duration" class="block text-sm font-medium text-gray-700 mb-2">
-                        Estimasi Durasi <span class="text-red-500">*</span>
+                        Estimasi Durasi (menit) <span class="text-red-500">*</span>
                     </label>
-                    <input type="text" 
+                    <input type="number" 
                            name="duration" 
                            id="duration" 
+                           min="1"
                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                           placeholder="2-4 jam"
+                           placeholder="120"
                            value="{{ old('duration') }}"
                            required>
                 </div>
             </div>
 
-            <div class="mb-6">
-                <label for="status" class="block text-sm font-medium text-gray-700 mb-2">
-                    Status
-                </label>
-                <select name="status" 
-                        id="status"
-                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                    <option value="active" {{ old('status') == 'active' ? 'selected' : '' }}>Aktif</option>
-                    <option value="inactive" {{ old('status') == 'inactive' ? 'selected' : '' }}>Nonaktif</option>
-                </select>
-            </div>
-
             <div class="flex items-center justify-end space-x-4">
-                <a href="/admin/services/test" 
+                <a href="{{ route('admin.services') }}" 
                    class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50">
                     Batal
                 </a>
@@ -138,7 +127,7 @@ function updatePreview() {
                 </div>
                 <div>
                     <h4 class="font-semibold text-gray-900">${name}</h4>
-                    <p class="text-sm text-gray-500">${duration}</p>
+                    <p class="text-sm text-gray-500">${duration} menit</p>
                 </div>
             </div>
             <p class="text-gray-600 mb-3">${description}</p>

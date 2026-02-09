@@ -55,17 +55,17 @@
                         <div class="flex items-center">
                             <div class="flex-shrink-0 h-10 w-10">
                                 <div class="h-10 w-10 rounded-full bg-blue-500 flex items-center justify-center text-white font-medium">
-                                    {{ substr($order->customer_name, 0, 1) }}
+                                    {{ substr($order->customer->user->name ?? 'U', 0, 1) }}
                                 </div>
                             </div>
                             <div class="ml-4">
-                                <div class="text-sm font-medium text-gray-900">{{ $order->customer_name }}</div>
+                                <div class="text-sm font-medium text-gray-900">{{ $order->customer->user->name ?? 'Unknown' }}</div>
                                 <div class="text-sm text-gray-500">Order #{{ $order->id }}</div>
                             </div>
                         </div>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm text-gray-900">{{ $order->service_name }}</div>
+                        <div class="text-sm text-gray-900">{{ $order->service->name ?? '-' }}</div>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">
                         <div class="text-sm text-gray-900">{{ date('d/m/Y', strtotime($order->created_at)) }}</div>
@@ -96,18 +96,13 @@
                         @endif
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                        <div class="flex space-x-2">
-                            <button class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-xs">
-                                <i class="fas fa-eye"></i> Detail
-                            </button>
-                            <button class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded text-xs">
-                                <i class="fas fa-edit"></i> Edit
-                            </button>
-                            <button class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-xs" 
-                                    onclick="return confirm('Yakin ingin menghapus pesanan ini?')">
+                        <form action="{{ route('admin.orders.delete', $order->id) }}" method="POST" class="inline">
+                            @csrf
+                            @method('DELETE')
+                            <button onclick="return confirm('Yakin ingin menghapus pesanan ini?')" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-xs">
                                 <i class="fas fa-trash"></i> Hapus
                             </button>
-                        </div>
+                        </form>
                     </td>
                 </tr>
                 @empty

@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Login - GOCLEAN</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
@@ -93,55 +95,6 @@
             box-shadow: 0 8px 25px rgba(0, 200, 83, 0.3);
         }
 
-        .role-selector {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 0.5rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .role-btn {
-            padding: 0.6rem;
-            border: 2px solid #e5e7eb;
-            border-radius: 10px;
-            background: white;
-            cursor: pointer;
-            text-align: center;
-            font-size: 0.85rem;
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
-
-        .role-btn:hover {
-            border-color: #00c853;
-        }
-
-        .role-btn.active {
-            border-color: #00c853;
-            background: #f0fdf4;
-            color: #00c853;
-        }
-
-        .demo-info {
-            background: #f8fafc;
-            padding: 1.2rem;
-            border-radius: 12px;
-            margin-top: 1.5rem;
-            font-size: 0.85rem;
-            color: #6b7280;
-            border: 1px solid #e5e7eb;
-        }
-
-        .demo-info h4 {
-            color: #374151;
-            margin-bottom: 0.8rem;
-            font-size: 0.95rem;
-        }
-
-        .demo-info p {
-            margin-bottom: 0.3rem;
-        }
-
         .register-link {
             text-align: center;
             margin-top: 1.5rem;
@@ -154,13 +107,19 @@
             font-weight: 600;
         }
 
-        .register-link a:hover {
-            text-decoration: underline;
-        }
-
         .error-message {
             background: #fee2e2;
             color: #dc2626;
+            padding: 0.8rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        .success-message {
+            background: #d1fae5;
+            color: #059669;
             padding: 0.8rem;
             border-radius: 8px;
             margin-bottom: 1rem;
@@ -177,26 +136,29 @@
             <p>Masuk ke akun Anda</p>
         </div>
 
+        @if(session('error'))
+            <div class="error-message" style="display:block;">{{ session('error') }}</div>
+        @endif
+
+        @if(session('success'))
+            <div class="success-message" style="display:block;">{{ session('success') }}</div>
+        @endif
+
         <div class="error-message" id="errorMessage"></div>
 
-        <form id="loginForm">
-            <div class="form-group">
-                <label>Pilih Role:</label>
-                <div class="role-selector">
-                    <div class="role-btn active" onclick="selectRole('customer')">Customer</div>
-                    <div class="role-btn" onclick="selectRole('staff')">Staff</div>
-                    <div class="role-btn" onclick="selectRole('admin')">Admin</div>
-                </div>
-            </div>
+        <form method="POST" action="{{ route('login') }}" id="loginForm">
+            @csrf
 
             <div class="form-group">
                 <label for="email">Email</label>
-                <input type="email" id="email" class="form-control" placeholder="Masukkan email Anda" required>
+                <input type="email" id="email" name="email" class="form-control" placeholder="Masukkan email Anda"
+                    required autofocus>
             </div>
 
             <div class="form-group">
                 <label for="password">Password</label>
-                <input type="password" id="password" class="form-control" placeholder="Masukkan password Anda" required>
+                <input type="password" id="password" name="password" class="form-control"
+                    placeholder="Masukkan password Anda" required>
             </div>
 
             <button type="submit" class="btn">
@@ -207,83 +169,7 @@
         <div class="register-link">
             <p>Belum punya akun? <a href="/register">Daftar sekarang</a></p>
         </div>
-
-        <div class="demo-info">
-            <h4><i class="fas fa-info-circle"></i> Demo Login:</h4>
-            <p><strong>Customer:</strong> customer@test.com / password</p>
-            <p><strong>Staff:</strong> staff@test.com / password</p>
-            <p><strong>Admin:</strong> admin@goclean.com / goclean</p>
-            <small style="color: #9ca3af; font-style: italic;">*Admin tidak dapat mendaftar, hanya 1 akun tetap</small>
-        </div>
     </div>
-
-    <script>
-        let selectedRole = 'customer';
-
-        function selectRole(role) {
-            selectedRole = role;
-            document.querySelectorAll('.role-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
-            hideError();
-        }
-
-        function showError(message) {
-            const errorDiv = document.getElementById('errorMessage');
-            errorDiv.textContent = message;
-            errorDiv.style.display = 'block';
-        }
-
-        function hideError() {
-            document.getElementById('errorMessage').style.display = 'none';
-        }
-
-        document.getElementById('loginForm').addEventListener('submit', function (e) {
-            e.preventDefault();
-            hideError();
-            
-            const email = document.getElementById('email').value.trim();
-            const password = document.getElementById('password').value;
-            
-            if (!email || !password) {
-                showError('Email dan password harus diisi!');
-                return;
-            }
-            
-            const validUsers = [
-                {email: 'customer@test.com', password: 'password', role: 'customer'},
-                {email: 'staff@test.com', password: 'password', role: 'staff'},
-                {email: 'admin@goclean.com', password: 'goclean', role: 'admin'}
-            ];
-            
-            const newUser = localStorage.getItem('newUser');
-            if (newUser) {
-                const userData = JSON.parse(newUser);
-                if (userData.role === 'customer' || userData.role === 'staff') {
-                    validUsers.push({
-                        email: userData.email,
-                        password: 'password',
-                        role: userData.role
-                    });
-                }
-            }
-            
-            const user = validUsers.find(u => 
-                u.email === email && 
-                u.password === password && 
-                u.role === selectedRole
-            );
-            
-            if (user) {
-                const redirects = {
-                    'customer': '/customer/test',
-                    'staff': '/staff/test',
-                    'admin': '/admin/test'
-                };
-                window.location.href = redirects[user.role];
-            } else {
-                showError('Email, password, atau role tidak sesuai!');
-            }
-        });
-    </script>
 </body>
+
 </html>

@@ -2,35 +2,32 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
-    use HasFactory;
-
-  protected $fillable = [
-    'name',
-    'description',
-    'price',
-    'duration',
-    'status'
-];
-
-
-
-
-    protected $casts = [
-        'tanggal' => 'date'
+    protected $fillable = [
+        'customer_id',
+        'service_id',
+        'staff_id',
+        'schedule',
+        'status',
+        'total',
+        'payment_method'
     ];
 
-    public function user()
+    public function customer()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Customer::class);
     }
 
-    public function scopeByStatus($query, $status)
+    public function service()
     {
-        return $query->where('status', $status);
+        return $this->belongsTo(Service::class);
+    }
+
+    public function staff()
+    {
+        return $this->belongsTo(Staff::class);
     }
 }

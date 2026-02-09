@@ -4,7 +4,7 @@
 @section('content')
 <div class="max-w-2xl mx-auto">
     <div class="mb-6">
-        <a href="/admin/services/test" class="text-blue-600 hover:text-blue-800 flex items-center">
+        <a href="{{ route('admin.services') }}" class="text-blue-600 hover:text-blue-800 flex items-center">
             <i class="fas fa-arrow-left mr-2"></i>
             Kembali ke Daftar Layanan
         </a>
@@ -23,61 +23,74 @@
             </div>
         @endif
 
-       <form action="{{ route('admin.services.update', $service->id) }}" method="POST">
-    @csrf
-    @method('PUT')
+        <form action="{{ route('admin.services.update', $service->id) }}" method="POST">
+            @csrf
+            @method('PUT')
 
+            <div class="mb-6">
+                <label for="name" class="block text-sm font-medium text-gray-700 mb-2">
+                    Nama Layanan <span class="text-red-500">*</span>
+                </label>
+                <input type="text" 
+                       name="name" 
+                       id="name" 
+                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                       value="{{ old('name', $service->name) }}"
+                       required>
+            </div>
 
-    <input type="text" name="name" value="{{ $service->name }}">
-    <input type="text" name="description" value="{{ $service->description }}">
-    <input type="number" name="price" value="{{ $service->price }}">
-    <input type="text" name="duration" value="{{ $service->duration }}">
+            <div class="mb-6">
+                <label for="description" class="block text-sm font-medium text-gray-700 mb-2">
+                    Deskripsi <span class="text-red-500">*</span>
+                </label>
+                <textarea name="description" 
+                          id="description" 
+                          rows="4"
+                          class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                          required>{{ old('description', $service->description) }}</textarea>
+            </div>
 
-    <button type="submit">Update</button>
-
-</form>
-
-    </div>
-
-    <!-- Current Service Info -->
-    <div class="mt-8 bg-white rounded-lg shadow p-6">
-        <h3 class="text-lg font-semibold text-gray-800 mb-4">Informasi Layanan Saat Ini</h3>
-        <div class="bg-gray-50 rounded-lg p-4">
-            <div class="flex items-center mb-3">
-                <div class="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-white mr-4">
-                    <i class="fas fa-broom"></i>
-                </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                 <div>
-                    <h4 class="font-semibold text-gray-900">{{ $service->name }}</h4>
-                    <p class="text-sm text-gray-500">{{ $service->duration }}</p>
+                    <label for="price" class="block text-sm font-medium text-gray-700 mb-2">
+                        Harga (Rp) <span class="text-red-500">*</span>
+                    </label>
+                    <input type="number" 
+                           name="price" 
+                           id="price" 
+                           min="0"
+                           step="1000"
+                           class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                           value="{{ old('price', $service->price) }}"
+                           required>
+                </div>
+
+                <div>
+                    <label for="duration" class="block text-sm font-medium text-gray-700 mb-2">
+                        Estimasi Durasi (menit) <span class="text-red-500">*</span>
+                    </label>
+                    <input type="number" 
+                           name="duration" 
+                           id="duration" 
+                           min="1"
+                           class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                           value="{{ old('duration', $service->duration) }}"
+                           required>
                 </div>
             </div>
-            <p class="text-gray-600 mb-3">{{ $service->description }}</p>
-            <div class="flex justify-between items-center">
-                <div class="text-xl font-bold text-green-600">Rp {{ number_format($service->price, 0, ',', '.') }}</div>
-                <span class="px-2 py-1 text-xs font-semibold rounded-full {{ $service->status == 'active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
-                    {{ $service->status == 'active' ? 'Aktif' : 'Nonaktif' }}
-                </span>
+
+            <div class="flex items-center justify-end space-x-4">
+                <a href="{{ route('admin.services') }}" 
+                   class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50">
+                    Batal
+                </a>
+                <button type="submit" 
+                        class="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <i class="fas fa-save mr-2"></i>
+                    Update Layanan
+                </button>
             </div>
-        </div>
+        </form>
     </div>
 </div>
-
-<script>
-// Live preview update
-function updatePreview() {
-    const name = document.getElementById('name').value || 'Nama Layanan';
-    const description = document.getElementById('description').value || 'Deskripsi layanan';
-    const price = document.getElementById('price').value || '0';
-    const duration = document.getElementById('duration').value || 'Durasi';
-    
-    // You can add live preview functionality here if needed
-}
-
-// Add event listeners
-document.getElementById('name').addEventListener('input', updatePreview);
-document.getElementById('description').addEventListener('input', updatePreview);
-document.getElementById('price').addEventListener('input', updatePreview);
-document.getElementById('duration').addEventListener('input', updatePreview);
-</script>
 @endsection

@@ -88,7 +88,7 @@
                             <p class="text-sm text-gray-500">Aktifkan untuk menonaktifkan sementara website</p>
                         </div>
                         <label class="relative inline-flex items-center cursor-pointer">
-                            <input type="checkbox" class="sr-only peer">
+                            <input type="checkbox" class="sr-only peer" onchange="toggleSetting('maintenance_mode', this.checked ? '1' : '0')" {{ $settings->maintenance_mode == '1' ? 'checked' : '' }}>
                             <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
                         </label>
                     </div>
@@ -99,7 +99,7 @@
                             <p class="text-sm text-gray-500">Izinkan user baru untuk mendaftar</p>
                         </div>
                         <label class="relative inline-flex items-center cursor-pointer">
-                            <input type="checkbox" class="sr-only peer" checked>
+                            <input type="checkbox" class="sr-only peer" onchange="toggleSetting('allow_registration', this.checked ? '1' : '0')" {{ $settings->allow_registration == '1' ? 'checked' : '' }}>
                             <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
                         </label>
                     </div>
@@ -110,7 +110,7 @@
                             <p class="text-sm text-gray-500">Kirim notifikasi email untuk pesanan baru</p>
                         </div>
                         <label class="relative inline-flex items-center cursor-pointer">
-                            <input type="checkbox" class="sr-only peer" checked>
+                            <input type="checkbox" class="sr-only peer" onchange="toggleSetting('email_notifications', this.checked ? '1' : '0')" {{ $settings->email_notifications == '1' ? 'checked' : '' }}>
                             <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
                         </label>
                     </div>
@@ -152,19 +152,43 @@
                 <div class="space-y-3">
                     <div class="flex justify-between">
                         <span class="text-gray-600">Pengunjung:</span>
-                        <span class="font-medium">127</span>
+                        <span class="font-medium">{{ $stats['visitors_today'] }}</span>
                     </div>
                     <div class="flex justify-between">
                         <span class="text-gray-600">Pesanan Baru:</span>
-                        <span class="font-medium">8</span>
+                        <span class="font-medium">{{ $stats['orders_today'] }}</span>
                     </div>
                     <div class="flex justify-between">
                         <span class="text-gray-600">User Baru:</span>
-                        <span class="font-medium">3</span>
+                        <span class="font-medium">{{ $stats['users_today'] }}</span>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+function toggleSetting(key, value) {
+    fetch('{{ route("admin.settings.toggle") }}', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        },
+        body: JSON.stringify({ key: key, value: value })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Show success notification
+            const notification = document.createElement('div');
+            notification.className = 'fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50';
+            notification.innerHTML = '<i class="fas fa-check-circle mr-2"></i>Pengaturan berhasil diperbarui';
+            document.body.appendChild(notification);
+            setTimeout(() => notification.remove(), 3000);
+        }
+    });
+}
+</script>
 @endsection

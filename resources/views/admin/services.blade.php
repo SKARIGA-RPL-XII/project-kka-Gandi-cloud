@@ -70,36 +70,28 @@
                                 </div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm text-gray-900">{{ $service->duration }}</div>
+                                <div class="text-sm text-gray-900">{{ $service->duration }} menit</div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                @if($service->status == 'active')
-                                    <span
-                                        class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
-                                        Aktif
-                                    </span>
-                                @else
-                                    <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-800">
-                                        Nonaktif
-                                    </span>
-                                @endif
+                                <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
+                                    Aktif
+                                </span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                 <div class="flex space-x-2">
                                     <a href="{{ route('admin.services.edit', $service->id) }}"
                                         class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded text-xs">
-                                        Edit
+                                        <i class="fas fa-edit"></i> Edit
                                     </a>
 
-                                    <form action="{{ route('admin.services.delete', $service->id) }}" method="POST">
+                                    <form action="{{ route('admin.services.delete', $service->id) }}" method="POST" class="inline">
                                         @csrf
                                         @method('DELETE')
                                         <button onclick="return confirm('Yakin ingin menghapus layanan ini?')"
                                             class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-xs">
-                                            Hapus
+                                            <i class="fas fa-trash"></i> Hapus
                                         </button>
                                     </form>
-
                                 </div>
                             </td>
                         </tr>
@@ -127,8 +119,8 @@
                     <i class="fas fa-check-circle text-green-600 text-xl"></i>
                 </div>
                 <div class="ml-4">
-                    <h3 class="text-gray-500 text-sm">Layanan Aktif</h3>
-                    <p class="text-2xl font-bold">{{ $services->where('status', 'active')->count() }}</p>
+                    <h3 class="text-gray-500 text-sm">Total Layanan</h3>
+                    <p class="text-2xl font-bold">{{ $services->count() }}</p>
                 </div>
             </div>
         </div>

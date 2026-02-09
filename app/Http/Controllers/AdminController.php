@@ -10,50 +10,34 @@ class AdminController extends Controller
 {
     public function dashboard()
     {
-        // Simulasi data statistik admin
         $stats = [
-            'total_users' => 25,
-            'total_orders' => 48,
-            'total_services' => 6,
-            'total_revenue' => 7500000
+            'total_users' => \App\Models\User::count(),
+            'total_customers' => \App\Models\User::where('role', 'customer')->count(),
+            'total_staff' => \App\Models\User::where('role', 'staff')->count(),
+            'total_orders' => \App\Models\Order::count(),
+            'pending_orders' => \App\Models\Order::where('status', 'pending')->count(),
+            'completed_orders' => \App\Models\Order::where('status', 'done')->count(),
+            'total_services' => \App\Models\Service::count(),
+            'total_revenue' => \App\Models\Order::where('status', 'done')->sum('total') ?? 0,
+            'revenue_today' => \App\Models\Order::where('status', 'done')->whereDate('updated_at', today())->sum('total') ?? 0,
+            'revenue_month' => \App\Models\Order::where('status', 'done')->whereMonth('updated_at', now()->month)->sum('total') ?? 0
         ];
         
-        return view('admin.dashboard', compact('stats'));
+        $recentOrders = \App\Models\Order::with(['customer.user', 'service'])
+            ->orderBy('created_at', 'desc')
+            ->limit(5)
+            ->get();
+        
+        $recentUsers = \App\Models\User::orderBy('created_at', 'desc')
+            ->limit(5)
+            ->get();
+        
+        return view('admin.dashboard', compact('stats', 'recentOrders', 'recentUsers'));
     }
 
     public function services()
     {
-        // Simulasi data layanan
-        $services = collect([
-            (object)[
-                'id' => 1,
-                'name' => 'Pembersihan Rumah',
-                'description' => 'Layanan pembersihan menyeluruh untuk rumah tinggal',
-                'price' => 150000,
-                'duration' => '2-4 jam',
-                'status' => 'active',
-                'created_at' => now()
-            ],
-            (object)[
-                'id' => 2,
-                'name' => 'Pembersihan Kantor',
-                'description' => 'Jaga kebersihan lingkungan kerja Anda',
-                'price' => 200000,
-                'duration' => '3-5 jam',
-                'status' => 'active',
-                'created_at' => now()
-            ],
-            (object)[
-                'id' => 3,
-                'name' => 'Deep Cleaning',
-                'description' => 'Pembersihan mendalam untuk area sulit dijangkau',
-                'price' => 300000,
-                'duration' => '4-6 jam',
-                'status' => 'active',
-                'created_at' => now()
-            ]
-        ]);
-        
+        $services = \App\Models\Service::orderBy('created_at', 'desc')->get();
         return view('admin.services', compact('services'));
     }
 
@@ -64,122 +48,168 @@ class AdminController extends Controller
 
     public function storeService(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'required|string',
             'price' => 'required|numeric|min:0',
-            'duration' => 'required|string',
+            'duration' => 'required|integer|min:1',
         ]);
 
-        // Simulasi penyimpanan layanan baru
-        return redirect()->route('admin.services')->with('success', 'Layanan "' . $request->name . '" berhasil ditambahkan!');
+        \App\Models\Service::create($validated);
+        return redirect()->route('admin.services')->with('success', 'Layanan berhasil ditambahkan!');
     }
 
     public function editService($id)
     {
-        // Simulasi data layanan untuk edit
-        $service = (object)[
-            'id' => $id,
-            'name' => 'Pembersihan Rumah',
-            'description' => 'Layanan pembersihan menyeluruh untuk rumah tinggal',
-            'price' => 150000,
-            'duration' => '2-4 jam',
-            'status' => 'active'
-        ];
-        
+        $service = \App\Models\Service::findOrFail($id);
         return view('admin.service-edit', compact('service'));
     }
 
     public function updateService(Request $request, $id)
     {
-        $request->validate([
+        $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'required|string',
             'price' => 'required|numeric|min:0',
-            'duration' => 'required|string',
+            'duration' => 'required|integer|min:1',
         ]);
 
-        // Simulasi update layanan
+        \App\Models\Service::findOrFail($id)->update($validated);
         return redirect()->route('admin.services')->with('success', 'Layanan berhasil diperbarui!');
     }
 
     public function deleteService($id)
     {
-        // Simulasi hapus layanan
+        \App\Models\Service::findOrFail($id)->delete();
         return redirect()->route('admin.services')->with('success', 'Layanan berhasil dihapus!');
     }
 
     public function users()
     {
-        // Simulasi data users
-        $users = collect([
-            (object)[
-                'id' => 1,
-                'name' => 'John Customer',
-                'email' => 'customer@test.com',
-                'role' => 'customer',
-                'created_at' => now()
-            ],
-            (object)[
-                'id' => 2,
-                'name' => 'Jane Staff',
-                'email' => 'staff@test.com',
-                'role' => 'staff',
-                'created_at' => now()
-            ]
-        ]);
-        
+        $users = \App\Models\User::orderBy('created_at', 'desc')->get();
         return view('admin.users', compact('users'));
+    }
+
+    public function storeStaff(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|min:8|confirmed'
+        ]);
+
+        \App\Models\User::create([
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'role' => 'staff',
+            'password' => bcrypt($validated['password']),
+            'is_active' => true
+        ]);
+
+        return redirect()->route('admin.users')->with('success', 'Staff berhasil ditambahkan!');
+    }
+
+    public function editUser($id)
+    {
+        $user = \App\Models\User::findOrFail($id);
+        return response()->json($user);
+    }
+
+    public function updateUser(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,'.$id
+        ]);
+
+        \App\Models\User::findOrFail($id)->update($validated);
+        return redirect()->route('admin.users')->with('success', 'User berhasil diperbarui!');
+    }
+
+    public function toggleUserStatus($id)
+    {
+        $user = \App\Models\User::findOrFail($id);
+        $user->update(['is_active' => !$user->is_active]);
+        $status = $user->is_active ? 'diaktifkan' : 'dinonaktifkan';
+        return redirect()->route('admin.users')->with('success', 'User berhasil '.$status.'!');
+    }
+
+    public function deleteUser($id)
+    {
+        \App\Models\User::findOrFail($id)->delete();
+        return redirect()->route('admin.users')->with('success', 'User berhasil dihapus!');
     }
 
     public function orders()
     {
-        // Simulasi data pesanan untuk admin
-        $orders = collect([
-            (object)[
-                'id' => 1,
-                'customer_name' => 'John Doe',
-                'service_name' => 'Pembersihan Rumah',
-                'status' => 'pending',
-                'total' => 150000,
-                'created_at' => now()
-            ],
-            (object)[
-                'id' => 2,
-                'customer_name' => 'Jane Smith',
-                'service_name' => 'Deep Cleaning',
-                'status' => 'proses',
-                'total' => 300000,
-                'created_at' => now()
-            ]
-        ]);
-        
+        $orders = \App\Models\Order::with(['customer.user', 'service'])
+            ->orderBy('created_at', 'desc')
+            ->get();
         return view('admin.orders', compact('orders'));
+    }
+
+    public function deleteOrder($id)
+    {
+        \App\Models\Order::findOrFail($id)->delete();
+        return redirect()->route('admin.orders')->with('success', 'Pesanan berhasil dihapus!');
     }
 
     public function settings()
     {
-        // Simulasi data pengaturan
         $settings = (object)[
-            'site_name' => 'GOCLEAN',
-            'site_description' => 'Layanan pembersihan profesional terpercaya',
-            'contact_email' => 'info@goclean.id',
-            'contact_phone' => '0812-3456-7890'
+            'site_name' => \App\Models\Setting::get('site_name', 'GOCLEAN'),
+            'site_description' => \App\Models\Setting::get('site_description', 'Layanan pembersihan profesional terpercaya'),
+            'contact_email' => \App\Models\Setting::get('contact_email', 'info@goclean.id'),
+            'contact_phone' => \App\Models\Setting::get('contact_phone', '0812-3456-7890'),
+            'maintenance_mode' => \App\Models\Setting::get('maintenance_mode', '0'),
+            'allow_registration' => \App\Models\Setting::get('allow_registration', '1'),
+            'email_notifications' => \App\Models\Setting::get('email_notifications', '1'),
         ];
         
-        return view('admin.settings', compact('settings'));
+        $stats = [
+            'visitors_today' => \App\Models\Order::whereDate('created_at', today())->count(),
+            'orders_today' => \App\Models\Order::whereDate('created_at', today())->count(),
+            'users_today' => \App\Models\User::whereDate('created_at', today())->count(),
+        ];
+        
+        return view('admin.settings', compact('settings', 'stats'));
     }
 
     public function updateSettings(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'site_name' => 'required|string|max:255',
             'site_description' => 'nullable|string',
             'contact_email' => 'required|email',
             'contact_phone' => 'nullable|string',
         ]);
 
-        // Simulasi update pengaturan
-        return redirect()->back()->with('success', 'Pengaturan berhasil diperbarui');
+        foreach ($validated as $key => $value) {
+            \App\Models\Setting::set($key, $value);
+        }
+
+        return redirect()->back()->with('success', 'Pengaturan berhasil diperbarui!');
+    }
+
+    public function toggleSetting(Request $request)
+    {
+        $key = $request->input('key');
+        $value = $request->input('value');
+        
+        \App\Models\Setting::set($key, $value);
+        
+        return response()->json(['success' => true, 'message' => 'Setting updated']);
+    }
+
+    public function contacts()
+    {
+        $contacts = \App\Models\Contact::orderBy('created_at', 'desc')->get();
+        return view('admin.contacts', compact('contacts'));
+    }
+
+    public function deleteContact($id)
+    {
+        \App\Models\Contact::findOrFail($id)->delete();
+        return redirect()->route('admin.contacts')->with('success', 'Pesan berhasil dihapus!');
     }
 }

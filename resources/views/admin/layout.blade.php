@@ -7,6 +7,15 @@
     <title>@yield('title')</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="/css/mobile-responsive.css" rel="stylesheet">
+    <style>
+        @media (max-width: 768px) {
+            aside { width: 100% !important; position: relative !important; min-height: auto !important; }
+            main { margin-left: 0 !important; }
+            nav ul { flex-direction: row !important; overflow-x: auto; }
+            nav ul li a { white-space: nowrap; padding: 12px 20px !important; }
+        }
+    </style>
 </head>
 
 <body class="bg-gray-100 flex">
@@ -25,7 +34,7 @@
             <ul class="flex flex-col space-y-1">
 
                 <li>
-                    <a href="/admin/test"
+                    <a href="/admin/dashboard"
                         class="flex items-center px-6 py-3 text-white/90 hover:bg-white/10 hover:text-white transition @if(request()->is('admin/dashboard')) bg-white/10 border-l-4 border-white text-white font-medium @endif">
                         <i class="fa fa-tachometer-alt w-6 text-center mr-3"></i>
                         <span>Dashboard</span>
@@ -33,7 +42,7 @@
                 </li>
 
                 <li>
-                    <a href="/admin/services/test"
+                    <a href="/admin/services"
                         class="flex items-center px-6 py-3 text-white/90 hover:bg-white/10 hover:text-white transition @if(request()->is('admin/services*')) bg-white/10 border-l-4 border-white text-white font-medium @endif">
                         <i class="fa fa-broom w-6 text-center mr-3"></i>
                         <span>Kelola Layanan</span>
@@ -41,7 +50,7 @@
                 </li>
 
                 <li>
-                    <a href="/admin/users/test"
+                    <a href="/admin/users"
                         class="flex items-center px-6 py-3 text-white/90 hover:bg-white/10 hover:text-white transition @if(request()->is('admin/users')) bg-white/10 border-l-4 border-white text-white font-medium @endif">
                         <i class="fa fa-users w-6 text-center mr-3"></i>
                         <span>Kelola Users</span>
@@ -49,7 +58,7 @@
                 </li>
 
                 <li>
-                    <a href="/admin/orders/test"
+                    <a href="/admin/orders"
                         class="flex items-center px-6 py-3 text-white/90 hover:bg-white/10 hover:text-white transition @if(request()->is('admin/orders')) bg-white/10 border-l-4 border-white text-white font-medium @endif">
                         <i class="fa fa-shopping-cart w-6 text-center mr-3"></i>
                         <span>Kelola Pesanan</span>
@@ -57,14 +66,14 @@
                 </li>
 
                 <li>
-                    <a href="/admin/settings/test"
+                    <a href="/admin/settings"
                         class="flex items-center px-6 py-3 text-white/90 hover:bg-white/10 hover:text-white transition @if(request()->is('admin/settings')) bg-white/10 border-l-4 border-white text-white font-medium @endif">
                         <i class="fa fa-cog w-6 text-center mr-3"></i>
                         <span>Pengaturan</span>
                     </a>
                 </li>
                 <li>
-                    <a href="/admin/contacts/test"
+                    <a href="/admin/contacts"
                         class="flex items-center px-6 py-3 text-white/90 hover:bg-white/10 hover:text-white transition @if(request()->is('admin/settings')) bg-white/10 border-l-4 border-white text-white font-medium @endif">
                         <i class="fa fa-cog w-6 text-center mr-3"></i>
                         <span>Pesan Kontak</span>

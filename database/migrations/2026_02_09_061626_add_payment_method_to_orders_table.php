@@ -12,9 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('orders', function (Blueprint $table) {
-            if (!Schema::hasColumn('orders', 'total')) {
-                $table->decimal('total', 10, 2)->default(0)->after('alamat');
-            }
+            $table->string('payment_method')->nullable()->after('total');
         });
     }
 
@@ -24,9 +22,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('orders', function (Blueprint $table) {
-            if (Schema::hasColumn('orders', 'total')) {
-                $table->dropColumn('total');
-            }
+            $table->dropColumn('payment_method');
         });
     }
 };

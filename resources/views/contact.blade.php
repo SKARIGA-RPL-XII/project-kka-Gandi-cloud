@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kontak - GOCLEAN</title>
+    <title>Hubungi Kami - GOCLEAN</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -16,133 +15,90 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            line-height: 1.6;
-            color: #333;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 2rem;
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 20px;
         }
 
-         .header {
-            background: linear-gradient(135deg, #1f2937 0%, #1a232f 100%);
-            color: white;
-            padding: 1rem 0;
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-        .nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            font-size: 1.8rem;
-            font-weight: 700;
-        }
-
-        .nav-links {
-            display: flex;
-            list-style: none;
-            gap: 2rem;
-        }
-
-        .nav-links a {
-            color: white;
-            text-decoration: none;
-            font-weight: 500;
-            transition: .3s;
-        }
-
-        .nav-links a:hover {
-            color: #00ff9d;
-        }
-
-        .btn {
-            padding: 0.7rem 1.5rem;
-            border: none;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: .3s;
-            text-decoration: none;
-            display: inline-block;
-        }
-
-        .btn-outline {
-            border: 2px solid white;
-            color: white;
-            background: transparent;
-        }
-
-        .btn-outline:hover {
-            background: white;
-            color: #005c02;
-        }
-
-        .hero {
-            background: linear-gradient(135deg, #005c02 0%, #00f7ff 100%);
-            color: white;
-            padding: 8rem 0 4rem;
+        .header {
             text-align: center;
+            margin-bottom: 3rem;
         }
 
-        .hero h1 {
-            font-size: 3rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
+        .header h1 {
+            font-size: 2.5rem;
+            color: #005c02;
+            margin-bottom: 0.5rem;
         }
 
-        .content {
-            padding: 4rem 0;
-            background: #f8fafc;
+        .header p {
+            color: #6b7280;
+            font-size: 1.1rem;
         }
 
-        .contact-grid {
+        .content-wrapper {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 3rem;
+            gap: 2rem;
+            margin-bottom: 2rem;
         }
 
         .contact-info {
             background: white;
             padding: 2rem;
-            border-radius: 16px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, .06);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .contact-info h2 {
+            font-size: 1.5rem;
+            color: #1f2937;
+            margin-bottom: 1.5rem;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: start;
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background: #f9fafb;
+            border-radius: 12px;
+        }
+
+        .info-item i {
+            font-size: 1.5rem;
+            color: #00c853;
+            margin-right: 1rem;
+            margin-top: 0.2rem;
+        }
+
+        .info-item div h3 {
+            font-size: 1rem;
+            color: #374151;
+            margin-bottom: 0.3rem;
+        }
+
+        .info-item div p {
+            color: #6b7280;
+            font-size: 0.95rem;
         }
 
         .contact-form {
             background: white;
             padding: 2rem;
-            border-radius: 16px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, .06);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         }
 
-        .contact-item {
-            display: flex;
-            align-items: center;
+        .contact-form h2 {
+            font-size: 1.5rem;
+            color: #1f2937;
             margin-bottom: 1.5rem;
-            padding: 1rem;
-            background: #f8fafc;
-            border-radius: 10px;
-        }
-
-        .contact-icon {
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(135deg, #00ff9d, #00c853);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            margin-right: 1rem;
         }
 
         .form-group {
@@ -154,179 +110,165 @@
             font-weight: 600;
             color: #374151;
             margin-bottom: 0.5rem;
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 0.75rem;
-            border: 2px solid #e5e7eb;
-            border-radius: 8px;
             font-size: 0.9rem;
-            transition: .3s;
         }
 
-        .form-control:focus {
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
             outline: none;
             border-color: #00c853;
             box-shadow: 0 0 0 3px rgba(0, 200, 83, 0.1);
         }
 
-        .btn-primary {
-            background: linear-gradient(135deg, #00ff9d, #00c853);
-            color: white;
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .btn-submit {
             width: 100%;
+            padding: 1rem;
+            border: none;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #00c853, #005c02);
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
         }
 
-        .btn-primary:hover {
+        .btn-submit:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0, 255, 157, 0.3);
+            box-shadow: 0 8px 25px rgba(0, 200, 83, 0.3);
         }
 
-        .map {
-            background: #e5e7eb;
-            height: 300px;
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #6b7280;
+        .back-link {
+            text-align: center;
             margin-top: 2rem;
         }
-        .map iframe {
-    filter: grayscale(10%);
-}
 
+        .back-link a {
+            color: #00c853;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .success-message {
+            background: #d1fae5;
+            color: #059669;
+            padding: 1rem;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .content-wrapper {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
-
 <body>
-
-    <header class="header">
-        <div class="container">
-            <nav class="nav">
-                <div class="logo">
-                    <i class="fas fa-sparkles"></i> GOCLEAN
-                </div>
-                <ul class="nav-links">
-                    <li><a href="/">Beranda</a></li>
-                    <li><a href="/#services">Layanan</a></li>
-                    <li><a href="/about">Tentang</a></li>
-                    <li><a href="/contact">Kontak</a></li>
-                </ul>
-                <div>
-                    <a href="/login" class="btn btn-outline">Masuk</a>
-                </div>
-            </nav>
+    
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-sparkles"></i> GOCLEAN</h1>
+            <p>Hubungi kami untuk pertanyaan, saran, atau keluhan</p>
         </div>
-    </header>
 
-    <section class="hero">
-        <div class="container">
-            <h1>Hubungi Kami</h1>
-            <p>Siap melayani kebutuhan kebersihan Anda 24/7</p>
-        </div>
-    </section>
-
-    <section class="content">
-        <div class="container">
-            <div class="contact-grid">
-                <div class="contact-info">
-                    <h3 style="margin-bottom:2rem;color:#1f2937;">Informasi Kontak</h3>
-
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <i class="fas fa-phone"></i>
-                        </div>
-                        <div>
-                            <h4>Telepon</h4>
-                            <p>0812-3456-7890</p>
-                            <p>021-1234-5678</p>
-                        </div>
-                    </div>
-
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <i class="fas fa-envelope"></i>
-                        </div>
-                        <div>
-                            <h4>Email</h4>
-                            <p>info@goclean.id</p>
-                            <p>support@goclean.id</p>
-                        </div>
-                    </div>
-
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <i class="fas fa-map-marker-alt"></i>
-                        </div>
-                        <div>
-                            <h4>Alamat</h4>
-                            <p>Jl. Raya Malang No. 123</p>
-                            <p>Malang, Jawa Timur 65141</p>
-                        </div>
-                    </div>
-
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <i class="fas fa-clock"></i>
-                        </div>
-                        <div>
-                            <h4>Jam Operasional</h4>
-                            <p>Senin - Sabtu: 08:00 - 18:00</p>
-                            <p>Minggu: 09:00 - 15:00</p>
-                        </div>
+        <div class="content-wrapper">
+            <div class="contact-info">
+                <h2><i class="fas fa-info-circle"></i> Informasi Kontak</h2>
+                
+                <div class="info-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <div>
+                        <h3>Alamat</h3>
+                        <p>Jl. Kebersihan No. 123<br>Jakarta Selatan, 12345</p>
                     </div>
                 </div>
 
-                <div class="contact-form">
-                    <h3 style="margin-bottom:2rem;color:#1f2937;">Kirim Pesan</h3>
+                <div class="info-item">
+                    <i class="fas fa-phone"></i>
+                    <div>
+                        <h3>Telepon</h3>
+                        <p>0812-3456-7890<br>021-1234-5678</p>
+                    </div>
+                </div>
 
-               <form action="{{ route('contact.store') }}" method="POST">
-    @csrf
+                <div class="info-item">
+                    <i class="fas fa-envelope"></i>
+                    <div>
+                        <h3>Email</h3>
+                        <p>info@goclean.id<br>support@goclean.id</p>
+                    </div>
+                </div>
 
-    <input name="name" type="text" class="form-control" required>
-    <input name="email" type="email" class="form-control" required>
-    <input name="phone" type="tel" class="form-control">
-
-    <select name="subject" class="form-control" required>
-        <option value="">Pilih subjek</option>
-        <option>Saran</option>
-        <option>Keluhan</option>
-        <option>Informasi Layanan</option>
-        <option>Lainnya</option>
-    </select>
-
-    <textarea name="message" class="form-control" required></textarea>
-
-    <button class="btn btn-primary">Kirim Pesan</button>
-</form>
-
+                <div class="info-item">
+                    <i class="fas fa-clock"></i>
+                    <div>
+                        <h3>Jam Operasional</h3>
+                        <p>Senin - Jumat: 08:00 - 17:00<br>Sabtu: 08:00 - 14:00</p>
+                    </div>
                 </div>
             </div>
 
-            <div class="map">
-    <iframe
-        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d246.98820291724655!2d112.67198627096626!3d-7.9147763641908595!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd62b63f9e27aaf%3A0x705ce543dc7091f9!2sVAMY%20STUDIO!5e0!3m2!1sid!2sid!4v1770380310223!5m2!1sid!2sid"
-        width="100%"
-        height="100%"
-        style="border:0; border-radius:16px;"
-        allowfullscreen=""
-        loading="lazy"
-        referrerpolicy="no-referrer-when-downgrade">
-    </iframe>
-</div>
+            <div class="contact-form">
+                <h2><i class="fas fa-paper-plane"></i> Kirim Pesan</h2>
 
+                @if(session('success'))
+                    <div class="success-message" style="display:block;">
+                        <i class="fas fa-check-circle"></i> {{ session('success') }}
+                    </div>
+                @endif
+
+                <form action="{{ route('contact.store') }}" method="POST">
+                    @csrf
+                    
+                    <div class="form-group">
+                        <label for="name">Nama Lengkap <span style="color:red;">*</span></label>
+                        <input type="text" id="name" name="name" placeholder="Masukkan nama lengkap Anda" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email <span style="color:red;">*</span></label>
+                        <input type="email" id="email" name="email" placeholder="nama@email.com" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="subject">Subjek <span style="color:red;">*</span></label>
+                        <input type="text" id="subject" name="subject" placeholder="Topik pesan Anda" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message">Pesan <span style="color:red;">*</span></label>
+                        <textarea id="message" name="message" placeholder="Tulis pesan, saran, atau keluhan Anda di sini..." required></textarea>
+                    </div>
+
+                    <button type="submit" class="btn-submit">
+                        <i class="fas fa-paper-plane"></i> Kirim Pesan
+                    </button>
+                </form>
+            </div>
         </div>
-    </section>
 
-    <script>
-        document.querySelector('form').addEventListener('submit', function (e) {
-            e.preventDefault();
-            alert('Terima kasih! Pesan Anda telah terkirim. Tim kami akan segera menghubungi Anda.');
-            this.reset();
-        });
-    </script>
-
+        <div class="back-link">
+            <a href="/"><i class="fas fa-arrow-left"></i> Kembali ke Beranda</a>
+        </div>
+    </div>
 </body>
-
 </html>

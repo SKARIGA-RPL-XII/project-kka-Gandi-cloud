@@ -10,33 +10,29 @@ class OrderController extends Controller
 {
     public function create()
     {
-        return view('customer.order-create');
+        $services = \App\Models\Service::all();
+        return view('customer.order-create', compact('services'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'layanan' => 'required|string',
+            'service_id' => 'required|exists:services,id',
             'tanggal' => 'required|date|after:today',
             'alamat' => 'required|string|min:10',
         ]);
 
-        // Hitung total berdasarkan layanan
-        $prices = [
-            'Pembersihan Rumah' => 150000,
-            'Pembersihan Kantor' => 200000,
-            'Deep Cleaning' => 300000,
-        ];
-
-        $total = $prices[$request->layanan] ?? 100000;
+        // Ambil data service dari database
+        $service = \App\Models\Service::findOrFail($request->service_id);
         
         // Simpan data ke session untuk pembayaran
         session([
             'order_data' => [
-                'layanan' => $request->layanan,
+                'service_id' => $service->id,
+                'layanan' => $service->name,
                 'tanggal' => $request->tanggal,
                 'alamat' => $request->alamat,
-                'total' => $total
+                'total' => $service->price
             ]
         ]);
         
@@ -103,24 +99,26 @@ class OrderController extends Controller
             return redirect('/order/create')->with('error', 'Data pesanan tidak ditemukan');
         }
         
-        // Create new order
-        $newOrder = [
-            'id' => rand(1000, 9999),
-            'customer_name' => 'Customer',
-            'layanan' => $orderData['layanan'],
+        // Cari atau buat customer
+        $customer = \App\Models\Customer::firstOrCreate(
+            ['user_id' => auth()->id()],
+            ['phone' => null, 'address' => $orderData['alamat']]
+        );
+        
+        // Buat order baru dengan total dari session
+        \App\Models\Order::create([
+            'customer_id' => $customer->id,
+            'service_id' => $orderData['service_id'],
+            'schedule' => $orderData['tanggal'],
             'status' => 'pending',
-            'tanggal' => $orderData['tanggal'],
-            'alamat' => $orderData['alamat'],
             'total' => $orderData['total'],
-            'payment_method' => strtoupper($request->payment_method),
-            'created_at' => now()->toDateTimeString()
-        ];
+            'payment_method' => $request->payment_method
+        ]);
         
         session()->forget('order_data');
         
-        return redirect('/customer/test')
-            ->with('success', 'Pesanan berhasil dibuat! Menunggu konfirmasi dari petugas.')
-            ->with('new_order', $newOrder);
+        return redirect('/customer/dashboard')
+            ->with('success', 'Pesanan berhasil dibuat! Menunggu konfirmasi dari staff.');
     }
     
     public function generateQRIS(Request $request)

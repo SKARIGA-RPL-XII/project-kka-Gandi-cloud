@@ -41,10 +41,10 @@
         <h2><i class="fas fa-sparkles"></i> GOCLEAN</h2>
     </div>
     <div class="sidebar-nav">
-        <a href="/customer/test"><i class="fas fa-home"></i> Dashboard</a>
+        <a href="/customer/dashboard"><i class="fas fa-home"></i> Dashboard</a>
         <a href="/order/create"><i class="fas fa-plus-circle"></i> Buat Pesanan</a>
         <a href="/order/history" class="active"><i class="fas fa-history"></i> Histori Pesanan</a>
-        <a href="/profile"><i class="fas fa-user"></i> Profil</a>
+        <a href="/customer/profile"><i class="fas fa-user"></i> Profil</a>
         <a href="/help"><i class="fas fa-headset"></i> Bantuan</a>
     </div>
 </div>
