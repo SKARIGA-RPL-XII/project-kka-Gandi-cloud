@@ -16,6 +16,11 @@ class Order extends Model
         'payment_method'
     ];
 
+    protected $casts = [
+        'schedule' => 'date',
+        'total' => 'decimal:2'
+    ];
+
     public function customer()
     {
         return $this->belongsTo(Customer::class);
@@ -28,6 +33,6 @@ class Order extends Model
 
     public function staff()
     {
-        return $this->belongsTo(Staff::class);
+        return $this->belongsTo(User::class, 'staff_id');
     }
 }

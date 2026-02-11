@@ -2,132 +2,160 @@
 @section('title', 'Kelola Akun')
 
 @section('content')
-<div class="flex justify-between items-center mb-6">
-    <h2 class="text-2xl font-bold text-gray-800">Kelola Akun</h2>
-    <div class="flex space-x-2">
-        <button class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg" onclick="showAddStaffModal()">
-            <i class="fas fa-user-plus"></i> Tambah Staff
-        </button>
-        <select class="px-3 py-2 border border-gray-300 rounded-lg" onchange="filterUsers(this.value)">
-            <option value="">Semua Role</option>
-            <option value="customer">Customer</option>
-            <option value="staff">Staff</option>
-        </select>
+<!-- Header Section -->
+<div class="mb-6">
+    <div class="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
+        <div>
+            <h2 class="text-2xl font-bold text-gray-800">Kelola Akun</h2>
+            <p class="text-gray-600 text-sm mt-1">Manajemen user, staff, dan customer</p>
+        </div>
+        <div class="flex flex-col sm:flex-row gap-2">
+            <button class="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white px-4 py-2 rounded-lg transition shadow-md" onclick="showAddStaffModal()">
+                <i class="fas fa-user-plus mr-2"></i>Tambah Staff
+            </button>
+            <select class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" onchange="filterUsers(this.value)">
+                <option value="">Semua Role</option>
+                <option value="customer">Customer</option>
+                <option value="staff">Staff</option>
+                <option value="admin">Admin</option>
+            </select>
+        </div>
     </div>
 </div>
 
 @if(session('success'))
-    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
-        <i class="fas fa-check-circle mr-2"></i>{{ session('success') }}
+    <div class="bg-green-50 border-l-4 border-green-500 text-green-700 px-4 py-3 rounded-lg mb-6 shadow-sm animate-fade-in">
+        <div class="flex items-center">
+            <i class="fas fa-check-circle text-green-500 mr-3 text-xl"></i>
+            <span class="font-medium">{{ session('success') }}</span>
+        </div>
     </div>
 @endif
 
-<div class="bg-white rounded-lg shadow overflow-hidden">
+@if(session('error'))
+    <div class="bg-red-50 border-l-4 border-red-500 text-red-700 px-4 py-3 rounded-lg mb-6 shadow-sm animate-fade-in">
+        <div class="flex items-center">
+            <i class="fas fa-exclamation-circle text-red-500 mr-3 text-xl"></i>
+            <span class="font-medium">{{ session('error') }}</span>
+        </div>
+    </div>
+@endif
+
+<!-- Users Table -->
+<div class="bg-white rounded-xl shadow-lg overflow-hidden">
     <div class="overflow-x-auto">
         <table class="min-w-full divide-y divide-gray-200">
-            <thead class="bg-gray-50">
+            <thead class="bg-gradient-to-r from-gray-50 to-gray-100">
                 <tr>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
                         User
                     </th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
                         Email
                     </th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
                         Role
                     </th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
                         Bergabung
                     </th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
                         Status
                     </th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th class="px-6 py-4 text-center text-xs font-semibold text-gray-700 uppercase tracking-wider">
                         Aksi
                     </th>
                 </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
                 @forelse($users as $user)
-                <tr class="hover:bg-gray-50" data-role="{{ $user->role }}">
+                <tr class="hover:bg-gray-50 transition duration-150" data-role="{{ $user->role }}">
                     <td class="px-6 py-4 whitespace-nowrap">
                         <div class="flex items-center">
-                            <div class="flex-shrink-0 h-10 w-10">
-                                <div class="h-10 w-10 rounded-full bg-blue-500 flex items-center justify-center text-white font-medium">
-                                    {{ substr($user->name, 0, 1) }}
+                            <div class="flex-shrink-0 h-12 w-12">
+                                <div class="h-12 w-12 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white font-bold text-lg shadow-md">
+                                    {{ strtoupper(substr($user->name, 0, 1)) }}
                                 </div>
                             </div>
                             <div class="ml-4">
-                                <div class="text-sm font-medium text-gray-900">{{ $user->name }}</div>
-                                <div class="text-sm text-gray-500">ID: #{{ $user->id }}</div>
+                                <div class="text-sm font-semibold text-gray-900">{{ $user->name }}</div>
+                                <div class="text-xs text-gray-500">ID: #{{ str_pad($user->id, 4, '0', STR_PAD_LEFT) }}</div>
                             </div>
                         </div>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm text-gray-900">{{ $user->email }}</div>
+                        <div class="text-sm text-gray-900">
+                            <i class="fas fa-envelope text-gray-400 mr-2"></i>{{ $user->email }}
+                        </div>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">
                         @if($user->role == 'admin')
-                            <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-purple-100 text-purple-800">
-                                Admin
+                            <span class="inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full bg-purple-100 text-purple-800">
+                                <i class="fas fa-crown mr-1"></i>Admin
                             </span>
                         @elseif($user->role == 'staff')
-                            <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
-                                Staff
+                            <span class="inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
+                                <i class="fas fa-user-tie mr-1"></i>Staff
                             </span>
                         @else
-                            <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
-                                Customer
+                            <span class="inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
+                                <i class="fas fa-user mr-1"></i>Customer
                             </span>
                         @endif
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm text-gray-900">{{ date('d/m/Y', strtotime($user->created_at)) }}</div>
-                        <div class="text-sm text-gray-500">{{ date('H:i', strtotime($user->created_at)) }}</div>
+                        <div class="text-sm text-gray-900">
+                            <i class="fas fa-calendar text-gray-400 mr-2"></i>{{ date('d M Y', strtotime($user->created_at)) }}
+                        </div>
+                        <div class="text-xs text-gray-500">
+                            <i class="fas fa-clock text-gray-400 mr-2"></i>{{ date('H:i', strtotime($user->created_at)) }}
+                        </div>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">
                         @if($user->is_active)
-                            <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
-                                Aktif
+                            <span class="inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
+                                <i class="fas fa-check-circle mr-1"></i>Aktif
                             </span>
                         @else
-                            <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-800">
-                                Nonaktif
+                            <span class="inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-800">
+                                <i class="fas fa-times-circle mr-1"></i>Nonaktif
                             </span>
                         @endif
                     </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                        <div class="flex space-x-2">
-                            @if($user->role != 'admin')
-                                <button onclick="editUser({{ $user->id }})" class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded text-xs">
-                                    <i class="fas fa-edit"></i> Edit
+                    <td class="px-6 py-4 whitespace-nowrap text-center">
+                        @if($user->role != 'admin')
+                            <div class="flex justify-center gap-2">
+                                <button onclick="editUser({{ $user->id }})" class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-2 rounded-lg text-xs font-medium transition shadow-sm" title="Edit User">
+                                    <i class="fas fa-edit"></i>
                                 </button>
                                 
                                 <form action="{{ route('admin.users.toggle', $user->id) }}" method="POST" class="inline">
                                     @csrf
-                                    <button type="submit" class="bg-{{ $user->is_active ? 'orange' : 'green' }}-500 hover:bg-{{ $user->is_active ? 'orange' : 'green' }}-600 text-white px-3 py-1 rounded text-xs">
-                                        <i class="fas fa-{{ $user->is_active ? 'ban' : 'check' }}"></i> {{ $user->is_active ? 'Nonaktif' : 'Aktifkan' }}
+                                    <button type="submit" class="bg-{{ $user->is_active ? 'orange' : 'green' }}-500 hover:bg-{{ $user->is_active ? 'orange' : 'green' }}-600 text-white px-3 py-2 rounded-lg text-xs font-medium transition shadow-sm" title="{{ $user->is_active ? 'Nonaktifkan' : 'Aktifkan' }}">
+                                        <i class="fas fa-{{ $user->is_active ? 'ban' : 'check' }}"></i>
                                     </button>
                                 </form>
 
                                 <form action="{{ route('admin.users.delete', $user->id) }}" method="POST" class="inline">
                                     @csrf
                                     @method('DELETE')
-                                    <button onclick="return confirm('Yakin ingin menghapus user ini?')" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-xs">
-                                        <i class="fas fa-trash"></i> Hapus
+                                    <button onclick="return confirm('Yakin ingin menghapus user ini?')" class="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-lg text-xs font-medium transition shadow-sm" title="Hapus User">
+                                        <i class="fas fa-trash"></i>
                                     </button>
                                 </form>
-                            @endif
-                        </div>
+                            </div>
+                        @else
+                            <span class="text-gray-400 text-xs italic">Protected</span>
+                        @endif
                     </td>
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="6" class="px-6 py-12 text-center">
-                        <div class="text-gray-500">
-                            <i class="fas fa-users text-4xl mb-4"></i>
-                            <p class="text-lg font-medium">Belum ada users</p>
-                            <p class="text-sm">Data users akan muncul di sini</p>
+                    <td colspan="6" class="px-6 py-16 text-center">
+                        <div class="text-gray-400">
+                            <i class="fas fa-users text-6xl mb-4 opacity-50"></i>
+                            <p class="text-lg font-medium text-gray-600">Belum ada users</p>
+                            <p class="text-sm text-gray-500 mt-2">Data users akan muncul di sini</p>
                         </div>
                     </td>
                 </tr>
@@ -138,51 +166,51 @@
 </div>
 
 <!-- User Statistics -->
-<div class="mt-8 grid grid-cols-1 md:grid-cols-4 gap-6">
-    <div class="bg-white p-6 rounded-lg shadow">
-        <div class="flex items-center">
-            <div class="p-3 bg-green-100 rounded-full">
-                <i class="fas fa-users text-green-600 text-xl"></i>
+<div class="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+    <div class="bg-gradient-to-br from-green-500 to-green-600 p-6 rounded-xl shadow-lg text-white transform hover:scale-105 transition duration-300">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-green-100 text-sm font-medium">Total Users</p>
+                <p class="text-4xl font-bold mt-2">{{ $users->count() }}</p>
             </div>
-            <div class="ml-4">
-                <h3 class="text-gray-500 text-sm">Total Users</h3>
-                <p class="text-2xl font-bold">{{ $users->count() }}</p>
-            </div>
-        </div>
-    </div>
-
-    <div class="bg-white p-6 rounded-lg shadow">
-        <div class="flex items-center">
-            <div class="p-3 bg-blue-100 rounded-full">
-                <i class="fas fa-user-tie text-blue-600 text-xl"></i>
-            </div>
-            <div class="ml-4">
-                <h3 class="text-gray-500 text-sm">Staff</h3>
-                <p class="text-2xl font-bold">{{ $users->where('role', 'staff')->count() }}</p>
+            <div class="bg-white bg-opacity-20 p-4 rounded-full">
+                <i class="fas fa-users text-3xl"></i>
             </div>
         </div>
     </div>
 
-    <div class="bg-white p-6 rounded-lg shadow">
-        <div class="flex items-center">
-            <div class="p-3 bg-yellow-100 rounded-full">
-                <i class="fas fa-user text-yellow-600 text-xl"></i>
+    <div class="bg-gradient-to-br from-blue-500 to-blue-600 p-6 rounded-xl shadow-lg text-white transform hover:scale-105 transition duration-300">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-blue-100 text-sm font-medium">Staff</p>
+                <p class="text-4xl font-bold mt-2">{{ $users->where('role', 'staff')->count() }}</p>
             </div>
-            <div class="ml-4">
-                <h3 class="text-gray-500 text-sm">Customer</h3>
-                <p class="text-2xl font-bold">{{ $users->where('role', 'customer')->count() }}</p>
+            <div class="bg-white bg-opacity-20 p-4 rounded-full">
+                <i class="fas fa-user-tie text-3xl"></i>
             </div>
         </div>
     </div>
 
-    <div class="bg-white p-6 rounded-lg shadow">
-        <div class="flex items-center">
-            <div class="p-3 bg-purple-100 rounded-full">
-                <i class="fas fa-crown text-purple-600 text-xl"></i>
+    <div class="bg-gradient-to-br from-yellow-500 to-yellow-600 p-6 rounded-xl shadow-lg text-white transform hover:scale-105 transition duration-300">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-yellow-100 text-sm font-medium">Customer</p>
+                <p class="text-4xl font-bold mt-2">{{ $users->where('role', 'customer')->count() }}</p>
             </div>
-            <div class="ml-4">
-                <h3 class="text-gray-500 text-sm">Admin</h3>
-                <p class="text-2xl font-bold">{{ $users->where('role', 'admin')->count() }}</p>
+            <div class="bg-white bg-opacity-20 p-4 rounded-full">
+                <i class="fas fa-user text-3xl"></i>
+            </div>
+        </div>
+    </div>
+
+    <div class="bg-gradient-to-br from-purple-500 to-purple-600 p-6 rounded-xl shadow-lg text-white transform hover:scale-105 transition duration-300">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-purple-100 text-sm font-medium">Admin</p>
+                <p class="text-4xl font-bold mt-2">{{ $users->where('role', 'admin')->count() }}</p>
+            </div>
+            <div class="bg-white bg-opacity-20 p-4 rounded-full">
+                <i class="fas fa-crown text-3xl"></i>
             </div>
         </div>
     </div>
