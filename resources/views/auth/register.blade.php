@@ -31,6 +31,33 @@
             flex-direction: column;
             padding: 40px;
         }
+        
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+            }
+            
+            .left {
+                padding: 2rem 1rem;
+                min-height: 200px;
+            }
+            
+            .left h1 {
+                font-size: 2rem;
+            }
+            
+            .left p {
+                font-size: 0.9rem;
+            }
+            
+            .right {
+                padding: 1rem;
+            }
+            
+            .card {
+                padding: 1.5rem;
+            }
+        }
 
         .left h1 {
             font-size: 3rem;

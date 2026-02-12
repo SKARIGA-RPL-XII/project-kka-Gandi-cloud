@@ -9,20 +9,39 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="/css/mobile-responsive.css" rel="stylesheet">
     <style>
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            overflow-x: hidden;
+        }
+        
         @media (max-width: 768px) {
-            aside { width: 100% !important; position: relative !important; min-height: auto !important; }
-            main { margin-left: 0 !important; }
-            nav ul { flex-direction: row !important; overflow-x: auto; }
-            nav ul li a { white-space: nowrap; padding: 12px 20px !important; }
+            aside { 
+                width: 100% !important; 
+                position: relative !important; 
+                min-height: auto !important; 
+            }
+            main { 
+                margin-left: 0 !important; 
+            }
+            nav ul { 
+                flex-direction: row !important; 
+                overflow-x: auto; 
+            }
+            nav ul li a { 
+                white-space: nowrap; 
+                padding: 12px 20px !important; 
+            }
         }
     </style>
 </head>
 
-<body class="bg-gray-100 flex">
+<body class="bg-gray-100">
 
     {{-- SIDEBAR --}}
-    <aside
-        class="w-72 bg-gradient-to-b from-[#005c02] to-[#00f7ff] text-white min-h-screen fixed flex flex-col shadow-lg">
+    <aside class="w-72 bg-gradient-to-b from-[#005c02] to-[#00f7ff] text-white min-h-screen fixed left-0 top-0 flex flex-col shadow-lg z-10">
 
         {{-- Header --}}
         <div class="px-6 py-5 border-b border-white/20">
@@ -30,7 +49,7 @@
         </div>
 
         {{-- Menu --}}
-        <nav class="flex-1 mt-3">
+        <nav class="flex-1 mt-3 overflow-y-auto">
             <ul class="flex flex-col space-y-1">
 
                 <li>
@@ -74,8 +93,8 @@
                 </li>
                 <li>
                     <a href="/admin/contacts"
-                        class="flex items-center px-6 py-3 text-white/90 hover:bg-white/10 hover:text-white transition @if(request()->is('admin/settings')) bg-white/10 border-l-4 border-white text-white font-medium @endif">
-                        <i class="fa fa-cog w-6 text-center mr-3"></i>
+                        class="flex items-center px-6 py-3 text-white/90 hover:bg-white/10 hover:text-white transition @if(request()->is('admin/contacts')) bg-white/10 border-l-4 border-white text-white font-medium @endif">
+                        <i class="fa fa-envelope w-6 text-center mr-3"></i>
                         <span>Pesan Kontak</span>
                     </a>
 
@@ -86,9 +105,9 @@
 
 
     {{-- MAIN --}}
-    <main class="flex-1 ml-72 min-h-screen flex flex-col">
+    <main class="ml-72 min-h-screen flex flex-col">
         {{-- HEADER --}}
-        <header class="bg-white shadow flex justify-between items-center px-6 py-4">
+        <header class="bg-white shadow flex justify-between items-center px-6 py-4 sticky top-0 z-5">
             <h1 class="text-xl font-semibold">@yield('title')</h1>
             <div class="flex items-center space-x-3">
                 <span class="text-gray-700">Selamat datang, Admin</span>
@@ -103,8 +122,10 @@
         </header>
 
         {{-- CONTENT --}}
-        <section class="p-6">
-            @yield('content')
+        <section class="p-6 flex-1">
+            <div class="max-w-full">
+                @yield('content')
+            </div>
         </section>
     </main>
 </body>

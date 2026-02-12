@@ -105,10 +105,20 @@ class OrderController extends Controller
             ['phone' => null, 'address' => $orderData['alamat']]
         );
         
-        // Buat order baru dengan total dari session
+        // Auto-assign ke staff yang tersedia (staff dengan pesanan paling sedikit)
+        $staff = \App\Models\User::where('role', 'staff')
+            ->where('is_active', true)
+            ->withCount(['orders' => function($query) {
+                $query->whereIn('status', ['pending', 'confirmed', 'in_progress']);
+            }])
+            ->orderBy('orders_count', 'asc')
+            ->first();
+        
+        // Buat order baru dengan staff_id
         \App\Models\Order::create([
             'customer_id' => $customer->id,
             'service_id' => $orderData['service_id'],
+            'staff_id' => $staff ? $staff->id : null,
             'schedule' => $orderData['tanggal'],
             'status' => 'pending',
             'total' => $orderData['total'],

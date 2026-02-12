@@ -3,58 +3,61 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 use App\Models\Order;
 use App\Models\User;
 
 class StaffController extends Controller
 {
-   public function dashboard()
-{
-    try {
-        $staffId = auth()->id();
+    public function dashboard()
+    {
+        try {
+            $staffId = auth()->id();
 
-        $orders = Order::with(['customer', 'service'])
-            ->where('staff_id', $staffId)
-            ->whereIn('status', ['pending', 'confirmed', 'in_progress'])
-            ->latest()
-            ->limit(10)
-            ->get();
-        
-        $stats = [
-            'pending_orders' => Order::where('staff_id', $staffId)->where('status', 'pending')->count(),
-            'confirmed' => Order::where('staff_id', $staffId)->where('status', 'confirmed')->count(),
-            'in_progress' => Order::where('staff_id', $staffId)->where('status', 'in_progress')->count(),
-            'completed_today' => Order::where('staff_id', $staffId)
-                ->where('status', 'done')
-                ->whereDate('updated_at', today())
-                ->count(),
-            'completed_week' => Order::where('staff_id', $staffId)
-                ->where('status', 'done')
-                ->whereBetween('updated_at', [now()->startOfWeek(), now()->endOfWeek()])
-                ->count(),
-            'completed_month' => Order::where('staff_id', $staffId)
-                ->where('status', 'done')
-                ->whereMonth('updated_at', now()->month)
-                ->count(),
-            'cancelled' => Order::where('staff_id', $staffId)->where('status', 'cancelled')->count(),
-            'total_orders' => Order::where('staff_id', $staffId)->count(),
-            'total_earnings' => Order::where('staff_id', $staffId)
-                ->where('status', 'done')
-                ->sum('total') ?? 0
-        ];
-        
-        return view('staff.dashboard', compact('stats', 'orders'));
+            $orders = Order::with(['customer.user', 'service'])
+                ->where('staff_id', $staffId)
+                ->whereIn('status', ['pending', 'confirmed', 'in_progress'])
+                ->latest()
+                ->limit(10)
+                ->get();
+            
+            $stats = [
+                'pending_orders' => Order::where('staff_id', $staffId)->where('status', 'pending')->count(),
+                'confirmed' => Order::where('staff_id', $staffId)->where('status', 'confirmed')->count(),
+                'in_progress' => Order::where('staff_id', $staffId)->where('status', 'in_progress')->count(),
+                'completed_today' => Order::where('staff_id', $staffId)
+                    ->where('status', 'done')
+                    ->whereDate('updated_at', today())
+                    ->count(),
+                'completed_week' => Order::where('staff_id', $staffId)
+                    ->where('status', 'done')
+                    ->whereBetween('updated_at', [now()->startOfWeek(), now()->endOfWeek()])
+                    ->count(),
+                'completed_month' => Order::where('staff_id', $staffId)
+                    ->where('status', 'done')
+                    ->whereMonth('updated_at', now()->month)
+                    ->count(),
+                'cancelled' => Order::where('staff_id', $staffId)->where('status', 'cancelled')->count(),
+                'total_orders' => Order::where('staff_id', $staffId)->count(),
+                'total_earnings' => Order::where('staff_id', $staffId)
+                    ->where('status', 'done')
+                    ->sum('total') ?? 0
+            ];
+            
+            return view('staff.dashboard', compact('stats', 'orders'));
 
-    } catch (\Exception $e) {
-        return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
-}
 
     public function orders(Request $request)
     {
-        $query = Order::with(['customer.user', 'service']);
+        $staffId = auth()->id();
+        
+        $query = Order::with(['customer.user', 'service'])
+            ->where('staff_id', $staffId);
         
         if ($request->has('status') && $request->status) {
             $query->where('status', $request->status);
@@ -122,14 +125,14 @@ class StaffController extends Controller
     public function profile()
     {
         $user = auth()->user();
-       $staffId = auth()->id();
+        $staffId = auth()->id();
 
-$stats = [
-    'total_completed' => Order::where('staff_id', $staffId)->where('status', 'done')->count(),
-    'total_earnings' => Order::where('staff_id', $staffId)->where('status', 'done')->sum('total') ?? 0,
-    'pending' => Order::where('staff_id', $staffId)->where('status', 'pending')->count(),
-    'in_progress' => Order::where('staff_id', $staffId)->where('status', 'in_progress')->count()
-];
+        $stats = [
+            'total_completed' => Order::where('staff_id', $staffId)->where('status', 'done')->count(),
+            'total_earnings' => Order::where('staff_id', $staffId)->where('status', 'done')->sum('total') ?? 0,
+            'pending' => Order::where('staff_id', $staffId)->where('status', 'pending')->count(),
+            'in_progress' => Order::where('staff_id', $staffId)->where('status', 'in_progress')->count()
+        ];
 
         return view('staff.profile', compact('user', 'stats'));
     }
@@ -155,7 +158,7 @@ $stats = [
             $user->save();
 
             return redirect()->back()->with('success', 'Profil berhasil diperbarui');
-        } catch (\Illuminate\Validation\ValidationException $e) {
+        } catch (ValidationException $e) {
             return redirect()->back()->withErrors($e->errors())->withInput();
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Gagal memperbarui profil: ' . $e->getMessage());

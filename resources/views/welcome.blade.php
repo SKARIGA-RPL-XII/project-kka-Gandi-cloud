@@ -7,6 +7,7 @@
     <title>GOCLEAN - Layanan Pembersihan Profesional</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="{{ asset('css/responsive.css') }}" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -316,19 +317,74 @@
             color: #9ca3af;
         }
 
-        /* Responsive */
+        /* Mobile Menu Toggle */
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+        
         @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2.5rem;
+            .mobile-menu-toggle {
+                display: block;
             }
-
+            
             .nav-links {
                 display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: #1f2937;
+                flex-direction: column;
+                padding: 1rem;
+                box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            }
+            
+            .nav-links.active {
+                display: flex !important;
+            }
+            
+            .nav-links li {
+                width: 100%;
+                text-align: center;
+                padding: 0.5rem 0;
+                border-bottom: 1px solid #374151;
+            }
+            
+            .nav-links li:last-child {
+                border-bottom: none;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
             }
 
             .hero-buttons {
                 flex-direction: column;
                 align-items: center;
+            }
+            
+            .hero-buttons .btn {
+                width: 100%;
+                max-width: 300px;
+            }
+            
+            .features-grid,
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -343,15 +399,20 @@
                 <div class="logo">
                     <i class="fas fa-sparkles"></i> GOCLEAN
                 </div>
+                
+                <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+                    <i class="fas fa-bars"></i>
+                </button>
 
-
-                <ul class="nav-links">
+                <ul class="nav-links" id="navLinks">
                     <li><a href="/">Beranda</a></li>
                     <li><a href="/#services">Layanan</a></li>
                     <li><a href="/about">Tentang</a></li>
                     <li><a href="/contact">Kontak</a></li>
+                    <li class="show-mobile"><a href="/register">Daftar</a></li>
+                    <li class="show-mobile"><a href="/login">Masuk</a></li>
                 </ul>
-                <div>
+                <div class="hide-mobile">
                     <a href="/register" class="btn btn-primary" style="margin-right:10px;">Daftar</a>
                     <a href="/login" class="btn btn-outline">Masuk</a>
                 </div>
@@ -501,6 +562,24 @@
             </div>
         </div>
     </footer>
+
+    <script>
+        function toggleMobileMenu() {
+            const navLinks = document.getElementById('navLinks');
+            navLinks.classList.toggle('active');
+        }
+        
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const nav = document.querySelector('.nav');
+            const navLinks = document.getElementById('navLinks');
+            const toggle = document.querySelector('.mobile-menu-toggle');
+            
+            if (!nav.contains(event.target) && navLinks.classList.contains('active')) {
+                navLinks.classList.remove('active');
+            }
+        });
+    </script>
 
 </body>
 

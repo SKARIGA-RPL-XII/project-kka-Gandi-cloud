@@ -17,7 +17,35 @@
             font-family: 'Inter', sans-serif;
             background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             min-height: 100vh;
-            padding: 2rem;
+            padding: 1rem;
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 0.5rem;
+            }
+            
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .header p {
+                font-size: 0.95rem;
+            }
+            
+            .content-wrapper {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .contact-info,
+            .contact-form {
+                padding: 1.5rem;
+            }
+            
+            .info-item {
+                padding: 0.8rem;
+            }
         }
 
         .container {

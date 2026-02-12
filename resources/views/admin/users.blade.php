@@ -44,94 +44,77 @@
 <!-- Users Table -->
 <div class="bg-white rounded-xl shadow-lg overflow-hidden">
     <div class="overflow-x-auto">
-        <table class="min-w-full divide-y divide-gray-200">
+        <table class="w-full">
             <thead class="bg-gradient-to-r from-gray-50 to-gray-100">
                 <tr>
-                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                        User
-                    </th>
-                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                        Email
-                    </th>
-                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                        Role
-                    </th>
-                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                        Bergabung
-                    </th>
-                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                        Status
-                    </th>
-                    <th class="px-6 py-4 text-center text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                        Aksi
-                    </th>
+                    <th class="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase">User</th>
+                    <th class="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase">Email</th>
+                    <th class="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase">Role</th>
+                    <th class="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase">Bergabung</th>
+                    <th class="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase">Status</th>
+                    <th class="px-4 py-3 text-center text-xs font-semibold text-gray-700 uppercase">Aksi</th>
                 </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
                 @forelse($users as $user)
-                <tr class="hover:bg-gray-50 transition duration-150" data-role="{{ $user->role }}">
-                    <td class="px-6 py-4 whitespace-nowrap">
+                <tr class="hover:bg-gray-50 transition" data-role="{{ $user->role }}">
+                    <td class="px-4 py-3">
                         <div class="flex items-center">
-                            <div class="flex-shrink-0 h-12 w-12">
-                                <div class="h-12 w-12 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white font-bold text-lg shadow-md">
-                                    {{ strtoupper(substr($user->name, 0, 1)) }}
-                                </div>
+                            <div class="h-10 w-10 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white font-bold shadow-md flex-shrink-0">
+                                {{ strtoupper(substr($user->name, 0, 1)) }}
                             </div>
-                            <div class="ml-4">
+                            <div class="ml-3">
                                 <div class="text-sm font-semibold text-gray-900">{{ $user->name }}</div>
                                 <div class="text-xs text-gray-500">ID: #{{ str_pad($user->id, 4, '0', STR_PAD_LEFT) }}</div>
                             </div>
                         </div>
                     </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
+                    <td class="px-4 py-3">
                         <div class="text-sm text-gray-900">
-                            <i class="fas fa-envelope text-gray-400 mr-2"></i>{{ $user->email }}
+                            <i class="fas fa-envelope text-gray-400 mr-1"></i>{{ $user->email }}
                         </div>
                     </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
+                    <td class="px-4 py-3">
                         @if($user->role == 'admin')
-                            <span class="inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full bg-purple-100 text-purple-800">
+                            <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full bg-purple-100 text-purple-800">
                                 <i class="fas fa-crown mr-1"></i>Admin
                             </span>
                         @elseif($user->role == 'staff')
-                            <span class="inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
+                            <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
                                 <i class="fas fa-user-tie mr-1"></i>Staff
                             </span>
                         @else
-                            <span class="inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
+                            <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
                                 <i class="fas fa-user mr-1"></i>Customer
                             </span>
                         @endif
                     </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
+                    <td class="px-4 py-3">
                         <div class="text-sm text-gray-900">
-                            <i class="fas fa-calendar text-gray-400 mr-2"></i>{{ date('d M Y', strtotime($user->created_at)) }}
-                        </div>
-                        <div class="text-xs text-gray-500">
-                            <i class="fas fa-clock text-gray-400 mr-2"></i>{{ date('H:i', strtotime($user->created_at)) }}
+                            <i class="fas fa-calendar text-gray-400 mr-1"></i>{{ date('d M Y', strtotime($user->created_at)) }}
                         </div>
                     </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
+                    <td class="px-4 py-3">
                         @if($user->is_active)
-                            <span class="inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
+                            <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
                                 <i class="fas fa-check-circle mr-1"></i>Aktif
                             </span>
                         @else
-                            <span class="inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-800">
+                            <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-800">
                                 <i class="fas fa-times-circle mr-1"></i>Nonaktif
                             </span>
                         @endif
                     </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-center">
+                    <td class="px-4 py-3">
                         @if($user->role != 'admin')
-                            <div class="flex justify-center gap-2">
-                                <button onclick="editUser({{ $user->id }})" class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-2 rounded-lg text-xs font-medium transition shadow-sm" title="Edit User">
+                            <div class="flex justify-center gap-1">
+                                <button onclick="editUser({{ $user->id }})" class="bg-yellow-500 hover:bg-yellow-600 text-white px-2 py-1 rounded text-xs transition" title="Edit">
                                     <i class="fas fa-edit"></i>
                                 </button>
                                 
                                 <form action="{{ route('admin.users.toggle', $user->id) }}" method="POST" class="inline">
                                     @csrf
-                                    <button type="submit" class="bg-{{ $user->is_active ? 'orange' : 'green' }}-500 hover:bg-{{ $user->is_active ? 'orange' : 'green' }}-600 text-white px-3 py-2 rounded-lg text-xs font-medium transition shadow-sm" title="{{ $user->is_active ? 'Nonaktifkan' : 'Aktifkan' }}">
+                                    <button type="submit" class="bg-{{ $user->is_active ? 'orange' : 'green' }}-500 hover:bg-{{ $user->is_active ? 'orange' : 'green' }}-600 text-white px-2 py-1 rounded text-xs transition" title="{{ $user->is_active ? 'Nonaktifkan' : 'Aktifkan' }}">
                                         <i class="fas fa-{{ $user->is_active ? 'ban' : 'check' }}"></i>
                                     </button>
                                 </form>
@@ -139,7 +122,7 @@
                                 <form action="{{ route('admin.users.delete', $user->id) }}" method="POST" class="inline">
                                     @csrf
                                     @method('DELETE')
-                                    <button onclick="return confirm('Yakin ingin menghapus user ini?')" class="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-lg text-xs font-medium transition shadow-sm" title="Hapus User">
+                                    <button onclick="return confirm('Yakin ingin menghapus user ini?')" class="bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded text-xs transition" title="Hapus">
                                         <i class="fas fa-trash"></i>
                                     </button>
                                 </form>
