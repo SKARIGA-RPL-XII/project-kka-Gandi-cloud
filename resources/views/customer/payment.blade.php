@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,463 +8,268 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        body {
-            margin: 0;
-            font-family: 'Inter', sans-serif;
-            background: #f8fafc;
-            display: flex;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #f8fafc; display: flex; }
 
-        .sidebar {
-            width: 280px;
-            background: linear-gradient(135deg, #005c02 0%, #00f7ff 100%);
-            height: 100vh;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, .1);
-            padding: 0;
-            position: fixed;
-            overflow-y: auto;
-        }
+        /* Sidebar */
+        .sidebar { width: 280px; background: linear-gradient(135deg, #005c02 0%, #00f7ff 100%); min-height: 100vh; position: fixed; top: 0; left: 0; overflow-y: auto; }
+        .sidebar-header { padding: 28px 24px; text-align: center; border-bottom: 1px solid rgba(255,255,255,.15); }
+        .sidebar-header h2 { color: white; font-size: 22px; font-weight: 700; }
+        .sidebar a { display: flex; align-items: center; padding: 14px 24px; color: rgba(255,255,255,.8); text-decoration: none; font-size: 14px; transition: .2s; border-left: 3px solid transparent; }
+        .sidebar a:hover, .sidebar a.active { background: rgba(255,255,255,.12); color: white; border-left-color: white; }
+        .sidebar a i { width: 20px; margin-right: 12px; }
 
-        .sidebar-header {
-            padding: 30px 25px;
-            text-align: center;
-            border-bottom: 1px solid rgba(255, 255, 255, .1);
-        }
+        /* Main */
+        .main { flex: 1; margin-left: 280px; min-height: 100vh; }
+        .topbar { background: white; padding: 0 30px; height: 65px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 1px 8px rgba(0,0,0,.06); position: sticky; top: 0; z-index: 10; }
+        .topbar h1 { font-size: 18px; font-weight: 600; color: #1f2937; }
+        .content { padding: 30px; max-width: 860px; }
 
-        .sidebar h2 {
-            color: white;
-            font-size: 24px;
-            font-weight: 700;
-            margin: 0;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, .3);
-        }
+        /* Card */
+        .card { background: white; border-radius: 16px; padding: 28px; box-shadow: 0 2px 16px rgba(0,0,0,.06); margin-bottom: 20px; }
 
-        .sidebar-nav {
-            padding: 20px 0;
-        }
+        /* Summary */
+        .summary-row { display: flex; justify-content: space-between; align-items: center; padding: 11px 0; border-bottom: 1px solid #f1f5f9; font-size: 14px; color: #374151; }
+        .summary-row:last-child { border-bottom: none; font-weight: 700; font-size: 16px; color: #059669; padding-top: 14px; }
+        .summary-box { background: #f8fafc; border-radius: 12px; padding: 18px 20px; margin-bottom: 28px; }
 
-        .sidebar a {
-            display: flex;
-            align-items: center;
-            padding: 15px 25px;
-            color: rgba(255, 255, 255, .8);
-            text-decoration: none;
-            font-size: 15px;
-            transition: .3s;
-            border-left: 3px solid transparent;
-        }
+        /* Payment Options */
+        .method-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
+        .method-card { border: 2px solid #e5e7eb; border-radius: 12px; padding: 22px 18px; cursor: pointer; text-align: center; transition: .2s; position: relative; }
+        .method-card:hover { border-color: #00c853; transform: translateY(-2px); }
+        .method-card.selected { border-color: #00c853; background: #f0fdf4; }
+        .method-card input[type="radio"] { position: absolute; opacity: 0; pointer-events: none; }
+        .method-icon { width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 22px; color: white; margin: 0 auto 12px; }
+        .icon-transfer { background: linear-gradient(135deg, #3b82f6, #1d4ed8); }
+        .icon-cash { background: linear-gradient(135deg, #10b981, #059669); }
+        .method-card h4 { font-size: 16px; font-weight: 600; color: #1f2937; margin-bottom: 4px; }
+        .method-card p { font-size: 13px; color: #6b7280; }
 
-        .sidebar a:hover,
-        .sidebar a.active {
-            background: rgba(255, 255, 255, .1);
-            color: white;
-            border-left-color: #fff;
-        }
+        /* Bank List */
+        .bank-section { display: none; background: #f8fafc; border-radius: 12px; padding: 20px; margin-bottom: 20px; }
+        .bank-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .bank-item { background: white; border-radius: 10px; padding: 16px; border: 1px solid #e5e7eb; display: flex; align-items: center; gap: 14px; }
+        .bank-logo { width: 46px; height: 46px; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 11px; flex-shrink: 0; }
+        .bank-info p { margin: 0; }
+        .bank-name { font-size: 13px; font-weight: 600; color: #1f2937; }
+        .bank-number { font-size: 17px; font-weight: 700; color: #111827; letter-spacing: .5px; margin: 2px 0 !important; }
+        .bank-owner { font-size: 11px; color: #6b7280; }
+        .bank-note { background: #fef9c3; border: 1px solid #fde047; border-radius: 8px; padding: 12px 16px; margin-top: 14px; font-size: 13px; color: #854d0e; line-height: 1.6; }
 
-        .sidebar a i {
-            width: 20px;
-            margin-right: 12px;
-            font-size: 16px;
-        }
+        /* Button */
+        .btn-pay { width: 100%; padding: 15px; border: none; border-radius: 12px; background: linear-gradient(135deg, #00c853, #005c02); color: white; font-size: 16px; font-weight: 600; cursor: pointer; transition: .2s; }
+        .btn-pay:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,200,83,.35); }
+        .btn-pay:disabled { opacity: .5; cursor: not-allowed; }
 
-        .container {
-            flex: 1;
-            margin-left: 280px;
-        }
+        /* Alert */
+        .alert-success { background: #d1fae5; color: #065f46; padding: 12px 16px; border-radius: 10px; margin-bottom: 20px; font-size: 14px; }
+        .alert-error { background: #fee2e2; color: #991b1b; padding: 12px 16px; border-radius: 10px; margin-bottom: 20px; font-size: 14px; }
 
-        .nav {
-            height: 70px;
-            background: white;
-            color: #333;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 30px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, .05);
-        }
+        /* Back link */
+        .back-link { display: inline-flex; align-items: center; gap: 8px; color: #6b7280; text-decoration: none; font-size: 14px; margin-bottom: 20px; }
+        .back-link:hover { color: #374151; }
 
-        .nav-title {
-            font-size: 20px;
-            font-weight: 600;
-            color: #2d3748;
-        }
-
-        .wrapper {
-            padding: 30px;
-        }
-
-        .payment-container {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .card {
-            background: white;
-            border-radius: 16px;
-            padding: 30px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, .06);
-            margin-bottom: 20px;
-        }
-
-        .order-summary {
-            background: #f8fafc;
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 30px;
-        }
-
-        .payment-methods {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .payment-option {
-            border: 2px solid #e5e7eb;
-            border-radius: 12px;
-            padding: 25px;
-            cursor: pointer;
-            transition: .3s;
-            text-align: center;
-            position: relative;
-        }
-
-        .payment-option:hover {
-            border-color: #667eea;
-            transform: translateY(-2px);
-        }
-
-        .payment-option.selected {
-            border-color: #667eea;
-            background: #f8faff;
-        }
-
-        .payment-option input {
-            position: absolute;
-            opacity: 0;
-        }
-
-        .payment-icon {
-            width: 60px;
-            height: 60px;
-            margin: 0 auto 15px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            color: white;
-        }
-
-        .qris-icon {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-        }
-
-        .cash-icon {
-            background: linear-gradient(135deg, #00c853, #4caf50);
-        }
-
-        .payment-option h4 {
-            font-size: 18px;
-            font-weight: 600;
-            margin: 0 0 8px 0;
-            color: #1f2937;
-        }
-
-        .payment-option p {
-            font-size: 14px;
-            color: #6b7280;
-            margin: 0;
-        }
-
-        .qris-section {
-            display: none;
-            text-align: center;
-            padding: 20px;
-            background: #f8fafc;
-            border-radius: 12px;
-            margin-top: 20px;
-        }
-
-        .qris-code {
-            width: 200px;
-            height: 200px;
-            margin: 0 auto 20px;
-            background: #fff;
-            border: 2px solid #e5e7eb;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 48px;
-            color: #d1d5db;
-        }
-
-        .btn {
-            padding: 14px 28px;
-            border: none;
-            border-radius: 12px;
-            background: linear-gradient(135deg, #00ff9d, #00c853);
-            color: white;
-            font-weight: 600;
-            cursor: pointer;
-            transition: .3s;
-            font-size: 16px;
-            width: 100%;
-        }
-
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0, 255, 157, .3);
-        }
-
-        .btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .back-btn {
-            display: inline-flex;
-            align-items: center;
-            color: #6b7280;
-            text-decoration: none;
-            font-size: 14px;
-            margin-bottom: 20px;
-            transition: .3s;
-        }
-
-        .back-btn:hover {
-            color: #374151;
-        }
-
-        .back-btn i {
-            margin-right: 8px;
-        }
-
-        .summary-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 0;
-            border-bottom: 1px solid #f1f5f9;
-        }
-
-        .summary-item:last-child {
-            border-bottom: none;
-            font-weight: 600;
-            font-size: 18px;
-            color: #059669;
-        }
-
+        /* Responsive */
         @media (max-width: 768px) {
             body { flex-direction: column; }
-            .sidebar { width: 100% !important; height: auto !important; position: relative !important; }
-            .sidebar-nav { display: flex; overflow-x: auto; padding: 10px 0 !important; }
-            .sidebar-nav a { display: inline-flex !important; padding: 12px 20px !important; border-left: none !important; white-space: nowrap; }
-            .container { margin-left: 0 !important; width: 100% !important; }
-            .wrapper { padding: 15px !important; }
-            .card { padding: 20px !important; }
-            .payment-methods { grid-template-columns: 1fr !important; }
-            .nav { padding: 15px !important; }
-            h2 { font-size: 22px !important; }
+            .sidebar { width: 100%; min-height: auto; position: relative; }
+            .sidebar a { display: inline-flex; padding: 12px 18px; border-left: none; white-space: nowrap; }
+            .sidebar nav { display: flex; overflow-x: auto; }
+            .main { margin-left: 0; }
+            .content { padding: 16px; }
+            .method-grid { grid-template-columns: 1fr; }
+            .bank-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
-
 <body>
 
-    <div class="sidebar">
-        <div class="sidebar-header">
-            <h2><i class="fas fa-sparkles"></i> GOCLEAN</h2>
-        </div>
-        <div class="sidebar-nav">
-            <a href="/customer/dashboard"><i class="fas fa-home"></i> Dashboard</a>
-            <a href="/order/create"><i class="fas fa-plus-circle"></i> Buat Pesanan</a>
-            <a href="/order/history"><i class="fas fa-history"></i> Histori Pesanan</a>
-            <a href="/customer/profile"><i class="fas fa-user"></i> Profil</a>
-            <a href="/help"><i class="fas fa-headset"></i> Bantuan</a>
-        </div>
+<div class="sidebar">
+    <div class="sidebar-header">
+        <h2><i class="fas fa-sparkles"></i> GOCLEAN</h2>
+    </div>
+    <nav>
+        <a href="{{ route('customer.dashboard') }}"><i class="fas fa-home"></i> Dashboard</a>
+        <a href="{{ route('order.create') }}" class="active"><i class="fas fa-plus-circle"></i> Buat Pesanan</a>
+        <a href="{{ route('order.history') }}"><i class="fas fa-history"></i> Histori</a>
+        <a href="{{ route('customer.profile') }}"><i class="fas fa-user"></i> Profil</a>
+    </nav>
+</div>
+
+<div class="main">
+    <div class="topbar">
+        <h1><i class="fas fa-credit-card" style="color:#00c853;margin-right:8px;"></i> Pembayaran Pesanan</h1>
+        <form action="{{ route('logout') }}" method="POST">
+            @csrf
+            <button type="submit" style="background:none;border:none;color:#ef4444;cursor:pointer;font-size:14px;">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+        </form>
     </div>
 
-    <div class="container">
-        <div class="nav">
-            <div class="nav-title">Pembayaran</div>
-        </div>
+    <div class="content">
+        <a href="{{ route('order.create') }}" class="back-link">
+            <i class="fas fa-arrow-left"></i> Kembali ke Form Pesanan
+        </a>
 
-        <div class="wrapper">
-            <div class="payment-container">
-                <a href="/order/create" class="back-btn">
-                    <i class="fas fa-arrow-left"></i> Kembali ke Form Pesanan
-                </a>
+        @if(session('error'))
+            <div class="alert-error"><i class="fas fa-exclamation-circle"></i> {{ session('error') }}</div>
+        @endif
 
-                <div class="card">
-                    <h2 style="font-size:28px;font-weight:700;margin:0 0 10px 0;color:#1f2937;">Pembayaran Pesanan</h2>
-                    <p style="color:#6b7280;margin:0 0 30px 0;">Pilih metode pembayaran yang Anda inginkan</p>
+        @if($errors->any())
+            <div class="alert-error">
+                @foreach($errors->all() as $error)
+                    <div><i class="fas fa-exclamation-circle"></i> {{ $error }}</div>
+                @endforeach
+            </div>
+        @endif
 
-                    <!-- Order Summary -->
-                    <div class="order-summary">
-                        <h3 style="font-size:18px;font-weight:600;margin:0 0 15px 0;color:#1f2937;">Ringkasan Pesanan
-                        </h3>
-                        <div class="summary-item">
-                            <span>Layanan:</span>
-                            <span>{{ $orderData['layanan'] }}</span>
-                        </div>
-                        <div class="summary-item">
-                            <span>Tanggal:</span>
-                            <span>{{ date('d M Y', strtotime($orderData['tanggal'])) }}</span>
-                        </div>
-                        <div class="summary-item">
-                            <span>Alamat:</span>
-                            <span>{{ Str::limit($orderData['alamat'], 30) }}</span>
-                        </div>
-                        <div class="summary-item">
-                            <span>Total Pembayaran:</span>
-                            <span>Rp {{ number_format($orderData['total'], 0, ',', '.') }}</span>
-                        </div>
-                    </div>
-
-                    <form action="/order/payment/process" method="POST" id="paymentForm">
-                        @csrf
-
-                        <h3 style="font-size:20px;font-weight:600;margin:0 0 20px 0;color:#1f2937;">Pilih Metode
-                            Pembayaran</h3>
-
-                        <div class="payment-methods">
-                            <div class="payment-option" onclick="selectPayment(this, 'qris')">
-                                <input type="radio" name="payment_method" value="qris" required>
-                                <div class="payment-icon qris-icon">
-                                    <i class="fas fa-qrcode"></i>
-                                </div>
-                                <h4>QRIS</h4>
-                                <p>Bayar dengan scan QR Code</p>
-                            </div>
-
-                            <div class="payment-option" onclick="selectPayment(this, 'cash')">
-                                <input type="radio" name="payment_method" value="cash" required>
-                                <div class="payment-icon cash-icon">
-                                    <i class="fas fa-money-bill-wave"></i>
-                                </div>
-                                <h4>Cash</h4>
-                                <p>Bayar tunai saat layanan</p>
-                            </div>
-                        </div>
-
-                        <!-- QRIS Section -->
-                        <div id="qrisSection" class="qris-section">
-                            <h4 style="margin:0 0 15px 0;color:#1f2937;">Scan QR Code untuk Pembayaran</h4>
-                            <div class="qris-code" id="qrisCodeContainer">
-                                <i class="fas fa-spinner fa-spin"></i>
-                            </div>
-                            <p style="color:#6b7280;margin:0 0 15px 0;">Scan QR Code di atas dengan aplikasi e-wallet
-                                Anda</p>
-                            <p style="color:#059669;font-weight:600;margin:0;">Total: Rp
-                                {{ number_format($orderData['total'], 0, ',', '.') }}</p>
-                            <p id="qrisStatus" style="margin-top:15px;padding:10px;border-radius:8px;display:none;"></p>
-                        </div>
-
-                        <button type="submit" class="btn" id="paymentBtn" disabled>
-                            <i class="fas fa-credit-card"></i> Konfirmasi Pembayaran
-                        </button>
-                    </form>
+        <!-- Ringkasan Pesanan -->
+        <div class="card">
+            <h3 style="font-size:18px;font-weight:700;color:#1f2937;margin-bottom:16px;">
+                <i class="fas fa-receipt" style="color:#00c853;margin-right:8px;"></i> Ringkasan Pesanan
+            </h3>
+            <div class="summary-box">
+                <div class="summary-row">
+                    <span>Layanan</span>
+                    <span style="font-weight:600;">{{ $orderData['layanan'] }}</span>
                 </div>
-
-                <!-- Payment Info -->
-                <div class="card">
-                    <h3 style="font-size:18px;font-weight:600;margin:0 0 15px 0;color:#1f2937;">Informasi Pembayaran
-                    </h3>
-                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
-                        <div>
-                            <h4 style="color:#667eea;margin:0 0 10px 0;font-size:16px;"><i class="fas fa-qrcode"></i>
-                                QRIS</h4>
-                            <ul style="color:#6b7280;font-size:14px;line-height:1.6;margin:0;padding-left:20px;">
-                                <li>Pembayaran langsung</li>
-                                <li>Aman dan terpercaya</li>
-                                <li>Mendukung semua e-wallet</li>
-                                <li>Konfirmasi otomatis</li>
-                            </ul>
-                        </div>
-                        <div>
-                            <h4 style="color:#00c853;margin:0 0 10px 0;font-size:16px;"><i
-                                    class="fas fa-money-bill-wave"></i> Cash</h4>
-                            <ul style="color:#6b7280;font-size:14px;line-height:1.6;margin:0;padding-left:20px;">
-                                <li>Bayar saat layanan selesai</li>
-                                <li>Tidak perlu pembayaran di muka</li>
-                                <li>Fleksibel dan mudah</li>
-                                <li>Terima kembalian pas</li>
-                            </ul>
-                        </div>
-                    </div>
+                <div class="summary-row">
+                    <span>Tanggal Jadwal</span>
+                    <span>{{ date('d M Y', strtotime($orderData['tanggal'])) }}</span>
+                </div>
+                <div class="summary-row">
+                    <span>Alamat</span>
+                    <span style="max-width:300px;text-align:right;">{{ $orderData['alamat'] }}</span>
+                </div>
+                <div class="summary-row">
+                    <span>Total Pembayaran</span>
+                    <span>Rp {{ number_format($orderData['total'], 0, ',', '.') }}</span>
                 </div>
             </div>
+
+            <!-- Form Pembayaran -->
+            <form action="{{ route('order.payment.process') }}" method="POST" id="paymentForm">
+                @csrf
+
+                <h3 style="font-size:16px;font-weight:700;color:#1f2937;margin-bottom:16px;">
+                    <i class="fas fa-wallet" style="color:#00c853;margin-right:8px;"></i> Pilih Metode Pembayaran
+                </h3>
+
+                <div class="method-grid">
+                    <div class="method-card" onclick="selectMethod(this, 'transfer')">
+                        <input type="radio" name="payment_method" value="transfer">
+                        <div class="method-icon icon-transfer">
+                            <i class="fas fa-university"></i>
+                        </div>
+                        <h4>Transfer Bank</h4>
+                        <p>Transfer ke rekening bank / e-wallet</p>
+                    </div>
+                    <div class="method-card" onclick="selectMethod(this, 'cash')">
+                        <input type="radio" name="payment_method" value="cash">
+                        <div class="method-icon icon-cash">
+                            <i class="fas fa-money-bill-wave"></i>
+                        </div>
+                        <h4>Cash</h4>
+                        <p>Bayar tunai saat layanan selesai</p>
+                    </div>
+                </div>
+
+                <!-- Info Transfer Bank -->
+                <div class="bank-section" id="bankSection">
+                    <p style="font-size:14px;font-weight:600;color:#1f2937;margin-bottom:14px;">
+                        <i class="fas fa-info-circle" style="color:#3b82f6;"></i> Pilih salah satu rekening di bawah:
+                    </p>
+                    <div class="bank-grid">
+                        <div class="bank-item">
+                            <div class="bank-logo" style="background:#003d99;">BCA</div>
+                            <div class="bank-info">
+                                <p class="bank-name">Bank BCA</p>
+                                <p class="bank-number">3901089660834545</p>
+                                <p class="bank-owner">a.n. GOCLEAN Indonesia</p>
+                            </div>
+                        </div>
+                        <div class="bank-item">
+                            <div class="bank-logo" style="background:#003d79;">MDR</div>
+                            <div class="bank-info">
+                                <p class="bank-name">Bank Mandiri</p>
+                                <p class="bank-number">9876543210</p>
+                                <p class="bank-owner">a.n. GOCLEAN Indonesia</p>
+                            </div>
+                        </div>
+                        <div class="bank-item">
+                            <div class="bank-logo" style="background:#ed7d31;">BNI</div>
+                            <div class="bank-info">
+                                <p class="bank-name">Bank BNI</p>
+                                <p class="bank-number">8810089660834545</p>
+                                <p class="bank-owner">a.n. GOCLEAN Indonesia</p>
+                            </div>
+                        </div>
+                        <div class="bank-item">
+                            <div class="bank-logo" style="background:#0066cc;">BRI</div>
+                            <div class="bank-info">
+                                <p class="bank-name">Bank BRI</p>
+                                <p class="bank-number">88810089660834545</p>
+                                <p class="bank-owner">a.n. GOCLEAN Indonesia</p>
+                            </div>
+                        </div>
+                        <div class="bank-item">
+                            <div class="bank-logo" style="background:#118EEA;">DANA</div>
+                            <div class="bank-info">
+                                <p class="bank-name">DANA</p>
+                                <p class="bank-number">089660834545</p>
+                                <p class="bank-owner">a.n. GOCLEAN Indonesia</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bank-note">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <strong>Penting:</strong> Transfer tepat <strong>Rp {{ number_format($orderData['total'], 0, ',', '.') }}</strong>.
+                        Setelah transfer, klik tombol konfirmasi di bawah. Pesanan akan diproses setelah pembayaran dikonfirmasi.
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-pay" id="btnPay" disabled>
+                    <i class="fas fa-lock"></i> Pilih Metode Pembayaran Dulu
+                </button>
+            </form>
         </div>
     </div>
+</div>
 
-   <script>
-    let selectedMethod = null;
+<script>
+    function selectMethod(el, method) {
+        document.querySelectorAll('.method-card').forEach(c => c.classList.remove('selected'));
+        el.classList.add('selected');
+        el.querySelector('input[type="radio"]').checked = true;
 
-    function selectPayment(element, method) {
-        document.querySelectorAll('.payment-option').forEach(opt => 
-            opt.classList.remove('selected')
-        );
+        const bankSection = document.getElementById('bankSection');
+        const btn = document.getElementById('btnPay');
 
-        element.classList.add('selected');
-        element.querySelector('input[type="radio"]').checked = true;
-        selectedMethod = method;
-
-        const qrisSection = document.getElementById('qrisSection');
-
-        if (method === 'qris') {
-            qrisSection.style.display = 'block';
-            generateQRIS();
+        if (method === 'transfer') {
+            bankSection.style.display = 'block';
+            btn.innerHTML = '<i class="fas fa-university"></i> Konfirmasi Pembayaran Transfer';
         } else {
-            qrisSection.style.display = 'none';
-        }
-
-        const btn = document.getElementById('paymentBtn');
-        btn.disabled = false;
-
-        if (method === 'qris') {
-            btn.innerHTML = '<i class="fas fa-qrcode"></i> Konfirmasi Pembayaran QRIS';
-        } else {
+            bankSection.style.display = 'none';
             btn.innerHTML = '<i class="fas fa-money-bill-wave"></i> Konfirmasi Pembayaran Cash';
         }
+        btn.disabled = false;
     }
 
-    function generateQRIS() {
-        const container = document.getElementById('qrisCodeContainer');
-
-       container.innerHTML = `
-    <img src="/image/qris-goclean.jpeg"
-         alt="QRIS GOCLEAN"
-         style="width:200px;height:200px;border-radius:12px;">
-`;
-
-        const status = document.getElementById('qrisStatus');
-        status.style.display = 'block';
-        status.style.background = '#fef3c7';
-        status.style.color = '#92400e';
-        status.textContent = 'Silakan scan QR dan lakukan pembayaran. Klik konfirmasi setelah selesai.';
-    }
-
-    document.getElementById('paymentForm').addEventListener('submit', function (e) {
-        if (!selectedMethod) {
+    document.getElementById('paymentForm').addEventListener('submit', function(e) {
+        const selected = document.querySelector('input[name="payment_method"]:checked');
+        if (!selected) {
             e.preventDefault();
-            alert('Silakan pilih metode pembayaran');
+            alert('Silakan pilih metode pembayaran terlebih dahulu.');
             return;
         }
-
-        if (selectedMethod === 'qris') {
-            const confirmPay = confirm('Pastikan Anda sudah melakukan pembayaran. Lanjutkan?');
-            if (!confirmPay) {
+        if (selected.value === 'transfer') {
+            if (!confirm('Pastikan Anda sudah melakukan transfer sesuai nominal. Lanjutkan konfirmasi?')) {
                 e.preventDefault();
             }
         }
     });
 </script>
 
-
 </body>
-
 </html>

@@ -10,30 +10,28 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-        'role',
-        'is_active',
-    ];
+    protected $fillable = ['name', 'email', 'password', 'role', 'is_active'];
 
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
+    protected $hidden = ['password', 'remember_token'];
 
     protected function casts(): array
     {
         return [
             'email_verified_at' => 'datetime',
-            'password' => 'hashed',
+            'password'          => 'hashed',
+            'is_active'         => 'boolean',
         ];
     }
 
-    // Orders sebagai staff (untuk staff dashboard)
+    // Relasi: user sebagai staff → pesanan yang di-assign ke dia
     public function orders()
     {
         return $this->hasMany(Order::class, 'staff_id');
+    }
+
+    // Relasi: user sebagai customer
+    public function customer()
+    {
+        return $this->hasOne(Customer::class);
     }
 }

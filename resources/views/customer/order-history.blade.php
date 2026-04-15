@@ -79,20 +79,23 @@
                 @foreach($orders as $order)
                 <div class="order-item">
                     <div class="order-info">
-                        <h4>{{ $order->layanan }}</h4>
-                        <p>{{ $order->alamat }}</p>
+                        <h4>{{ $order->service->name ?? '-' }}</h4>
                         <div class="order-meta">
-                            <span><i class="fas fa-calendar"></i> {{ date('d M Y', strtotime($order->tanggal)) }}</span>
+                            <span><i class="fas fa-calendar"></i> {{ date('d M Y', strtotime($order->schedule)) }}</span>
                             <span><i class="fas fa-clock"></i> {{ date('d M Y H:i', strtotime($order->created_at)) }}</span>
-                            @if(isset($order->payment_method))
-                                <span><i class="fas fa-credit-card"></i> {{ $order->payment_method }}</span>
+                            @if($order->payment_method)
+                                <span><i class="fas fa-credit-card"></i> {{ ucfirst($order->payment_method) }}</span>
                             @endif
                         </div>
                     </div>
                     <div style="text-align:right;">
                         <div class="price">Rp {{ number_format($order->total ?? 0, 0, ',', '.') }}</div>
                         <div style="margin-top:8px;">
-                            <span class="status {{ $order->status }}">{{ ucfirst($order->status) }}</span>
+                            @php
+                                $statusMap = ['pending'=>'pending','confirmed'=>'proses','in_progress'=>'proses','done'=>'selesai','cancelled'=>'batal'];
+                                $statusLabel = ['pending'=>'Menunggu','confirmed'=>'Dikonfirmasi','in_progress'=>'Dikerjakan','done'=>'Selesai','cancelled'=>'Dibatalkan'];
+                            @endphp
+                            <span class="status {{ $statusMap[$order->status] ?? 'pending' }}">{{ $statusLabel[$order->status] ?? $order->status }}</span>
                         </div>
                     </div>
                 </div>

@@ -7,18 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 class Order extends Model
 {
     protected $fillable = [
-        'customer_id',
-        'service_id',
-        'staff_id',
-        'schedule',
-        'status',
-        'total',
-        'payment_method'
+        'customer_id', 'service_id', 'staff_id',
+        'schedule', 'status', 'total', 'payment_method'
     ];
 
     protected $casts = [
         'schedule' => 'date',
-        'total' => 'decimal:2'
+        'total'    => 'decimal:2',
     ];
 
     public function customer()
@@ -35,5 +30,4 @@ class Order extends Model
     {
         return $this->belongsTo(User::class, 'staff_id');
     }
-
 }

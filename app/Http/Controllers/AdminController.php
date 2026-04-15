@@ -3,8 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Hash;
+use App\Models\User;
+use App\Models\Order;
+use App\Models\Service;
+use App\Models\Contact;
+use App\Models\Setting;
+use App\Models\Customer;
 
 class AdminController extends Controller
 {
@@ -93,17 +98,17 @@ class AdminController extends Controller
     public function storeStaff(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|min:8|confirmed'
+            'name'     => 'required|string|max:255',
+            'email'    => 'required|email|unique:users,email',
+            'password' => 'required|min:8|confirmed',
         ]);
 
-        \App\Models\User::create([
-            'name' => $validated['name'],
-            'email' => $validated['email'],
-            'role' => 'staff',
-            'password' => bcrypt($validated['password']),
-            'is_active' => true
+        User::create([
+            'name'      => $validated['name'],
+            'email'     => $validated['email'],
+            'password'  => Hash::make($validated['password']),
+            'role'      => 'staff',
+            'is_active' => true,
         ]);
 
         return redirect()->route('admin.users')->with('success', 'Staff berhasil ditambahkan!');

@@ -16,10 +16,18 @@ return new class extends Migration
             $table->text('message');
             $table->timestamps();
         });
+
+        Schema::create('settings', function (Blueprint $table) {
+            $table->id();
+            $table->string('key')->unique();
+            $table->text('value')->nullable();
+            $table->timestamps();
+        });
     }
 
     public function down(): void
     {
+        Schema::dropIfExists('settings');
         Schema::dropIfExists('contacts');
     }
 };

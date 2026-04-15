@@ -262,7 +262,7 @@
 
         <div class="role-note">
             <i class="fas fa-info-circle"></i>
-            <strong>Catatan:</strong> Pendaftaran ini untuk customer. Staff ditambahkan oleh admin dari dashboard.
+            <strong>Catatan:</strong> Pendaftaran ini untuk customer. Staff ditambahkan oleh admin.
         </div>
     </form>
 </div>
@@ -324,7 +324,8 @@ document.getElementById('registerForm').addEventListener('submit', function(e) {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || ''
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '',
+            'Accept': 'application/json'
         },
         body: JSON.stringify({
             name: name,
@@ -333,7 +334,14 @@ document.getElementById('registerForm').addEventListener('submit', function(e) {
             password_confirmation: confirmPassword
         })
     })
-    .then(response => response.json())
+    .then(response => {
+        if (!response.ok) {
+            return response.json().then(data => {
+                throw new Error(data.message || 'Registrasi gagal!');
+            });
+        }
+        return response.json();
+    })
     .then(data => {
         if (data.success) {
             document.getElementById('successPopup').style.display = 'flex';
@@ -342,7 +350,8 @@ document.getElementById('registerForm').addEventListener('submit', function(e) {
         }
     })
     .catch(error => {
-        showError('Terjadi kesalahan. Silakan coba lagi.');
+        showError(error.message || 'Terjadi kesalahan. Silakan coba lagi.');
+        console.error('Error:', error);
     });
 });
 
