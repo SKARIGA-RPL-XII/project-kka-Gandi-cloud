@@ -2,100 +2,95 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Service;
+use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Order;
-use App\Models\Service;
-use App\Models\Customer;
-use App\Models\User;
 
 class OrderController extends Controller
 {
-    public function create()
+    public function index()
     {
         $services = Service::all();
-        return view('customer.order-create', compact('services'));
+        return view('order', compact('services'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
             'service_id' => 'required|exists:services,id',
-            'tanggal'    => 'required|date|after:today',
-            'alamat'     => 'required|string|min:10',
+            'tanggal' => 'required|date|after:today',
+            'alamat' => 'required|min:10',
         ]);
 
         $service = Service::findOrFail($request->service_id);
 
-        session(['order_data' => [
-            'service_id' => $service->id,
-            'layanan'    => $service->name,
-            'tanggal'    => $request->tanggal,
-            'alamat'     => $request->alamat,
-            'total'      => $service->price,
-        ]]);
+        $order = Order::create([
+            'user_id' => auth()->id(),
+            'service_id' => $request->service_id,
+            'order_date' => $request->tanggal,
+            'address' => $request->alamat,
+            'total_price' => $service->price,
+            'status' => 'pending',
+            'payment_status' => 'unpaid',
+        ]);
 
-        return redirect()->route('order.payment');
+        session(['new_order_id' => $order->id]);
+
+        return redirect()->route('order.payment')
+            ->with('success', 'Pesanan berhasil dibuat! Silakan lakukan pembayaran.');
     }
 
     public function payment()
     {
-        $orderData = session('order_data');
-        if (!$orderData) {
-            return redirect()->route('order.create')->with('error', 'Data pesanan tidak ditemukan.');
+        $orderId = session('new_order_id');
+        if (!$orderId) {
+            return redirect()->route('order.history')->with('error', 'Tidak ada pesanan untuk dibayar.');
         }
-        return view('customer.payment', compact('orderData'));
+
+        $order = Order::with('service', 'user')->findOrFail($orderId);
+
+        $orderData = [
+            'layanan' => $order->service->name,
+            'tanggal' => $order->order_date,
+            'alamat' => $order->address,
+            'total' => $order->total_price,
+        ];
+
+        return view('customer.payment', compact('orderData', 'order'));
     }
 
     public function processPayment(Request $request)
     {
         $request->validate([
-            'payment_method' => 'required|in:transfer,cash'
+            'payment_method' => 'required|in:transfer,cash',
         ]);
 
-        $orderData = session('order_data');
-        if (!$orderData) {
-            return redirect()->route('order.create')->with('error', 'Sesi pesanan habis. Silakan buat pesanan ulang.');
+        $orderId = session('new_order_id');
+        if (!$orderId) {
+            return redirect()->route('order.history')->with('error', 'Pesanan tidak ditemukan.');
         }
 
-        // Cari atau buat customer record
-        $customer = Customer::firstOrCreate(
-            ['user_id' => auth()->id()],
-            ['phone' => null, 'address' => $orderData['alamat']]
-        );
-
-        // Auto-assign staff dengan pesanan aktif paling sedikit
-        $staff = User::where('role', 'staff')
-            ->where('is_active', true)
-            ->withCount(['orders as active_orders' => function ($q) {
-                $q->whereIn('status', ['pending', 'confirmed', 'in_progress']);
-            }])
-            ->orderBy('active_orders', 'asc')
-            ->first();
-
-        Order::create([
-            'customer_id'    => $customer->id,
-            'service_id'     => $orderData['service_id'],
-            'staff_id'       => $staff ? $staff->id : null,
-            'schedule'       => $orderData['tanggal'],
-            'status'         => 'pending',
-            'total'          => $orderData['total'],
+        $order = Order::findOrFail($orderId);
+        $order->update([
             'payment_method' => $request->payment_method,
+            'payment_status' => $request->payment_method === 'cash' ? 'pending' : 'paid',
         ]);
 
-        session()->forget('order_data');
+        session()->forget('new_order_id');
 
-        return redirect()->route('customer.dashboard')
-            ->with('success', 'Pesanan berhasil dibuat! Menunggu konfirmasi dari staff.');
+        return redirect()->route('order.history')
+            ->with('success', 'Pembayaran berhasil dikonfirmasi! Pesanan Anda sedang diproses.');
     }
+    public function create()
+{
+    $services = \App\Models\Service::all(); // ambil layanan
+    return view('customer.order-create', compact('services'));
+}
+public function history()
+{
+    $orders = Order::with('service')->where('user_id', Auth::id())->latest()->get();
 
-    public function history()
-    {
-        $customer = Customer::where('user_id', auth()->id())->first();
-        $orders = $customer
-            ? Order::with('service')->where('customer_id', $customer->id)->latest()->get()
-            : collect();
-
-        return view('customer.order-history', compact('orders'));
-    }
+    return view('customer.order-history', compact('orders'));
+}
 }

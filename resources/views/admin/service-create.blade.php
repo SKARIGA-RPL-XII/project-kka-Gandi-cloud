@@ -2,144 +2,53 @@
 @section('title', 'Tambah Layanan')
 
 @section('content')
+
 <div class="max-w-2xl mx-auto">
-    <div class="mb-6">
-        <a href="{{ route('admin.services') }}" class="text-blue-600 hover:text-blue-800 flex items-center">
-            <i class="fas fa-arrow-left mr-2"></i>
-            Kembali ke Daftar Layanan
-        </a>
-    </div>
+    <a href="{{ route('admin.services') }}" class="inline-flex items-center gap-2 text-gray-500 hover:text-gray-700 text-sm mb-5 transition">
+        <i class="fas fa-arrow-left"></i> Kembali ke Daftar Layanan
+    </a>
 
-    <div class="bg-white rounded-lg shadow p-6">
-        <h2 class="text-2xl font-bold text-gray-800 mb-6">Tambah Layanan Baru</h2>
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+        <h2 class="text-xl font-bold text-gray-800 mb-5">Tambah Layanan Baru</h2>
 
-        @if ($errors->any())
-            <div style="background:#fee2e2;color:#dc2626;padding:15px;border-radius:10px;margin-bottom:20px;border:1px solid #fecaca;">
-                <ul style="margin:0;padding-left:20px;">
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
+        @if($errors->any())
+            <div class="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-xl mb-5 text-sm">
+                @foreach($errors->all() as $e)<div><i class="fas fa-exclamation-circle mr-1"></i>{{ $e }}</div>@endforeach
             </div>
         @endif
 
-        <form action="{{ route('admin.services.store') }}" method="POST">
-    @csrf
-
-            
-            
-            <div class="mb-6">
-                <label for="name" class="block text-sm font-medium text-gray-700 mb-2">
-                    Nama Layanan <span class="text-red-500">*</span>
-                </label>
-                <input type="text" 
-                       name="name" 
-                       id="name" 
-                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                       placeholder="Contoh: Pembersihan Rumah"
-                       value="{{ old('name') }}"
-                       required>
+        <form action="{{ route('admin.services.store') }}" method="POST" class="space-y-4">
+            @csrf
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-1">Nama Layanan <span class="text-red-500">*</span></label>
+                <input type="text" name="name" value="{{ old('name') }}" required placeholder="Contoh: Pembersihan Rumah"
+                    class="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-100">
             </div>
-
-            <div class="mb-6">
-                <label for="description" class="block text-sm font-medium text-gray-700 mb-2">
-                    Deskripsi <span class="text-red-500">*</span>
-                </label>
-                <textarea name="description" 
-                          id="description" 
-                          rows="4"
-                          class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                          placeholder="Jelaskan detail layanan yang ditawarkan..."
-                          required>{{ old('description') }}</textarea>
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-1">Deskripsi <span class="text-red-500">*</span></label>
+                <textarea name="description" required rows="3" placeholder="Jelaskan detail layanan..."
+                    class="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-100 resize-none">{{ old('description') }}</textarea>
             </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <div class="grid grid-cols-2 gap-4">
                 <div>
-                    <label for="price" class="block text-sm font-medium text-gray-700 mb-2">
-                        Harga (Rp) <span class="text-red-500">*</span>
-                    </label>
-                    <input type="number" 
-                           name="price" 
-                           id="price" 
-                           min="0"
-                           step="1000"
-                           class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                           placeholder="150000"
-                           value="{{ old('price') }}"
-                           required>
+                    <label class="block text-sm font-semibold text-gray-700 mb-1">Harga (Rp) <span class="text-red-500">*</span></label>
+                    <input type="number" name="price" value="{{ old('price') }}" required min="0" step="1000" placeholder="150000"
+                        class="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-100">
                 </div>
-
                 <div>
-                    <label for="duration" class="block text-sm font-medium text-gray-700 mb-2">
-                        Estimasi Durasi (menit) <span class="text-red-500">*</span>
-                    </label>
-                    <input type="number" 
-                           name="duration" 
-                           id="duration" 
-                           min="1"
-                           class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                           placeholder="120"
-                           value="{{ old('duration') }}"
-                           required>
+                    <label class="block text-sm font-semibold text-gray-700 mb-1">Durasi (menit) <span class="text-red-500">*</span></label>
+                    <input type="number" name="duration" value="{{ old('duration') }}" required min="1" placeholder="120"
+                        class="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-100">
                 </div>
             </div>
-
-            <div class="flex items-center justify-end space-x-4">
-                <a href="{{ route('admin.services') }}" 
-                   class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50">
-                    Batal
-                </a>
-                <button type="submit" 
-                        class="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    <i class="fas fa-save mr-2"></i>
-                    Simpan Layanan
+            <div class="flex gap-3 pt-2">
+                <a href="{{ route('admin.services') }}" class="flex-1 text-center py-2.5 border border-gray-200 text-gray-600 rounded-xl text-sm font-medium hover:bg-gray-50 transition">Batal</a>
+                <button type="submit" class="flex-1 py-2.5 bg-green-600 hover:bg-green-700 text-white rounded-xl text-sm font-semibold transition">
+                    <i class="fas fa-save mr-1"></i> Simpan Layanan
                 </button>
             </div>
         </form>
     </div>
-
-    <!-- Preview Card -->
-    <div class="mt-8 bg-white rounded-lg shadow p-6">
-        <h3 class="text-lg font-semibold text-gray-800 mb-4">Preview Layanan</h3>
-        <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center" id="preview">
-            <div class="text-gray-400">
-                <i class="fas fa-broom text-4xl mb-4"></i>
-                <p>Preview akan muncul saat Anda mengisi form</p>
-            </div>
-        </div>
-    </div>
 </div>
 
-<script>
-// Live preview
-function updatePreview() {
-    const name = document.getElementById('name').value || 'Nama Layanan';
-    const description = document.getElementById('description').value || 'Deskripsi layanan';
-    const price = document.getElementById('price').value || '0';
-    const duration = document.getElementById('duration').value || 'Durasi';
-    
-    const preview = document.getElementById('preview');
-    preview.innerHTML = `
-        <div class="text-left">
-            <div class="flex items-center mb-3">
-                <div class="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-white mr-4">
-                    <i class="fas fa-broom"></i>
-                </div>
-                <div>
-                    <h4 class="font-semibold text-gray-900">${name}</h4>
-                    <p class="text-sm text-gray-500">${duration} menit</p>
-                </div>
-            </div>
-            <p class="text-gray-600 mb-3">${description}</p>
-            <div class="text-xl font-bold text-green-600">Rp ${parseInt(price).toLocaleString('id-ID')}</div>
-        </div>
-    `;
-}
-
-// Add event listeners
-document.getElementById('name').addEventListener('input', updatePreview);
-document.getElementById('description').addEventListener('input', updatePreview);
-document.getElementById('price').addEventListener('input', updatePreview);
-document.getElementById('duration').addEventListener('input', updatePreview);
-</script>
 @endsection

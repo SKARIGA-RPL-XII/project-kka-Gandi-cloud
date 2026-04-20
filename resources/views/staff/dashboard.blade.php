@@ -1,231 +1,106 @@
 @extends('staff.layout')
-
-@section('title', 'Dashboard Staff')
+@section('title', 'Dashboard')
 
 @section('content')
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-    <!-- Stats Cards -->
-    <div class="bg-white p-6 rounded-lg shadow hover:shadow-lg transition">
-        <div class="flex items-center">
-            <div class="p-3 bg-yellow-100 rounded-full">
-                <i class="fas fa-clock text-yellow-600 text-xl"></i>
-            </div>
-            <div class="ml-4">
-                <h3 class="text-gray-500 text-sm">Pesanan Pending</h3>
-                <p class="text-2xl font-bold text-gray-800">{{ $stats['pending_orders'] }}</p>
-            </div>
-        </div>
-    </div>
 
-    <div class="bg-white p-6 rounded-lg shadow hover:shadow-lg transition">
-        <div class="flex items-center">
-            <div class="p-3 bg-green-100 rounded-full">
-                <i class="fas fa-check-circle text-green-600 text-xl"></i>
-            </div>
-            <div class="ml-4">
-                <h3 class="text-gray-500 text-sm">Dikonfirmasi</h3>
-                <p class="text-2xl font-bold text-gray-800">{{ $stats['confirmed'] }}</p>
-            </div>
-        </div>
-    </div>
+<div class="mb-6">
+    <h2 class="text-xl font-bold text-gray-800">Halo, {{ auth()->user()->name }}! 👋</h2>
+    <p class="text-gray-500 text-sm mt-1">Berikut ringkasan pekerjaan Anda hari ini.</p>
+</div>
 
-    <div class="bg-white p-6 rounded-lg shadow hover:shadow-lg transition">
-        <div class="flex items-center">
-            <div class="p-3 bg-blue-100 rounded-full">
-                <i class="fas fa-spinner text-blue-600 text-xl"></i>
-            </div>
-            <div class="ml-4">
-                <h3 class="text-gray-500 text-sm">Sedang Dikerjakan</h3>
-                <p class="text-2xl font-bold text-gray-800">{{ $stats['in_progress'] }}</p>
-            </div>
+{{-- Stats --}}
+<div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+    @foreach([
+        ['label'=>'Pending','value'=>$stats['pending_orders'],'icon'=>'fa-clock','color'=>'bg-yellow-100 text-yellow-600'],
+        ['label'=>'Dikonfirmasi','value'=>$stats['confirmed'],'icon'=>'fa-check','color'=>'bg-blue-100 text-blue-600'],
+        ['label'=>'Dikerjakan','value'=>$stats['in_progress'],'icon'=>'fa-spinner','color'=>'bg-indigo-100 text-indigo-600'],
+        ['label'=>'Total Pesanan','value'=>$stats['total_orders'],'icon'=>'fa-clipboard-list','color'=>'bg-gray-100 text-gray-600'],
+    ] as $s)
+    <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
+        <div class="w-10 h-10 {{ $s['color'] }} rounded-xl flex items-center justify-center mb-3">
+            <i class="fas {{ $s['icon'] }}"></i>
         </div>
+        <p class="text-2xl font-bold text-gray-800">{{ $s['value'] }}</p>
+        <p class="text-xs text-gray-500 mt-1">{{ $s['label'] }}</p>
     </div>
+    @endforeach
+</div>
 
-    <div class="bg-white p-6 rounded-lg shadow hover:shadow-lg transition">
-        <div class="flex items-center">
-            <div class="p-3 bg-purple-100 rounded-full">
-                <i class="fas fa-money-bill text-purple-600 text-xl"></i>
-            </div>
-            <div class="ml-4">
-                <h3 class="text-gray-500 text-sm">Total Pendapatan</h3>
-                <p class="text-xl font-bold text-gray-800">Rp {{ number_format($stats['total_earnings'], 0, ',', '.') }}</p>
-            </div>
-        </div>
+{{-- Revenue & Completed --}}
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+    <div class="bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl p-5 text-white">
+        <p class="text-white/70 text-sm mb-1">Selesai Hari Ini</p>
+        <p class="text-3xl font-bold">{{ $stats['completed_today'] }}</p>
+    </div>
+    <div class="bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl p-5 text-white">
+        <p class="text-white/70 text-sm mb-1">Selesai Bulan Ini</p>
+        <p class="text-3xl font-bold">{{ $stats['completed_month'] }}</p>
+    </div>
+    <div class="bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl p-5 text-white">
+        <p class="text-white/70 text-sm mb-1">Total Pendapatan</p>
+        <p class="text-xl font-bold">Rp {{ number_format($stats['total_earnings'], 0, ',', '.') }}</p>
     </div>
 </div>
 
-<!-- Additional Stats Row -->
-<div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-    <div class="bg-gradient-to-br from-green-500 to-green-600 p-6 rounded-lg shadow text-white">
-        <div class="flex items-center justify-between">
-            <div>
-                <p class="text-green-100 text-sm">Selesai Hari Ini</p>
-                <p class="text-3xl font-bold mt-1">{{ $stats['completed_today'] }}</p>
-            </div>
-            <i class="fas fa-calendar-check text-4xl text-green-200"></i>
-        </div>
+{{-- Recent Orders --}}
+<div class="bg-white rounded-2xl shadow-sm border border-gray-100">
+    <div class="flex items-center justify-between px-5 py-4 border-b border-gray-50">
+        <h3 class="font-semibold text-gray-800">Pesanan Aktif</h3>
+        <a href="{{ route('staff.orders') }}" class="text-xs text-blue-600 hover:text-blue-700 font-medium">
+            Lihat semua <i class="fas fa-arrow-right ml-1"></i>
+        </a>
     </div>
-
-    <div class="bg-gradient-to-br from-blue-500 to-blue-600 p-6 rounded-lg shadow text-white">
-        <div class="flex items-center justify-between">
-            <div>
-                <p class="text-blue-100 text-sm">Selesai Minggu Ini</p>
-                <p class="text-3xl font-bold mt-1">{{ $stats['completed_week'] }}</p>
-            </div>
-            <i class="fas fa-calendar-week text-4xl text-blue-200"></i>
-        </div>
-    </div>
-
-    <div class="bg-gradient-to-br from-purple-500 to-purple-600 p-6 rounded-lg shadow text-white">
-        <div class="flex items-center justify-between">
-            <div>
-                <p class="text-purple-100 text-sm">Selesai Bulan Ini</p>
-                <p class="text-3xl font-bold mt-1">{{ $stats['completed_month'] }}</p>
-            </div>
-            <i class="fas fa-calendar-alt text-4xl text-purple-200"></i>
-        </div>
-    </div>
-
-    <div class="bg-gradient-to-br from-gray-500 to-gray-600 p-6 rounded-lg shadow text-white">
-        <div class="flex items-center justify-between">
-            <div>
-                <p class="text-gray-100 text-sm">Total Pesanan</p>
-                <p class="text-3xl font-bold mt-1">{{ $stats['total_orders'] }}</p>
-            </div>
-            <i class="fas fa-clipboard-list text-4xl text-gray-200"></i>
-        </div>
-    </div>
-</div>
-
-<!-- Recent Orders & Quick Actions -->
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-    <div class="lg:col-span-2 bg-white p-6 rounded-lg shadow">
-        <div class="flex justify-between items-center mb-4">
-            <h3 class="text-lg font-semibold text-gray-800">Pesanan Terbaru</h3>
-            <a href="{{ route('staff.orders') }}" class="text-blue-600 hover:text-blue-700 text-sm font-medium">
-                Lihat Semua <i class="fas fa-arrow-right ml-1"></i>
-            </a>
-        </div>
-        <div class="space-y-3">
-            @forelse($orders as $order)
-            <div class="flex justify-between items-center p-4 border rounded-lg hover:bg-gray-50 transition">
-                <div class="flex items-center space-x-3">
-                    <div class="w-10 h-10 bg-gradient-to-br from-[#005c02] to-[#00f7ff] rounded-full flex items-center justify-center text-white font-bold">
-                        {{ substr($order->customer->user->name ?? 'U', 0, 1) }}
-                    </div>
-                    <div>
-                        <p class="font-medium text-gray-800">{{ $order->customer->user->name ?? 'Unknown' }}</p>
-                        <p class="text-sm text-gray-600">{{ $order->service->name ?? '-' }}</p>
-                        <p class="text-xs text-gray-500">
-                            <i class="fas fa-calendar mr-1"></i>{{ date('d/m/Y', strtotime($order->schedule)) }}
-                            <span class="mx-2">•</span>
-                            <i class="fas fa-money-bill mr-1"></i>Rp {{ number_format($order->total, 0, ',', '.') }}
-                        </p>
-                    </div>
+    @php
+        $badge = ['pending'=>'bg-yellow-100 text-yellow-700','confirmed'=>'bg-blue-100 text-blue-700','in_progress'=>'bg-indigo-100 text-indigo-700','done'=>'bg-green-100 text-green-700','cancelled'=>'bg-red-100 text-red-700'];
+        $label = ['pending'=>'Pending','confirmed'=>'Dikonfirmasi','in_progress'=>'Dikerjakan','done'=>'Selesai','cancelled'=>'Batal'];
+    @endphp
+    <div class="divide-y divide-gray-50">
+        @forelse($orders as $order)
+        <div class="flex items-center justify-between px-5 py-4 hover:bg-gray-50 transition">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-gradient-to-br from-blue-400 to-indigo-500 rounded-xl flex items-center justify-center text-white text-sm font-bold flex-shrink-0">
+                    {{ strtoupper(substr($order->customer->user->name ?? 'U', 0, 1)) }}
                 </div>
-                <div class="flex space-x-2">
-                    @if($order->status == 'pending')
-                        <form action="{{ route('staff.order.accept', $order->id) }}" method="POST" style="display:inline;">
-                            @csrf
-                            <button class="bg-green-500 text-white px-3 py-2 rounded text-sm hover:bg-green-600 transition">
-                                <i class="fas fa-check mr-1"></i>Terima
-                            </button>
-                        </form>
-                        <form action="{{ route('staff.order.reject', $order->id) }}" method="POST" style="display:inline;">
-                            @csrf
-                            <button class="bg-red-500 text-white px-3 py-2 rounded text-sm hover:bg-red-600 transition"
-                                    onclick="return confirm('Yakin ingin menolak pesanan ini?')">
-                                <i class="fas fa-times mr-1"></i>Tolak
-                            </button>
-                        </form>
-                    @elseif($order->status == 'confirmed')
-                        <form action="{{ route('staff.order.start', $order->id) }}" method="POST" style="display:inline;">
-                            @csrf
-                            <button class="bg-blue-500 text-white px-3 py-2 rounded text-sm hover:bg-blue-600 transition"
-                                    onclick="return confirm('Mulai mengerjakan pesanan ini?')">
-                                <i class="fas fa-play mr-1"></i>Mulai
-                            </button>
-                        </form>
-                    @elseif($order->status == 'in_progress')
-                        <form action="{{ route('staff.order.complete', $order->id) }}" method="POST" style="display:inline;">
-                            @csrf
-                            <button class="bg-purple-500 text-white px-3 py-2 rounded text-sm hover:bg-purple-600 transition"
-                                    onclick="return confirm('Yakin pekerjaan sudah selesai?')">
-                                <i class="fas fa-check-circle mr-1"></i>Selesai
-                            </button>
-                        </form>
-                    @else
-                        <span class="px-3 py-2 bg-gray-100 text-gray-600 rounded text-sm">{{ ucfirst($order->status) }}</span>
-                    @endif
+                <div>
+                    <p class="text-sm font-semibold text-gray-800">{{ $order->customer->user->name ?? 'Unknown' }}</p>
+                    <p class="text-xs text-gray-400">{{ $order->service->name ?? '-' }} · {{ date('d M Y', strtotime($order->schedule)) }}</p>
                 </div>
             </div>
-            @empty
-            <div class="text-center py-12">
-                <i class="fas fa-inbox text-gray-300 text-5xl mb-3"></i>
-                <p class="text-gray-500 font-medium">Tidak ada pesanan terbaru</p>
-                <p class="text-gray-400 text-sm">Pesanan baru akan muncul di sini</p>
-            </div>
-            @endforelse
-        </div>
-    </div>
-
-    <div class="bg-white p-6 rounded-lg shadow">
-        <h3 class="text-lg font-semibold text-gray-800 mb-4">Aksi Cepat</h3>
-        <div class="space-y-3">
-            <a href="{{ route('staff.orders') }}" class="flex items-center p-3 bg-blue-50 rounded-lg hover:bg-blue-100 transition group">
-                <div class="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center text-white group-hover:scale-110 transition">
-                    <i class="fas fa-list"></i>
-                </div>
-                <div class="ml-3">
-                    <p class="font-medium text-gray-800">Semua Pesanan</p>
-                    <p class="text-xs text-gray-500">Lihat daftar lengkap</p>
-                </div>
-            </a>
-
-            <a href="{{ route('staff.orders', ['status' => 'pending']) }}" class="flex items-center p-3 bg-yellow-50 rounded-lg hover:bg-yellow-100 transition group">
-                <div class="w-10 h-10 bg-yellow-500 rounded-lg flex items-center justify-center text-white group-hover:scale-110 transition">
-                    <i class="fas fa-clock"></i>
-                </div>
-                <div class="ml-3">
-                    <p class="font-medium text-gray-800">Pesanan Pending</p>
-                    <p class="text-xs text-gray-500">{{ $stats['pending_orders'] }} pesanan menunggu</p>
-                </div>
-            </a>
-
-            <a href="{{ route('staff.orders', ['status' => 'in_progress']) }}" class="flex items-center p-3 bg-green-50 rounded-lg hover:bg-green-100 transition group">
-                <div class="w-10 h-10 bg-green-500 rounded-lg flex items-center justify-center text-white group-hover:scale-110 transition">
-                    <i class="fas fa-tasks"></i>
-                </div>
-                <div class="ml-3">
-                    <p class="font-medium text-gray-800">Pekerjaan Aktif</p>
-                    <p class="text-xs text-gray-500">{{ $stats['in_progress'] }} sedang dikerjakan</p>
-                </div>
-            </a>
-
-            <a href="{{ route('staff.profile') }}" class="flex items-center p-3 bg-purple-50 rounded-lg hover:bg-purple-100 transition group">
-                <div class="w-10 h-10 bg-purple-500 rounded-lg flex items-center justify-center text-white group-hover:scale-110 transition">
-                    <i class="fas fa-user"></i>
-                </div>
-                <div class="ml-3">
-                    <p class="font-medium text-gray-800">Profil Saya</p>
-                    <p class="text-xs text-gray-500">Kelola akun</p>
-                </div>
-            </a>
-        </div>
-
-        <div class="mt-6 p-4 bg-gradient-to-br from-[#005c02] to-[#00f7ff] rounded-lg text-white">
-            <h4 class="font-medium mb-2">Status Hari Ini</h4>
-            <div class="text-sm">
-                <p class="flex justify-between mb-1">
-                    <span>Jam Kerja:</span>
-                    <span class="font-medium">08:00 - 17:00</span>
-                </p>
-                <p class="flex justify-between">
-                    <span>Status:</span>
-                    <span class="font-medium">✓ Aktif</span>
-                </p>
+            <div class="flex items-center gap-3">
+                <span class="text-xs px-2 py-1 rounded-full font-medium {{ $badge[$order->status] ?? '' }}">
+                    {{ $label[$order->status] ?? $order->status }}
+                </span>
+                @if($order->status == 'pending')
+                    <form action="{{ route('staff.order.accept', $order->id) }}" method="POST">
+                        @csrf
+                        <button class="bg-green-500 hover:bg-green-600 text-white px-3 py-1.5 rounded-lg text-xs font-medium transition">
+                            Terima
+                        </button>
+                    </form>
+                @elseif($order->status == 'confirmed')
+                    <form action="{{ route('staff.order.start', $order->id) }}" method="POST">
+                        @csrf
+                        <button class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1.5 rounded-lg text-xs font-medium transition">
+                            Mulai
+                        </button>
+                    </form>
+                @elseif($order->status == 'in_progress')
+                    <form action="{{ route('staff.order.complete', $order->id) }}" method="POST">
+                        @csrf
+                        <button class="bg-purple-500 hover:bg-purple-600 text-white px-3 py-1.5 rounded-lg text-xs font-medium transition">
+                            Selesai
+                        </button>
+                    </form>
+                @endif
             </div>
         </div>
+        @empty
+        <div class="text-center py-12 text-gray-400">
+            <i class="fas fa-inbox text-3xl mb-2 block opacity-30"></i>
+            <p class="text-sm">Tidak ada pesanan aktif</p>
+        </div>
+        @endforelse
     </div>
 </div>
+
 @endsection

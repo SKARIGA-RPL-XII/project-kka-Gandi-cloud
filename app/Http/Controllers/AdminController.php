@@ -23,9 +23,9 @@ class AdminController extends Controller
             'pending_orders' => \App\Models\Order::where('status', 'pending')->count(),
             'completed_orders' => \App\Models\Order::where('status', 'done')->count(),
             'total_services' => \App\Models\Service::count(),
-            'total_revenue' => \App\Models\Order::where('status', 'done')->sum('total') ?? 0,
-            'revenue_today' => \App\Models\Order::where('status', 'done')->whereDate('updated_at', today())->sum('total') ?? 0,
-            'revenue_month' => \App\Models\Order::where('status', 'done')->whereMonth('updated_at', now()->month)->sum('total') ?? 0
+            'total_revenue' => \App\Models\Order::where('status', 'done')->sum('total_price') ?? 0,
+'revenue_today' => \App\Models\Order::where('status', 'done')->whereDate('updated_at', today())->sum('total_price') ?? 0,
+'revenue_month' => \App\Models\Order::where('status', 'done')->whereMonth('updated_at', now()->month)->sum('total_price') ?? 0
         ];
         
         $recentOrders = \App\Models\Order::with(['customer.user', 'service'])
@@ -147,7 +147,7 @@ class AdminController extends Controller
 
     public function orders()
     {
-        $orders = \App\Models\Order::with(['customer.user', 'service'])
+        $orders = \App\Models\Order::with(['customer', 'service', 'staff'])
             ->orderBy('created_at', 'desc')
             ->get();
         return view('admin.orders', compact('orders'));

@@ -1,586 +1,224 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GOCLEAN - Layanan Pembersihan Profesional</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>GOCLEAN — Layanan Pembersihan Profesional</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="shortcut icon" href="{{ asset('favicon.png') }}">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="{{ asset('css/responsive.css') }}" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            line-height: 1.6;
-            color: #333;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        /* Header */
-        .header {
-            background: linear-gradient(135deg, #1f2937 0%, #1a232f 100%);
-            color: white;
-            padding: 1rem 0;
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .logo-img {
-            width: 70px;
-            height: 70px;
-            object-fit: contain;
-        }
-
-        .nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            font-size: 1.8rem;
-            font-weight: 700;
-        }
-
-        .nav-links {
-            display: flex;
-            list-style: none;
-            gap: 2rem;
-        }
-
-        .nav-links a {
-            color: white;
-            text-decoration: none;
-            font-weight: 500;
-            transition: 0.3s;
-        }
-
-        .nav-links a:hover {
-            color: #00ff9d;
-        }
-
-        .btn {
-            padding: 0.7rem 1.5rem;
-            border: none;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.3s;
-            text-decoration: none;
-            display: inline-block;
-        }
-
-        .btn-primary {
-            background: #00ff9d;
-            color: #005c02;
-        }
-
-        .btn-primary:hover {
-            background: #00e68a;
-            transform: translateY(-2px);
-        }
-
-        .btn-outline {
-            border: 2px solid white;
-            color: white;
-            background: transparent;
-        }
-
-        .btn-outline:hover {
-            background: white;
-            color: #005c02;
-        }
-
-        /* Hero */
-        .hero {
-            background: linear-gradient(135deg, #005c02 0%, #00f7ff 100%);
-            color: white;
-            padding: 8rem 0 4rem;
-            text-align: center;
-        }
-
-        .hero h1 {
-            font-size: 3.5rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-        }
-
-        .hero p {
-            font-size: 1.2rem;
-            margin-bottom: 2rem;
-            opacity: 0.9;
-        }
-
-        .hero-buttons {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        /* Features */
-        .features {
-            padding: 4rem 0;
-            background: #f8fafc;
-        }
-
-        .features h2 {
-            text-align: center;
-            font-size: 2.5rem;
-            margin-bottom: 3rem;
-            color: #1f2937;
-        }
-
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-        }
-
-        .feature-card {
-            background: white;
-            padding: 2rem;
-            border-radius: 16px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
-            text-align: center;
-            transition: 0.3s;
-        }
-
-        .feature-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        }
-
-        .feature-icon {
-            width: 80px;
-            height: 80px;
-            margin: 0 auto 1rem;
-            background: linear-gradient(135deg, #00ff9d, #00c853);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            color: white;
-        }
-
-        .feature-card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            color: #1f2937;
-        }
-
-        .feature-card p {
-            color: #6b7280;
-        }
-
-        /* Services */
-        .services {
-            padding: 4rem 0;
-        }
-
-        .services h2 {
-            text-align: center;
-            font-size: 2.5rem;
-            margin-bottom: 3rem;
-            color: #1f2937;
-        }
-
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 2rem;
-        }
-
-        .service-card {
-            background: white;
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
-            transition: 0.3s;
-        }
-
-        .service-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        }
-
-        .service-header {
-            background: linear-gradient(135deg, #005c02, #00f7ff);
-            color: white;
-            padding: 2rem;
-            text-align: center;
-        }
-
-        .service-header h3 {
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .service-price {
-            font-size: 2rem;
-            font-weight: 700;
-        }
-
-        .service-body {
-            padding: 2rem;
-        }
-
-        .service-features {
-            list-style: none;
-            margin-bottom: 2rem;
-        }
-
-        .service-features li {
-            padding: 0.5rem 0;
-            display: flex;
-            align-items: center;
-        }
-
-        .service-features li i {
-            color: #00c853;
-            margin-right: 0.5rem;
-        }
-
-        /* CTA */
-        .cta {
-            background: linear-gradient(135deg, #005c02 0%, #00f7ff 100%);
-            color: white;
-            padding: 4rem 0;
-            text-align: center;
-        }
-
-        .cta h2 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .cta p {
-            font-size: 1.2rem;
-            margin-bottom: 2rem;
-            opacity: 0.9;
-        }
-
-        /* Footer */
-        .footer {
-            background: #1f2937;
-            color: white;
-            padding: 3rem 0 1rem;
-        }
-
-        .footer-content {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            margin-bottom: 2rem;
-        }
-
-        .footer-section h3 {
-            margin-bottom: 1rem;
-            color: #00ff9d;
-        }
-
-        .footer-section p,
-        .footer-section a {
-            color: #d1d5db;
-            text-decoration: none;
-        }
-
-        .footer-section a:hover {
-            color: #00ff9d;
-        }
-
-        .footer-bottom {
-            border-top: 1px solid #374151;
-            padding-top: 1rem;
-            text-align: center;
-            color: #9ca3af;
-        }
-
-        /* Mobile Menu Toggle */
-        .mobile-menu-toggle {
-            display: none;
-            background: none;
-            border: none;
-            color: white;
-            font-size: 1.5rem;
-            cursor: pointer;
-            padding: 0.5rem;
-        }
-        
-        @media (max-width: 768px) {
-            .mobile-menu-toggle {
-                display: block;
-            }
-            
-            .nav-links {
-                display: none;
-                position: absolute;
-                top: 100%;
-                left: 0;
-                right: 0;
-                background: #1f2937;
-                flex-direction: column;
-                padding: 1rem;
-                box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            }
-            
-            .nav-links.active {
-                display: flex !important;
-            }
-            
-            .nav-links li {
-                width: 100%;
-                text-align: center;
-                padding: 0.5rem 0;
-                border-bottom: 1px solid #374151;
-            }
-            
-            .nav-links li:last-child {
-                border-bottom: none;
-            }
-            
-            .hero h1 {
-                font-size: 2rem;
-            }
-            
-            .hero p {
-                font-size: 1rem;
-            }
-
-            .hero-buttons {
-                flex-direction: column;
-                align-items: center;
-            }
-            
-            .hero-buttons .btn {
-                width: 100%;
-                max-width: 300px;
-            }
-            
-            .features-grid,
-            .services-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .footer-content {
-                grid-template-columns: 1fr;
-            }
-        }
+        body { font-family: 'Inter', sans-serif; }
+        .nav-link { color: rgba(255,255,255,0.85); text-decoration: none; font-size: 14px; font-weight: 500; transition: color 0.2s; }
+        .nav-link:hover { color: white; }
+        html { scroll-behavior: smooth; }
     </style>
 </head>
+<body class="bg-white">
 
-<body>
+{{-- NAVBAR --}}
+<nav class="fixed top-0 w-full z-50 px-6 py-4" style="background:linear-gradient(135deg,#07102b,#07102b)">
+    <div class="max-w-6xl mx-auto flex items-center justify-between">
+        <div class="flex items-center gap-2">
+            <div class="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center">
+                <i class="fas fa-sparkles text-white text-xs"></i>
+            </div>
+            <span class="text-white font-bold text-lg">GOCLEAN</span>
+        </div>
 
-    <!-- Header -->
-    <header class="header">
-        <div class="container">
-            <nav class="nav">
-                <div class="logo">
-                    <i class="fas fa-sparkles"></i> GOCLEAN
+        {{-- Desktop Nav --}}
+        <div class="hidden md:flex items-center gap-8">
+            <a href="#home" class="nav-link">Beranda</a>
+            <a href="#services" class="nav-link">Layanan</a>
+            <a href="about" class="nav-link">Tentang</a>
+            <a href="{{ route('contact') }}" class="nav-link">Kontak</a>
+        </div>
+
+        <div class="hidden md:flex items-center gap-3">
+            <a href="{{ route('login') }}" class="text-white/80 hover:text-white text-sm font-medium transition">Masuk</a>
+            <a href="{{ route('register') }}" class="bg-white text-green-700 font-semibold px-4 py-2 rounded-xl text-sm hover:bg-green-50 transition">
+                Daftar Gratis
+            </a>
+        </div>
+
+        {{-- Mobile --}}
+        <button class="md:hidden text-white" onclick="document.getElementById('mobileMenu').classList.toggle('hidden')">
+            <i class="fas fa-bars text-xl"></i>
+        </button>
+    </div>
+
+    {{-- Mobile Menu --}}
+    <div id="mobileMenu" class="hidden md:hidden mt-4 pb-4 border-t border-white/20">
+        <div class="flex flex-col gap-3 pt-4">
+            <a href="#services" class="nav-link px-2">Layanan</a>
+            <a href="{{ route('contact') }}" class="nav-link px-2">Kontak</a>
+            <div class="flex gap-3 pt-2">
+                <a href="{{ route('login') }}" class="flex-1 text-center border border-white/40 text-white py-2 rounded-xl text-sm font-medium">Masuk</a>
+                <a href="{{ route('register') }}" class="flex-1 text-center bg-white text-green-700 py-2 rounded-xl text-sm font-semibold">Daftar</a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+{{-- HERO --}}
+<section id="home" class="pt-20 min-h-screen flex items-center" style="background:linear-gradient(135deg,#0a3d0a,#005c02 60%,#007a7a)">
+    <div class="max-w-6xl mx-auto px-6 py-20 text-center text-white">
+        <span class="inline-block bg-white/15 text-white/90 text-xs font-semibold px-4 py-2 rounded-full mb-6 border border-white/20">
+            ✨ Layanan Pembersihan #1 Terpercaya
+        </span>
+        <h1 class="text-4xl md:text-6xl font-extrabold leading-tight mb-6">
+            Rumah Bersih,Hidup Lebih Nyaman
+            <br>
+        </h1>
+        <p class="text-white/70 text-lg md:text-xl max-w-2xl mx-auto mb-10">
+            Layanan pembersihan profesional untuk rumah dan kantor Anda. Pesan sekarang, kami siap melayani!
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="{{ route('login') }}" class="bg-white text-green-700 font-bold px-8 py-4 rounded-2xl text-base hover:bg-green-50 transition shadow-xl">
+                <i class="fas fa-sign-in-alt mr-2"></i> Masuk Sekarang
+            </a>
+            <a href="#services" class="border-2 border-white/40 text-white font-semibold px-8 py-4 rounded-2xl text-base hover:bg-white/10 transition">
+                <i class="fas fa-eye mr-2"></i> Lihat Layanan
+            </a>
+        </div>
+
+        {{-- Stats --}}
+        <div class="grid grid-cols-3 gap-6 max-w-lg mx-auto mt-16">
+            <div class="text-center">
+                <p class="text-3xl font-bold">500+</p>
+                <p class="text-white/60 text-sm mt-1">Pelanggan</p>
+            </div>
+            <div class="text-center border-x border-white/20">
+                <p class="text-3xl font-bold">4.9★</p>
+                <p class="text-white/60 text-sm mt-1">Rating</p>
+            </div>
+            <div class="text-center">
+                <p class="text-3xl font-bold">100%</p>
+                <p class="text-white/60 text-sm mt-1">Puas</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+{{-- WHY US --}}
+<section class="py-20 bg-gray-50">
+    <div class="max-w-6xl mx-auto px-6">
+        <div class="text-center mb-14">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Mengapa Memilih GOCLEAN?</h2>
+            <p class="text-gray-500 max-w-xl mx-auto">Kami berkomitmen memberikan layanan terbaik dengan standar profesional tinggi</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            @php
+            $features = [
+                ['icon'=>'fa-shield-alt','color'=>'bg-blue-100 text-blue-600','title'=>'Terpercaya','desc'=>'Tim profesional berpengalaman dengan standar keamanan tinggi'],
+                ['icon'=>'fa-clock','color'=>'bg-green-100 text-green-600','title'=>'Tepat Waktu','desc'=>'Layanan sesuai jadwal yang telah disepakati bersama'],
+                ['icon'=>'fa-tools','color'=>'bg-yellow-100 text-yellow-600','title'=>'Peralatan Modern','desc'=>'Menggunakan peralatan dan bahan pembersih berkualitas'],
+                ['icon'=>'fa-tag','color'=>'bg-purple-100 text-purple-600','title'=>'Harga Terjangkau','desc'=>'Tarif kompetitif dengan kualitas layanan terbaik'],
+            ];
+            @endphp
+            @foreach($features as $feat)
+            <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition hover:-translate-y-1">
+                <div class="w-12 h-12 {{ $feat['color'] }} rounded-xl flex items-center justify-center mb-4">
+                    <i class="fas {{ $feat['icon'] }} text-xl"></i>
                 </div>
-                
-                <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
-                    <i class="fas fa-bars"></i>
-                </button>
+                <h3 class="font-bold text-gray-800 mb-2">{{ $feat['title'] }}</h3>
+                <p class="text-gray-500 text-sm leading-relaxed">{{ $feat['desc'] }}</p>
+            </div>
+            @endforeach
+        </div>
+    </div>
+</section>
 
-                <ul class="nav-links" id="navLinks">
-                    <li><a href="/">Beranda</a></li>
-                    <li><a href="/#services">Layanan</a></li>
-                    <li><a href="/about">Tentang</a></li>
-                    <li><a href="/contact">Kontak</a></li>
-                    <li class="show-mobile"><a href="/register">Daftar</a></li>
-                    <li class="show-mobile"><a href="/login">Masuk</a></li>
+{{-- SERVICES --}}
+<section id="services" class="py-20 bg-white">
+    <div class="max-w-6xl mx-auto px-6">
+        <div class="text-center mb-14">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Layanan Kami</h2>
+            <p class="text-gray-500 max-w-xl mx-auto">Pilih layanan yang sesuai dengan kebutuhan Anda</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            @php
+            $services = [
+                ['icon'=>'fa-home','title'=>'Pembersihan Rumah','price'=>'Rp 150.000','desc'=>'Pembersihan menyeluruh seluruh ruangan rumah Anda','features'=>['Vacuum & pel lantai','Bersih kamar mandi','Lap furniture','Durasi 1+- jam'],'color'=>'from-green-500 to-emerald-600'],
+                ['icon'=>'fa-building','title'=>'Pembersihan Kantor','price'=>'Rp 200.000','desc'=>'Jaga kebersihan lingkungan kerja Anda','features'=>['Bersih area kerja','Sanitasi meja & kursi','Bersih toilet kantor','Durasi 1-2 jam'],'color'=>'from-blue-500 to-indigo-600'],
+                ['icon'=>'fa-broom','title'=>'Deep Cleaning','price'=>'Rp 300.000','desc'=>'Pembersihan mendalam untuk area sulit dijangkau','features'=>['Pembersihan mendalam','Area sulit dijangkau','Disinfeksi menyeluruh','Durasi 2 jam'],'color'=>'from-purple-500 to-pink-600'],
+            ];
+            @endphp
+            @foreach($services as $svc)
+            <div class="rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-lg transition hover:-translate-y-1">
+                <div class="bg-gradient-to-br {{ $svc['color'] }} p-6 text-white text-center">
+                    <div class="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-3">
+                        <i class="fas {{ $svc['icon'] }} text-2xl"></i>
+                    </div>
+                    <h3 class="font-bold text-lg">{{ $svc['title'] }}</h3>
+                    <p class="text-3xl font-extrabold mt-2">{{ $svc['price'] }}</p>
+                </div>
+                <div class="p-6 bg-white">
+                    <p class="text-gray-500 text-sm mb-4">{{ $svc['desc'] }}</p>
+                    <ul class="space-y-2 mb-6">
+                        @foreach($svc['features'] as $item)
+                        <li class="flex items-center gap-2 text-sm text-gray-600">
+                            <i class="fas fa-check text-green-500 text-xs"></i> {{ $item }}
+                        </li>
+                        @endforeach
+                    </ul>
+                    <a href="{{ route('register') }}" class="block text-center bg-gray-800 hover:bg-gray-900 text-white font-semibold py-3 rounded-xl text-sm transition">
+                        Pesan Layanan
+                    </a>
+                </div>
+            </div>
+            @endforeach
+        </div>
+    </div>
+</section>
+
+{{-- CTA --}}
+<section class="py-20" style="background:linear-gradient(135deg,#0a3d0a,#005c02 60%,#007a7a)">
+    <div class="max-w-3xl mx-auto px-6 text-center text-white">
+        <h2 class="text-3xl md:text-4xl font-bold mb-4">Siap Untuk Rumah Bersih?</h2>
+        <p class="text-white/70 text-lg mb-8">Daftar sekarang dan dapatkan layanan pembersihan profesional pertama Anda</p>
+        <a href="{{ route('register') }}" class="inline-block bg-white text-green-700 font-bold px-10 py-4 rounded-2xl text-base hover:bg-green-50 transition shadow-xl">
+            <i class="fas fa-rocket mr-2"></i> Mulai Sekarang
+        </a>
+    </div>
+</section>
+
+{{-- FOOTER --}}
+<footer class="bg-gray-900 text-white py-12">
+    <div class="max-w-6xl mx-auto px-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+            <div>
+                <div class="flex items-center gap-2 mb-4">
+                    <div class="w-8 h-8 bg-green-600 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-sparkles text-white text-xs"></i>
+                    </div>
+                    <span class="font-bold text-lg">GOCLEAN</span>
+                </div>
+                <p class="text-gray-400 text-sm leading-relaxed">Layanan pembersihan profesional terpercaya untuk rumah dan kantor Anda.</p>
+            </div>
+            <div>
+                <h4 class="font-semibold mb-4 text-sm uppercase tracking-wider text-gray-400">Layanan</h4>
+                <ul class="space-y-2 text-sm text-gray-400">
+                    <li><a href="#services" class="hover:text-white transition">Pembersihan Rumah</a></li>
+                    <li><a href="#services" class="hover:text-white transition">Pembersihan Kantor</a></li>
+                    <li><a href="#services" class="hover:text-white transition">Deep Cleaning</a></li>
                 </ul>
-                <div class="hide-mobile">
-                    <a href="/register" class="btn btn-primary" style="margin-right:10px;">Daftar</a>
-                    <a href="/login" class="btn btn-outline">Masuk</a>
-                </div>
-            </nav>
-        </div>
-    </header>
-
-    <!-- Hero Section -->
-    <section class="hero" id="home">
-        <div class="container">
-            <h1>Layanan Pembersihan Profesional</h1>
-            <p>Solusi terpercaya untuk kebersihan rumah dan kantor Anda dengan standar kualitas tinggi</p>
-            <div class="hero-buttons">
-                <a href="/login" class="btn btn-primary">Pesan Sekarang</a>
-                <a href="#services" class="btn btn-outline">Lihat Layanan</a>
+            </div>
+            <div>
+                <h4 class="font-semibold mb-4 text-sm uppercase tracking-wider text-gray-400">Kontak</h4>
+                <ul class="space-y-2 text-sm text-gray-400">
+                    <li><i class="fas fa-phone mr-2"></i> 0812-3456-7890</li>
+                    <li><i class="fas fa-envelope mr-2"></i> info@goclean.id</li>
+                    <li><i class="fas fa-map-marker-alt mr-2"></i> Malang, Indonesia</li>
+                </ul>
             </div>
         </div>
-    </section>
-
-    <!-- Features -->
-    <section class="features">
-        <div class="container">
-            <h2>Mengapa Memilih GOCLEAN?</h2>
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-shield-alt"></i>
-                    </div>
-                    <h3>Terpercaya</h3>
-                    <p>Tim profesional berpengalaman dengan standar keamanan tinggi</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-clock"></i>
-                    </div>
-                    <h3>Tepat Waktu</h3>
-                    <p>Layanan sesuai jadwal yang telah disepakati</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-tools"></i>
-                    </div>
-                    <h3>Peralatan Modern</h3>
-                    <p>Menggunakan peralatan dan bahan pembersih berkualitas</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-money-bill-wave"></i>
-                    </div>
-                    <h3>Harga Terjangkau</h3>
-                    <p>Tarif kompetitif dengan kualitas layanan terbaik</p>
-                </div>
-            </div>
+        <div class="border-t border-gray-800 pt-6 text-center text-gray-500 text-sm">
+            © 2024 GOCLEAN. All rights reserved.
         </div>
-    </section>
-
-    <!-- Services -->
-    <section class="services" id="services">
-        <div class="container">
-            <h2>Layanan Kami</h2>
-            <div class="services-grid">
-                <div class="service-card">
-                    <div class="service-header">
-                        <h3>Pembersihan Rumah</h3>
-                        <div class="service-price">Rp 150.000</div>
-                    </div>
-                    <div class="service-body">
-                        <ul class="service-features">
-                            <li><i class="fas fa-check"></i> Pembersihan seluruh ruangan</li>
-                            <li><i class="fas fa-check"></i> Vacuum dan pel lantai</li>
-                            <li><i class="fas fa-check"></i> Bersih kamar mandi</li>
-                            <li><i class="fas fa-check"></i> Durasi 2-4 jam</li>
-                        </ul>
-                        <a href="/login" class="btn btn-primary" style="width:100%;text-align:center;">Pesan Layanan</a>
-                    </div>
-                </div>
-
-                <div class="service-card">
-                    <div class="service-header">
-                        <h3>Pembersihan Kantor</h3>
-                        <div class="service-price">Rp 200.000</div>
-                    </div>
-                    <div class="service-body">
-                        <ul class="service-features">
-                            <li><i class="fas fa-check"></i> Bersih area kerja</li>
-                            <li><i class="fas fa-check"></i> Sanitasi meja & kursi</li>
-                            <li><i class="fas fa-check"></i> Bersih toilet kantor</li>
-                            <li><i class="fas fa-check"></i> Durasi 3-5 jam</li>
-                        </ul>
-                        <a href="/login" class="btn btn-primary" style="width:100%;text-align:center;">Pesan Layanan</a>
-                    </div>
-                </div>
-
-                <div class="service-card">
-                    <div class="service-header">
-                        <h3>Deep Cleaning</h3>
-                        <div class="service-price">Rp 300.000</div>
-                    </div>
-                    <div class="service-body">
-                        <ul class="service-features">
-                            <li><i class="fas fa-check"></i> Pembersihan mendalam</li>
-                            <li><i class="fas fa-check"></i> Area sulit dijangkau</li>
-                            <li><i class="fas fa-check"></i> Disinfeksi menyeluruh</li>
-                            <li><i class="fas fa-check"></i> Durasi 4-6 jam</li>
-                        </ul>
-                        <a href="/login" class="btn btn-primary" style="width:100%;text-align:center;">Pesan Layanan</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-
-
-    <!-- CTA -->
-    <section class="cta">
-        <div class="container">
-            <h2>Siap Untuk Rumah Bersih?</h2>
-            <p>Hubungi kami sekarang dan rasakan perbedaannya</p>
-            <a href="/login" class="btn btn-primary">Mulai Sekarang</a>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h3>GOCLEAN</h3>
-                    <p>Layanan pembersihan profesional terpercaya untuk rumah dan kantor Anda.</p>
-                </div>
-                <div class="footer-section">
-                    <h3>Layanan</h3>
-                    <p><a href="#services">Pembersihan Rumah</a></p>
-                    <p><a href="#services">Pembersihan Kantor</a></p>
-                    <p><a href="#services">Deep Cleaning</a></p>
-                </div>
-                <div class="footer-section">
-                    <h3>Kontak</h3>
-                    <p><i class="fas fa-phone"></i> 0812-3456-7890</p>
-                    <p><i class="fas fa-envelope"></i> info@goclean.id</p>
-                    <p><i class="fas fa-map-marker-alt"></i> Malang, Indonesia</p>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2026 GOCLEAN. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
-
-    <script>
-        function toggleMobileMenu() {
-            const navLinks = document.getElementById('navLinks');
-            navLinks.classList.toggle('active');
-        }
-        
-        // Close mobile menu when clicking outside
-        document.addEventListener('click', function(event) {
-            const nav = document.querySelector('.nav');
-            const navLinks = document.getElementById('navLinks');
-            const toggle = document.querySelector('.mobile-menu-toggle');
-            
-            if (!nav.contains(event.target) && navLinks.classList.contains('active')) {
-                navLinks.classList.remove('active');
-            }
-        });
-    </script>
+    </div>
+</footer>
 
 </body>
-
 </html>

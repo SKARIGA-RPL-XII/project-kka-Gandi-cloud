@@ -4,361 +4,186 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Register - GOCLEAN</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <title>Daftar — GOCLEAN</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background: #f8fbff;
-            display: flex;
-            min-height: 100vh;
-        }
-
-        .left {
-            flex: 1.2;
-            background: linear-gradient(135deg, #005c02 0%, #00f7ff 100%);
-            color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            padding: 40px;
-        }
-        
-        @media (max-width: 768px) {
-            body {
-                flex-direction: column;
-            }
-            
-            .left {
-                padding: 2rem 1rem;
-                min-height: 200px;
-            }
-            
-            .left h1 {
-                font-size: 2rem;
-            }
-            
-            .left p {
-                font-size: 0.9rem;
-            }
-            
-            .right {
-                padding: 1rem;
-            }
-            
-            .card {
-                padding: 1.5rem;
-            }
-        }
-
-        .left h1 {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            font-weight: 700;
-        }
-
-        .left p {
-            font-size: 1.1rem;
-            opacity: 0.9;
-            text-align: center;
-            max-width: 400px;
-        }
-
-        .right {
-            flex: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 2rem;
-        }
-
-        .card {
-            width: 100%;
-            max-width: 400px;
-            background: white;
-            border-radius: 16px;
-            padding: 2rem;
-            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.1);
-        }
-
-        .card h2 {
-            margin-bottom: 1.5rem;
-            color: #1f2937;
-            font-size: 1.5rem;
-            font-weight: 600;
-        }
-
-        .form-group {
-            margin-bottom: 1.2rem;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            color: #374151;
-            font-weight: 500;
-            font-size: 0.9rem;
-        }
-
-        input, select {
-            width: 100%;
-            padding: 0.8rem;
-            border: 2px solid #e5e7eb;
-            border-radius: 10px;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
-        }
-
-        input:focus, select:focus {
-            outline: none;
-            border-color: #00c853;
-            box-shadow: 0 0 0 3px rgba(0, 200, 83, 0.1);
-        }
-
-        button {
-            width: 100%;
-            background: linear-gradient(135deg, #00c853, #005c02);
-            border: none;
-            padding: 0.8rem;
-            color: white;
-            border-radius: 10px;
-            font-weight: 600;
-            font-size: 1rem;
-            margin-top: 1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0, 200, 83, 0.3);
-        }
-
-        .login-link {
-            text-align: center;
-            margin-top: 1.5rem;
-            font-size: 0.9rem;
-        }
-
-        .login-link a {
-            color: #00c853;
-            text-decoration: none;
-            font-weight: 600;
-        }
-
-        .login-link a:hover {
-            text-decoration: underline;
-        }
-
-        .error-message {
-            background: #fee2e2;
-            color: #dc2626;
-            padding: 0.8rem;
-            border-radius: 8px;
-            margin-bottom: 1rem;
-            font-size: 0.9rem;
-            display: none;
-        }
-
-        .popup {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-
-        .popup-content {
-            background: white;
-            padding: 2rem;
-            border-radius: 16px;
-            text-align: center;
-            max-width: 400px;
-            width: 90%;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-        }
-
-        .popup-content h3 {
-            color: #059669;
-            margin-bottom: 1rem;
-            font-size: 1.3rem;
-        }
-
-        .popup-content p {
-            margin-bottom: 1.5rem;
-            color: #6b7280;
-        }
-
-        .popup-content button {
-            background: #059669;
-            margin-top: 0;
-        }
-
-        .role-note {
-            background: #f0f9ff;
-            border: 1px solid #bae6fd;
-            padding: 0.8rem;
-            border-radius: 8px;
-            margin-top: 1rem;
-            font-size: 0.85rem;
-            color: #0369a1;
-        }
-    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>body{font-family:'Inter',sans-serif;}</style>
 </head>
-<body>
+<body class="min-h-screen flex" style="background:linear-gradient(135deg,#0a3d0a,#005c02 50%,#007a7a)">
 
-<div class="left">
-    <h1><i class="fas fa-sparkles"></i> GOCLEAN</h1>
-    <p>Bergabunglah dengan layanan pembersihan terpercaya dan nikmati kemudahan dalam menjaga kebersihan</p>
+{{-- Left Panel --}}
+<div class="hidden lg:flex flex-col justify-center px-16 w-1/2 text-white">
+    <div class="flex items-center gap-3 mb-10">
+        <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center">
+            <i class="fas fa-sparkles text-white"></i>
+        </div>
+        <span class="text-2xl font-bold">GOCLEAN</span>
+    </div>
+    <h1 class="text-4xl font-bold leading-tight mb-4">Bergabung Bersama<br>Ribuan Pelanggan</h1>
+    <p class="text-white/70 text-lg mb-8">Daftar sekarang dan nikmati layanan pembersihan profesional terpercaya.</p>
+    <div class="bg-white/10 rounded-2xl p-5">
+        <p class="text-sm text-white/60 mb-3">Keuntungan menjadi member:</p>
+        <div class="space-y-2">
+            @foreach(['Pesan layanan kapan saja', 'Pantau status pesanan real-time', 'Histori pesanan lengkap', 'Layanan profesional terjamin'] as $item)
+            <div class="flex items-center gap-2 text-sm">
+                <i class="fas fa-check-circle text-green-300"></i>
+                <span>{{ $item }}</span>
+            </div>
+            @endforeach
+        </div>
+    </div>
 </div>
 
-<div class="right">
-    <form class="card" method="POST" action="/register/process" id="registerForm">
-        @csrf
-        <h2><i class="fas fa-user-plus"></i> Daftar Akun</h2>
+{{-- Right Panel --}}
+<div class="flex-1 flex items-center justify-center p-6">
+    <div class="bg-white rounded-3xl shadow-2xl w-full max-w-md p-8">
 
-        <div class="error-message" id="errorMessage"></div>
-
-        <div class="form-group">
-            <label for="name">Nama Lengkap</label>
-            <input type="text" name="name" id="name" placeholder="Masukkan nama lengkap" required>
+        <div class="flex items-center gap-2 mb-7 lg:hidden">
+            <div class="w-8 h-8 bg-green-600 rounded-lg flex items-center justify-center">
+                <i class="fas fa-sparkles text-white text-xs"></i>
+            </div>
+            <span class="text-xl font-bold text-gray-800">GOCLEAN</span>
         </div>
 
-        <div class="form-group">
-            <label for="email">Email</label>
-            <input type="email" name="email" id="email" placeholder="Masukkan email" required>
-        </div>
-        
-        <div class="form-group">
-            <label for="password">Password</label>
-            <input type="password" name="password" id="password" placeholder="Minimal 8 karakter" required>
+        <h2 class="text-2xl font-bold text-gray-800 mb-1">Buat Akun Baru</h2>
+        <p class="text-gray-500 text-sm mb-7">Daftar sebagai customer untuk memesan layanan</p>
+
+        <div id="errorBox" class="hidden flex items-center gap-2 bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-xl mb-5 text-sm">
+            <i class="fas fa-exclamation-circle"></i> <span id="errorMsg"></span>
         </div>
 
-        <div class="form-group">
-            <label for="password_confirmation">Konfirmasi Password</label>
-            <input type="password" name="password_confirmation" id="password_confirmation" placeholder="Ulangi password" required>
-        </div>
+        <form id="registerForm">
+            @csrf
+            <div class="mb-4">
+                <label class="block text-sm font-semibold text-gray-700 mb-2">Nama Lengkap</label>
+                <div class="relative">
+                    <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"><i class="fas fa-user text-sm"></i></span>
+                    <input type="text" id="name" required
+                        class="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-100 transition"
+                        placeholder="Masukkan nama lengkap">
+                </div>
+            </div>
 
-        <button type="submit">
-            <i class="fas fa-user-plus"></i> Daftar Sekarang
-        </button>
+            <div class="mb-4">
+                <label class="block text-sm font-semibold text-gray-700 mb-2">Email</label>
+                <div class="relative">
+                    <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"><i class="fas fa-envelope text-sm"></i></span>
+                    <input type="email" id="email" required
+                        class="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-100 transition"
+                        placeholder="nama@email.com">
+                </div>
+            </div>
 
-        <div class="login-link">
-            <p>Sudah punya akun? <a href="/login">Login sekarang</a></p>
-        </div>
+            <div class="mb-4">
+                <label class="block text-sm font-semibold text-gray-700 mb-2">Password</label>
+                <div class="relative">
+                    <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"><i class="fas fa-lock text-sm"></i></span>
+                    <input type="password" id="password" required
+                        class="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-100 transition"
+                        placeholder="Minimal 8 karakter">
+                </div>
+            </div>
 
-        <div class="role-note">
-            <i class="fas fa-info-circle"></i>
-            <strong>Catatan:</strong> Pendaftaran ini untuk customer. Staff ditambahkan oleh admin.
+            <div class="mb-6">
+                <label class="block text-sm font-semibold text-gray-700 mb-2">Konfirmasi Password</label>
+                <div class="relative">
+                    <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"><i class="fas fa-lock text-sm"></i></span>
+                    <input type="password" id="password_confirmation" required
+                        class="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-100 transition"
+                        placeholder="Ulangi password">
+                </div>
+            </div>
+
+            <button type="submit" id="submitBtn"
+                class="w-full py-3 bg-gradient-to-r from-green-600 to-teal-600 hover:from-green-700 hover:to-teal-700 text-white font-semibold rounded-xl transition shadow-lg shadow-green-200 text-sm">
+                <i class="fas fa-user-plus mr-2"></i> Daftar Sekarang
+            </button>
+        </form>
+
+        <p class="text-center text-sm text-gray-500 mt-6">
+            Sudah punya akun?
+            <a href="{{ route('login') }}" class="text-green-600 font-semibold hover:text-green-700">Masuk di sini</a>
+        </p>
+
+        <div class="mt-5 p-3 bg-blue-50 rounded-xl">
+            <p class="text-xs text-blue-600 text-center">
+                <i class="fas fa-info-circle mr-1"></i>
+                Pendaftaran hanya untuk <strong>customer</strong>. Staff ditambahkan oleh admin.
+            </p>
         </div>
-    </form>
+    </div>
 </div>
 
-<div class="popup" id="successPopup">
-    <div class="popup-content">
-        <h3><i class="fas fa-check-circle"></i> Registrasi Berhasil!</h3>
-        <p>Akun Anda telah berhasil dibuat. Silakan login untuk melanjutkan menggunakan layanan GOCLEAN.</p>
-        <button onclick="redirectToLogin()">
-            <i class="fas fa-sign-in-alt"></i> Login Sekarang
-        </button>
+{{-- Success Modal --}}
+<div id="successModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+    <div class="bg-white rounded-2xl p-8 max-w-sm w-full text-center shadow-2xl">
+        <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <i class="fas fa-check-circle text-green-500 text-3xl"></i>
+        </div>
+        <h3 class="text-xl font-bold text-gray-800 mb-2">Registrasi Berhasil!</h3>
+        <p class="text-gray-500 text-sm mb-6">Akun Anda berhasil dibuat. Silakan login untuk melanjutkan.</p>
+        <a href="{{ route('login') }}" class="block w-full py-3 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-xl transition text-sm">
+            <i class="fas fa-sign-in-alt mr-2"></i> Login Sekarang
+        </a>
     </div>
 </div>
 
 <script>
-function showError(message) {
-    const errorDiv = document.getElementById('errorMessage');
-    errorDiv.textContent = message;
-    errorDiv.style.display = 'block';
-}
-
-function hideError() {
-    document.getElementById('errorMessage').style.display = 'none';
-}
-
-document.getElementById('registerForm').addEventListener('submit', function(e) {
+document.getElementById('registerForm').addEventListener('submit', async function(e) {
     e.preventDefault();
-    hideError();
-    
-    const formData = new FormData(this);
-    const password = formData.get('password');
-    const confirmPassword = formData.get('password_confirmation');
-    const name = formData.get('name').trim();
-    const email = formData.get('email').trim();
-    
-    if (!name || !email || !password || !confirmPassword) {
-        showError('Semua field harus diisi!');
-        return;
+    const btn = document.getElementById('submitBtn');
+    const errorBox = document.getElementById('errorBox');
+    const errorMsg = document.getElementById('errorMsg');
+
+    const name = document.getElementById('name').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value;
+    const confirm = document.getElementById('password_confirmation').value;
+
+    errorBox.classList.add('hidden');
+
+    if (!name || !email || !password || !confirm) {
+        errorMsg.textContent = 'Semua field harus diisi!';
+        errorBox.classList.remove('hidden'); return;
     }
-    
     if (password.length < 8) {
-        showError('Password minimal 8 karakter!');
-        return;
+        errorMsg.textContent = 'Password minimal 8 karakter!';
+        errorBox.classList.remove('hidden'); return;
     }
-    
-    if (password !== confirmPassword) {
-        showError('Konfirmasi password tidak sesuai!');
-        return;
+    if (password !== confirm) {
+        errorMsg.textContent = 'Konfirmasi password tidak sesuai!';
+        errorBox.classList.remove('hidden'); return;
     }
-    
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-        showError('Format email tidak valid!');
-        return;
-    }
-    
-    // Submit to server
-    fetch('/register/process', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '',
-            'Accept': 'application/json'
-        },
-        body: JSON.stringify({
-            name: name,
-            email: email,
-            password: password,
-            password_confirmation: confirmPassword
-        })
-    })
-    .then(response => {
-        if (!response.ok) {
-            return response.json().then(data => {
-                throw new Error(data.message || 'Registrasi gagal!');
-            });
-        }
-        return response.json();
-    })
-    .then(data => {
+
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Memproses...';
+
+    try {
+        const res = await fetch('/register/process', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({ name, email, password, password_confirmation: confirm })
+        });
+        const data = await res.json();
         if (data.success) {
-            document.getElementById('successPopup').style.display = 'flex';
+            document.getElementById('successModal').classList.remove('hidden');
         } else {
-            showError(data.message || 'Registrasi gagal!');
+            errorMsg.textContent = data.message || 'Registrasi gagal!';
+            errorBox.classList.remove('hidden');
         }
-    })
-    .catch(error => {
-        showError(error.message || 'Terjadi kesalahan. Silakan coba lagi.');
-        console.error('Error:', error);
-    });
+    } catch {
+        errorMsg.textContent = 'Terjadi kesalahan. Silakan coba lagi.';
+        errorBox.classList.remove('hidden');
+    }
+
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fas fa-user-plus mr-2"></i> Daftar Sekarang';
 });
-
-function redirectToLogin() {
-    window.location.href = '/login';
-}
 </script>
-
 </body>
 </html>

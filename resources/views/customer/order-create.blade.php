@@ -1,350 +1,99 @@
-<!DOCTYPE html>
-<html lang="id">
+@extends('customer.layout')
+@section('title', 'Buat Pesanan')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Buat Pesanan | GOCLEAN</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <style>
-        body {
-            margin: 0;
-            font-family: 'Inter', sans-serif;
-            background: #f8fafc;
-            display: flex;
-        }
+@section('content')
 
-        .sidebar {
-            width: 280px;
-            background: linear-gradient(135deg, #005c02 0%, #00f7ff 100%);
-            height: 100vh;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, .1);
-            padding: 0;
-            position: fixed;
-            overflow-y: auto;
-        }
-
-        @media (max-width: 768px) {
-            body { flex-direction: column; }
-            .sidebar { width: 100% !important; height: auto !important; position: relative !important; }
-            .sidebar-nav { display: flex; overflow-x: auto; padding: 10px 0 !important; }
-            .sidebar-nav a { display: inline-flex !important; padding: 12px 20px !important; border-left: none !important; white-space: nowrap; }
-            .container { margin-left: 0 !important; width: 100% !important; }
-            .wrapper { padding: 15px !important; }
-            .form-container { padding: 20px !important; }
-            .nav { padding: 15px !important; }
-        }
-
-        .sidebar-header {
-            padding: 30px 25px;
-            text-align: center;
-            border-bottom: 1px solid rgba(255, 255, 255, .1);
-        }
-
-        .sidebar h2 {
-            color: white;
-            font-size: 24px;
-            font-weight: 700;
-            margin: 0;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, .3);
-        }
-
-        .sidebar-nav {
-            padding: 20px 0;
-        }
-
-        .sidebar a {
-            display: flex;
-            align-items: center;
-            padding: 15px 25px;
-            color: rgba(255, 255, 255, .8);
-            text-decoration: none;
-            font-size: 15px;
-            transition: .3s;
-            border-left: 3px solid transparent;
-        }
-
-        .sidebar a:hover,
-        .sidebar a.active {
-            background: rgba(255, 255, 255, .1);
-            color: white;
-            border-left-color: #fff;
-        }
-
-        .sidebar a i {
-            width: 20px;
-            margin-right: 12px;
-            font-size: 16px;
-        }
-
-        .container {
-            flex: 1;
-            margin-left: 280px;
-        }
-
-        .nav {
-            height: 70px;
-            background: white;
-            color: #333;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 30px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, .05);
-        }
-
-        .nav-title {
-            font-size: 20px;
-            font-weight: 600;
-            color: #2d3748;
-        }
-
-        .wrapper {
-            padding: 30px;
-        }
-
-        .form-container {
-            background: white;
-            border-radius: 20px;
-            padding: 40px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, .06);
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .form-group {
-            margin-bottom: 25px;
-        }
-
-        .form-group label {
-            display: block;
-            font-weight: 600;
-            color: #374151;
-            margin-bottom: 8px;
-            font-size: 14px;
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 12px 16px;
-            border: 2px solid #e5e7eb;
-            border-radius: 10px;
-            font-size: 14px;
-            transition: .3s;
-            box-sizing: border-box;
-        }
-
-        .form-control:focus {
-            outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, .1);
-        }
-
-        .service-options {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 15px;
-        }
-
-        .service-option {
-            border: 2px solid #e5e7eb;
-            border-radius: 12px;
-            padding: 20px;
-            cursor: pointer;
-            transition: .3s;
-            position: relative;
-        }
-
-        .service-option:hover {
-            border-color: #667eea;
-        }
-
-        .service-option.selected {
-            border-color: #667eea;
-            background: #f8faff;
-        }
-
-        .service-option input {
-            position: absolute;
-            opacity: 0;
-        }
-
-        .service-info h4 {
-            font-size: 16px;
-            font-weight: 600;
-            margin: 0 0 5px 0;
-            color: #1f2937;
-        }
-
-        .service-info p {
-            font-size: 14px;
-            color: #6b7280;
-            margin: 0 0 8px 0;
-        }
-
-        .service-price {
-            font-size: 18px;
-            font-weight: 700;
-            color: #059669;
-        }
-
-        .btn {
-            padding: 14px 28px;
-            border: none;
-            border-radius: 12px;
-            background: linear-gradient(135deg, #00ff9d, #00c853);
-            color: white;
-            font-weight: 600;
-            cursor: pointer;
-            transition: .3s;
-            font-size: 16px;
-            width: 100%;
-        }
-
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0, 255, 157, .3);
-        }
-
-        .btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .alert {
-            padding: 12px 16px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            font-size: 14px;
-        }
-
-        .alert-danger {
-            background: #fef2f2;
-            color: #dc2626;
-            border: 1px solid #fecaca;
-        }
-
-        .back-btn {
-            display: inline-flex;
-            align-items: center;
-            color: #6b7280;
-            text-decoration: none;
-            font-size: 14px;
-            margin-bottom: 20px;
-            transition: .3s;
-        }
-
-        .back-btn:hover {
-            color: #374151;
-        }
-
-        .back-btn i {
-            margin-right: 8px;
-        }
-    </style>
-</head>
-
-<body>
-
-    <div class="sidebar">
-        <div class="sidebar-header">
-            <h2><i class="fas fa-sparkles"></i> GOCLEAN</h2>
-        </div>
-        <div class="sidebar-nav">
-            <a href="/customer/dashboard"><i class="fas fa-home"></i> Dashboard</a>
-            <a href="/order/create" class="active"><i class="fas fa-plus-circle"></i> Buat Pesanan</a>
-            <a href="/order/history"><i class="fas fa-history"></i> Histori Pesanan</a>
-            <a href="/customer/profile"><i class="fas fa-user"></i> Profil</a>
-            <a href="/help"><i class="fas fa-headset"></i> Bantuan</a>
-        </div>
+<div class="max-w-2xl mx-auto">
+    <div class="mb-6">
+        <h2 class="text-xl font-bold text-gray-800">Buat Pesanan Baru</h2>
+        <p class="text-gray-500 text-sm mt-1">Isi form di bawah untuk memesan layanan pembersihan</p>
     </div>
 
-    <div class="container">
-        <div class="nav">
-            <div class="nav-title">Buat Pesanan Baru</div>
+    @if($errors->any())
+        <div class="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-xl mb-5 text-sm">
+            @foreach($errors->all() as $error)
+                <div><i class="fas fa-exclamation-circle mr-1"></i> {{ $error }}</div>
+            @endforeach
+        </div>
+    @endif
+
+    <form action="{{ route('order.store') }}" method="POST" class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 space-y-5">
+        @csrf
+
+        {{-- Pilih Layanan --}}
+        <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">
+                <i class="fas fa-broom text-green-500 mr-1"></i> Pilih Layanan
+            </label>
+            <select name="service_id" required
+                class="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-100 transition bg-white"
+                onchange="updatePrice(this)">
+                <option value="">-- Pilih layanan --</option>
+                @foreach($services as $service)
+                    <option value="{{ $service->id }}"
+                        data-price="{{ $service->price }}"
+                        data-duration="{{ $service->duration }}"
+                        {{ old('service_id') == $service->id ? 'selected' : '' }}>
+                        {{ $service->name }} — Rp {{ number_format($service->price, 0, ',', '.') }}
+                    </option>
+                @endforeach
+            </select>
         </div>
 
-        <div class="wrapper">
-            <div class="form-container">
-                <a href="/customer/test" class="back-btn">
-                    <i class="fas fa-arrow-left"></i> Kembali ke Dashboard
-                </a>
-
-                <h2 style="font-size:28px;font-weight:700;margin:0 0 10px 0;color:#1f2937;">Buat Pesanan Baru</h2>
-                <p style="color:#6b7280;margin:0 0 30px 0;">Isi form di bawah untuk membuat pesanan layanan pembersihan
-                </p>
-
-                @if ($errors->any())
-                    <div
-                        style="background:#fee2e2;color:#dc2626;padding:15px;border-radius:10px;margin-bottom:20px;border:1px solid #fecaca;">
-                        <ul style="margin:0;padding-left:20px;">
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
-
-                <form action="{{ route('order.store') }}" method="POST" id="orderForm">
-                    @csrf
-
-                    <div class="form-group">
-                        <label for="service_id">Pilih Layanan</label>
-                        <div class="service-options">
-                            @forelse($services as $service)
-                            <div class="service-option" onclick="selectService(this, {{ $service->id }}, '{{ $service->name }}', {{ $service->price }})">
-                                <input type="radio" name="service_id" value="{{ $service->id }}" data-price="{{ $service->price }}" required>
-                                <div class="service-info">
-                                    <h4><i class="fas fa-broom"></i> {{ $service->name }}</h4>
-                                    <p>{{ $service->description }}</p>
-                                    <div class="service-price">Rp {{ number_format($service->price, 0, ',', '.') }}</div>
-                                    <small style="color:#6b7280;">Durasi: {{ $service->duration }} menit</small>
-                                </div>
-                            </div>
-                            @empty
-                            <div style="text-align:center;padding:40px;color:#6b7280;">
-                                <i class="fas fa-inbox" style="font-size:48px;margin-bottom:15px;opacity:0.5;"></i>
-                                <p style="margin:0;">Belum ada layanan tersedia</p>
-                                <small>Silakan hubungi admin untuk menambahkan layanan</small>
-                            </div>
-                            @endforelse
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="tanggal">Tanggal Layanan</label>
-                        <input type="date" name="tanggal" id="tanggal" class="form-control" required
-                            min="{{ date('Y-m-d', strtotime('+1 day')) }}">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="alamat">Alamat Lengkap</label>
-                        <textarea name="alamat" id="alamat" class="form-control" rows="4"
-                            placeholder="Masukkan alamat lengkap tempat layanan..." required
-                            style="resize:vertical;"></textarea>
-                    </div>
-
-                    <button type="submit" class="btn">
-                        <i class="fas fa-arrow-right"></i> Lanjut ke Pembayaran
-                    </button>
-                </form>
+        {{-- Service Info --}}
+        <div id="serviceInfo" class="hidden bg-green-50 border border-green-200 rounded-xl p-4">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm text-gray-600">Harga Layanan</p>
+                    <p class="text-xl font-bold text-green-700" id="servicePrice">-</p>
+                </div>
+                <div class="text-right">
+                    <p class="text-sm text-gray-600">Durasi</p>
+                    <p class="text-sm font-semibold text-gray-800" id="serviceDuration">-</p>
+                </div>
             </div>
         </div>
-    </div>
 
-    <script>
-        function selectService(element, serviceId, serviceName, price) {
-            document.querySelectorAll('.service-option').forEach(opt => opt.classList.remove('selected'));
-            element.classList.add('selected');
-            element.querySelector('input[type="radio"]').checked = true;
-        }
+        {{-- Tanggal --}}
+        <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">
+                <i class="fas fa-calendar text-green-500 mr-1"></i> Tanggal Layanan
+            </label>
+            <input type="date" name="tanggal" required
+                min="{{ date('Y-m-d', strtotime('+1 day')) }}"
+                value="{{ old('tanggal') }}"
+                class="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-100 transition">
+        </div>
 
-        // Set minimum date to tomorrow
-        document.getElementById('tanggal').min = new Date(Date.now() + 86400000).toISOString().split('T')[0];
-    </script>
+        {{-- Alamat --}}
+        <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">
+                <i class="fas fa-map-marker-alt text-green-500 mr-1"></i> Alamat Lengkap
+            </label>
+            <textarea name="alamat" required rows="3"
+                class="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-100 transition resize-none"
+                placeholder="Masukkan alamat lengkap (minimal 10 karakter)">{{ old('alamat') }}</textarea>
+        </div>
 
-</body>
+        <button type="submit"
+            class="w-full py-3 bg-gradient-to-r from-green-600 to-teal-600 hover:from-green-700 hover:to-teal-700 text-white font-semibold rounded-xl transition shadow-lg shadow-green-200 text-sm">
+            <i class="fas fa-arrow-right mr-2"></i> Lanjut ke Pembayaran
+        </button>
+    </form>
+</div>
 
-</html>
+<script>
+function updatePrice(sel) {
+    const opt = sel.options[sel.selectedIndex];
+    const info = document.getElementById('serviceInfo');
+    if (opt.value) {
+        const price = parseInt(opt.dataset.price);
+        document.getElementById('servicePrice').textContent = 'Rp ' + price.toLocaleString('id-ID');
+        document.getElementById('serviceDuration').textContent = opt.dataset.duration + ' menit';
+        info.classList.remove('hidden');
+    } else {
+        info.classList.add('hidden');
+    }
+}
+</script>
+@endsection

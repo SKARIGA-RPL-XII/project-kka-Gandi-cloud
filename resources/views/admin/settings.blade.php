@@ -1,167 +1,91 @@
 @extends('admin.layout')
-@section('title', 'Pengaturan Website')
+@section('title', 'Pengaturan')
 
 @section('content')
-<div class="max-w-4xl mx-auto">
-    <h2 class="text-2xl font-bold text-gray-800 mb-6">Pengaturan Website</h2>
 
-    @if(session('success'))
-        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-6">
-            <i class="fas fa-check-circle mr-2"></i>{{ session('success') }}
-        </div>
-    @endif
+<div class="max-w-3xl mx-auto">
+    <div class="mb-6">
+        <h2 class="text-xl font-bold text-gray-800">Pengaturan Website</h2>
+        <p class="text-gray-500 text-sm mt-1">Kelola konfigurasi website GOCLEAN</p>
+    </div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <!-- Settings Form -->
-        <div class="lg:col-span-2">
-            <div class="bg-white rounded-lg shadow p-6">
-                <h3 class="text-lg font-semibold text-gray-800 mb-4">Informasi Umum</h3>
-                
-                <form action="{{ route('admin.settings.update') }}" method="POST">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+
+        {{-- Form --}}
+        <div class="lg:col-span-2 space-y-5">
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+                <h3 class="font-semibold text-gray-800 mb-4">Informasi Umum</h3>
+                <form action="{{ route('admin.settings.update') }}" method="POST" class="space-y-4">
                     @csrf
-                    
-                    <div class="mb-6">
-                        <label for="site_name" class="block text-sm font-medium text-gray-700 mb-2">
-                            Nama Website <span class="text-red-500">*</span>
-                        </label>
-                        <input type="text" 
-                               name="site_name" 
-                               id="site_name" 
-                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                               value="{{ old('site_name', $settings->site_name ?? '') }}"
-                               required>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1">Nama Website</label>
+                        <input type="text" name="site_name" value="{{ old('site_name', $settings->site_name ?? '') }}" required
+                            class="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-100">
                     </div>
-
-                    <div class="mb-6">
-                        <label for="site_description" class="block text-sm font-medium text-gray-700 mb-2">
-                            Deskripsi Website
-                        </label>
-                        <textarea name="site_description" 
-                                  id="site_description" 
-                                  rows="3"
-                                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                  placeholder="Deskripsi singkat tentang website...">{{ old('site_description', $settings->site_description ?? '') }}</textarea>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1">Deskripsi</label>
+                        <textarea name="site_description" rows="2"
+                            class="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-100 resize-none">{{ old('site_description', $settings->site_description ?? '') }}</textarea>
                     </div>
-
-                    <div class="mb-6">
-                        <label for="contact_email" class="block text-sm font-medium text-gray-700 mb-2">
-                            Email Kontak <span class="text-red-500">*</span>
-                        </label>
-                        <input type="email" 
-                               name="contact_email" 
-                               id="contact_email" 
-                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                               value="{{ old('contact_email', $settings->contact_email ?? '') }}"
-                               required>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1">Email Kontak</label>
+                        <input type="email" name="contact_email" value="{{ old('contact_email', $settings->contact_email ?? '') }}" required
+                            class="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-100">
                     </div>
-
-                    <div class="mb-6">
-                        <label for="contact_phone" class="block text-sm font-medium text-gray-700 mb-2">
-                            Nomor Telepon
-                        </label>
-                        <input type="text" 
-                               name="contact_phone" 
-                               id="contact_phone" 
-                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                               value="{{ old('contact_phone', $settings->contact_phone ?? '') }}"
-                               placeholder="0812-3456-7890">
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1">Nomor Telepon</label>
+                        <input type="text" name="contact_phone" value="{{ old('contact_phone', $settings->contact_phone ?? '') }}"
+                            class="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-100">
                     </div>
-
-                    <div class="flex justify-end">
-                        <button type="submit" 
-                                class="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            <i class="fas fa-save mr-2"></i>
-                            Simpan Pengaturan
-                        </button>
-                    </div>
+                    <button type="submit" class="w-full py-2.5 bg-green-600 hover:bg-green-700 text-white rounded-xl text-sm font-semibold transition">
+                        <i class="fas fa-save mr-1"></i> Simpan Pengaturan
+                    </button>
                 </form>
             </div>
 
-            <!-- Additional Settings -->
-            <div class="bg-white rounded-lg shadow p-6 mt-6">
-                <h3 class="text-lg font-semibold text-gray-800 mb-4">Pengaturan Lainnya</h3>
-                
-                <div class="space-y-4">
-                    <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+                <h3 class="font-semibold text-gray-800 mb-4">Pengaturan Lainnya</h3>
+                <div class="space-y-3">
+                    @foreach([
+                        ['key'=>'maintenance_mode','label'=>'Mode Maintenance','desc'=>'Nonaktifkan website sementara'],
+                        ['key'=>'allow_registration','label'=>'Registrasi User','desc'=>'Izinkan user baru mendaftar'],
+                        ['key'=>'email_notifications','label'=>'Notifikasi Email','desc'=>'Kirim email untuk pesanan baru'],
+                    ] as $s)
+                    <div class="flex items-center justify-between p-4 bg-gray-50 rounded-xl">
                         <div>
-                            <h4 class="font-medium text-gray-900">Mode Maintenance</h4>
-                            <p class="text-sm text-gray-500">Aktifkan untuk menonaktifkan sementara website</p>
+                            <p class="text-sm font-semibold text-gray-700">{{ $s['label'] }}</p>
+                            <p class="text-xs text-gray-400">{{ $s['desc'] }}</p>
                         </div>
                         <label class="relative inline-flex items-center cursor-pointer">
-                            <input type="checkbox" class="sr-only peer" onchange="toggleSetting('maintenance_mode', this.checked ? '1' : '0')" {{ $settings->maintenance_mode == '1' ? 'checked' : '' }}>
-                            <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                            <input type="checkbox" class="sr-only peer"
+                                onchange="toggleSetting('{{ $s['key'] }}', this.checked ? '1' : '0')"
+                                {{ ($settings->{$s['key']} ?? '0') == '1' ? 'checked' : '' }}>
+                            <div class="w-10 h-6 bg-gray-300 rounded-full peer peer-checked:bg-green-500 after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:after:translate-x-4"></div>
                         </label>
                     </div>
-
-                    <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
-                        <div>
-                            <h4 class="font-medium text-gray-900">Registrasi User Baru</h4>
-                            <p class="text-sm text-gray-500">Izinkan user baru untuk mendaftar</p>
-                        </div>
-                        <label class="relative inline-flex items-center cursor-pointer">
-                            <input type="checkbox" class="sr-only peer" onchange="toggleSetting('allow_registration', this.checked ? '1' : '0')" {{ $settings->allow_registration == '1' ? 'checked' : '' }}>
-                            <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
-                        </label>
-                    </div>
-
-                    <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
-                        <div>
-                            <h4 class="font-medium text-gray-900">Notifikasi Email</h4>
-                            <p class="text-sm text-gray-500">Kirim notifikasi email untuk pesanan baru</p>
-                        </div>
-                        <label class="relative inline-flex items-center cursor-pointer">
-                            <input type="checkbox" class="sr-only peer" onchange="toggleSetting('email_notifications', this.checked ? '1' : '0')" {{ $settings->email_notifications == '1' ? 'checked' : '' }}>
-                            <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
-                        </label>
-                    </div>
+                    @endforeach
                 </div>
             </div>
         </div>
 
-        <!-- Settings Info -->
-        <div class="space-y-6">
-            <div class="bg-white rounded-lg shadow p-6">
-                <h3 class="text-lg font-semibold text-gray-800 mb-4">Informasi Sistem</h3>
-                <div class="space-y-3">
+        {{-- Sidebar Info --}}
+        <div class="space-y-5">
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
+                <h3 class="font-semibold text-gray-800 mb-4">Info Sistem</h3>
+                <div class="space-y-3 text-sm">
+                    @foreach(['Laravel'=>'10.x','PHP'=>'8.1+','Database'=>'MySQL','Status'=>'Online'] as $k=>$v)
                     <div class="flex justify-between">
-                        <span class="text-gray-600">Versi Laravel:</span>
-                        <span class="font-medium">10.x</span>
+                        <span class="text-gray-500">{{ $k }}</span>
+                        <span class="font-medium {{ $k=='Status' ? 'text-green-600' : 'text-gray-700' }}">{{ $v }}</span>
                     </div>
-                    <div class="flex justify-between">
-                        <span class="text-gray-600">Versi PHP:</span>
-                        <span class="font-medium">8.1+</span>
-                    </div>
-                    <div class="flex justify-between">
-                        <span class="text-gray-600">Database:</span>
-                        <span class="font-medium">MySQL</span>
-                    </div>
-                    <div class="flex justify-between">
-                        <span class="text-gray-600">Status:</span>
-                        <span class="text-green-600 font-medium">
-                            <i class="fas fa-circle text-xs mr-1"></i>
-                            Online
-                        </span>
-                    </div>
+                    @endforeach
                 </div>
             </div>
-
-           
-
-            <div class="bg-white rounded-lg shadow p-6">
-                <h3 class="text-lg font-semibold text-gray-800 mb-4">Statistik Hari Ini</h3>
-                <div class="space-y-3">
-                    <div class="flex justify-between">
-                        <span class="text-gray-600">Pengunjung:</span>
-                        <span class="font-medium">{{ $stats['visitors_today'] }}</span>
-                    </div>
-                    <div class="flex justify-between">
-                        <span class="text-gray-600">Pesanan Baru:</span>
-                        <span class="font-medium">{{ $stats['orders_today'] }}</span>
-                    </div>
-                    <div class="flex justify-between">
-                        <span class="text-gray-600">User Baru:</span>
-                        <span class="font-medium">{{ $stats['users_today'] }}</span>
-                    </div>
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
+                <h3 class="font-semibold text-gray-800 mb-4">Statistik Hari Ini</h3>
+                <div class="space-y-3 text-sm">
+                    <div class="flex justify-between"><span class="text-gray-500">Pesanan Baru</span><span class="font-bold text-gray-800">{{ $stats['orders_today'] }}</span></div>
+                    <div class="flex justify-between"><span class="text-gray-500">User Baru</span><span class="font-bold text-gray-800">{{ $stats['users_today'] }}</span></div>
                 </div>
             </div>
         </div>
@@ -172,23 +96,18 @@
 function toggleSetting(key, value) {
     fetch('{{ route("admin.settings.toggle") }}', {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-        },
-        body: JSON.stringify({ key: key, value: value })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            // Show success notification
-            const notification = document.createElement('div');
-            notification.className = 'fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50';
-            notification.innerHTML = '<i class="fas fa-check-circle mr-2"></i>Pengaturan berhasil diperbarui';
-            document.body.appendChild(notification);
-            setTimeout(() => notification.remove(), 3000);
+        headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+        body: JSON.stringify({ key, value })
+    }).then(r => r.json()).then(d => {
+        if (d.success) {
+            const n = document.createElement('div');
+            n.className = 'fixed top-4 right-4 bg-green-600 text-white px-5 py-3 rounded-xl shadow-lg z-50 text-sm font-medium';
+            n.innerHTML = '<i class="fas fa-check mr-2"></i>Pengaturan disimpan';
+            document.body.appendChild(n);
+            setTimeout(() => n.remove(), 2500);
         }
     });
 }
 </script>
+
 @endsection

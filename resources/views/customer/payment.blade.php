@@ -146,6 +146,7 @@
                     <span>Total Pembayaran</span>
                     <span>Rp {{ number_format($orderData['total'], 0, ',', '.') }}</span>
                 </div>
+                <input type="hidden" name="order_id" value="{{ $order->id }}"> 
             </div>
 
             <!-- Form Pembayaran -->
@@ -225,7 +226,7 @@
                     <div class="bank-note">
                         <i class="fas fa-exclamation-triangle"></i>
                         <strong>Penting:</strong> Transfer tepat <strong>Rp {{ number_format($orderData['total'], 0, ',', '.') }}</strong>.
-                        Setelah transfer, klik tombol konfirmasi di bawah. Pesanan akan diproses setelah pembayaran dikonfirmasi.
+                        No. Pesanan: #{{ $order->id }}. Setelah transfer, klik tombol konfirmasi.
                     </div>
                 </div>
 
@@ -255,6 +256,12 @@
         }
         btn.disabled = false;
     }
+
+    // Prefill if method from session or something, but optional
+    document.addEventListener('DOMContentLoaded', function() {
+        const radios = document.querySelectorAll('input[name="payment_method"]');
+        if (radios.length > 0) radios[0].closest('.method-card').click();
+    });
 
     document.getElementById('paymentForm').addEventListener('submit', function(e) {
         const selected = document.querySelector('input[name="payment_method"]:checked');

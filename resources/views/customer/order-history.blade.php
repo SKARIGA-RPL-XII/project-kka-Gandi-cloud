@@ -1,109 +1,78 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Histori Pesanan | GOCLEAN</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <style>
-        body{margin:0;font-family:'Inter',sans-serif;background:#f8fafc;display:flex;}
-        .sidebar{width:280px;background:linear-gradient(135deg,#005c02 0%,#00f7ff 100%);height:100vh;box-shadow:0 10px 30px rgba(0,0,0,.1);padding:0;position:fixed;overflow-y:auto;}
-        .sidebar-header{padding:30px 25px;text-align:center;border-bottom:1px solid rgba(255,255,255,.1);}
-        .sidebar h2{color:white;font-size:24px;font-weight:700;margin:0;text-shadow:0 2px 4px rgba(0,0,0,.3);}
-        .sidebar-nav{padding:20px 0;}
-        .sidebar a{display:flex;align-items:center;padding:15px 25px;color:rgba(255,255,255,.8);text-decoration:none;font-size:15px;transition:.3s;border-left:3px solid transparent;}
-        .sidebar a:hover, .sidebar a.active{background:rgba(255,255,255,.1);color:white;border-left-color:#fff;}
-        .sidebar a i{width:20px;margin-right:12px;font-size:16px;}
-        .container{flex:1;margin-left:280px;}
-        .nav{height:70px;background:white;color:#333;display:flex;align-items:center;justify-content:space-between;padding:0 30px;box-shadow:0 2px 10px rgba(0,0,0,.05);}
-        .nav-title{font-size:20px;font-weight:600;color:#2d3748;}
-        .wrapper{padding:30px;}
-        .card{background:white;border-radius:16px;padding:25px;box-shadow:0 4px 20px rgba(0,0,0,.06);margin-bottom:20px;}
-        .order-item{display:flex;align-items:center;justify-content:space-between;padding:20px;border:1px solid #f1f5f9;border-radius:12px;margin-bottom:15px;transition:.3s;}
-        .order-item:hover{box-shadow:0 4px 15px rgba(0,0,0,.08);}
-        .order-info{flex:1;}
-        .order-info h4{font-size:18px;font-weight:600;margin:0 0 8px 0;color:#1f2937;}
-        .order-info p{font-size:14px;color:#6b7280;margin:0 0 5px 0;}
-        .order-meta{display:flex;gap:20px;font-size:13px;color:#9ca3af;}
-        .status{padding:6px 12px;border-radius:20px;font-size:12px;font-weight:500;text-transform:uppercase;}
-        .status.pending{background:#fef3c7;color:#d97706;}
-        .status.proses{background:#dbeafe;color:#2563eb;}
-        .status.selesai{background:#d1fae5;color:#059669;}
-        .status.batal{background:#fee2e2;color:#dc2626;}
-        .price{font-size:18px;font-weight:700;color:#059669;}
-        .empty-state{text-align:center;padding:60px 20px;}
-        .empty-state i{font-size:64px;color:#d1d5db;margin-bottom:20px;}
-        .empty-state h3{font-size:20px;font-weight:600;color:#374151;margin:0 0 10px 0;}
-        .empty-state p{color:#6b7280;margin:0 0 25px 0;}
-        .btn{padding:12px 24px;border:none;border-radius:10px;background:linear-gradient(135deg,#00ff9d,#00c853);color:white;font-weight:600;cursor:pointer;transition:.3s;font-size:14px;text-decoration:none;display:inline-block;}
-        .btn:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(0,255,157,.3);}
-    </style>
-</head>
-<body>
+@extends('customer.layout')
+@section('title', 'Histori Pesanan')
 
-<div class="sidebar">
-    <div class="sidebar-header">
-        <h2><i class="fas fa-sparkles"></i> GOCLEAN</h2>
+@section('content')
+
+@php
+    $statusBadge = [
+        'pending'=>'bg-yellow-100 text-yellow-700',
+        'terima'=>'bg-blue-100 text-blue-700', 
+        'proses'=>'bg-indigo-100 text-indigo-700',
+        'selesai'=>'bg-green-100 text-green-700'
+    ];
+    $statusLabel = [
+        'pending'=>'Menunggu',
+        'terima'=>'Diterima',
+        'proses'=>'Diproses', 
+        'selesai'=>'Selesai'
+    ];
+@endphp
+
+<div class="mb-6 flex items-center justify-between">
+    <div>
+        <h2 class="text-xl font-bold text-gray-800">Histori Pesanan</h2>
+        <p class="text-gray-500 text-sm mt-1">Semua riwayat pesanan Anda</p>
     </div>
-    <div class="sidebar-nav">
-        <a href="/customer/dashboard"><i class="fas fa-home"></i> Dashboard</a>
-        <a href="/order/create"><i class="fas fa-plus-circle"></i> Buat Pesanan</a>
-        <a href="/order/history" class="active"><i class="fas fa-history"></i> Histori Pesanan</a>
-        <a href="/customer/profile"><i class="fas fa-user"></i> Profil</a>
-        <a href="/help"><i class="fas fa-headset"></i> Bantuan</a>
-    </div>
+    <a href="{{ route('order.create') }}" class="bg-green-600 hover:bg-green-700 text-white text-sm font-semibold px-4 py-2 rounded-xl transition">
+        <i class="fas fa-plus mr-1"></i> Pesan Lagi
+    </a>
 </div>
 
-<div class="container">
-    <div class="nav">
-        <div class="nav-title">Histori Pesanan</div>
-    </div>
-
-    <div class="wrapper">
-        <div class="card">
-            <h3 style="font-size:24px;font-weight:700;margin:0 0 20px 0;color:#1f2937;">
-                <i class="fas fa-history"></i> Riwayat Pesanan Anda
-            </h3>
-
-            @if($orders->count() == 0)
-                <div class="empty-state">
-                    <i class="fas fa-clipboard-list"></i>
-                    <h3>Belum Ada Pesanan</h3>
-                    <p>Anda belum pernah membuat pesanan. Mulai dengan membuat pesanan pertama Anda!</p>
-                    <a href="/order/create" class="btn">
-                        <i class="fas fa-plus"></i> Buat Pesanan Pertama
-                    </a>
-                </div>
-            @else
-                @foreach($orders as $order)
-                <div class="order-item">
-                    <div class="order-info">
-                        <h4>{{ $order->service->name ?? '-' }}</h4>
-                        <div class="order-meta">
-                            <span><i class="fas fa-calendar"></i> {{ date('d M Y', strtotime($order->schedule)) }}</span>
-                            <span><i class="fas fa-clock"></i> {{ date('d M Y H:i', strtotime($order->created_at)) }}</span>
-                            @if($order->payment_method)
-                                <span><i class="fas fa-credit-card"></i> {{ ucfirst($order->payment_method) }}</span>
-                            @endif
-                        </div>
-                    </div>
-                    <div style="text-align:right;">
-                        <div class="price">Rp {{ number_format($order->total ?? 0, 0, ',', '.') }}</div>
-                        <div style="margin-top:8px;">
-                            @php
-                                $statusMap = ['pending'=>'pending','confirmed'=>'proses','in_progress'=>'proses','done'=>'selesai','cancelled'=>'batal'];
-                                $statusLabel = ['pending'=>'Menunggu','confirmed'=>'Dikonfirmasi','in_progress'=>'Dikerjakan','done'=>'Selesai','cancelled'=>'Dibatalkan'];
-                            @endphp
-                            <span class="status {{ $statusMap[$order->status] ?? 'pending' }}">{{ $statusLabel[$order->status] ?? $order->status }}</span>
-                        </div>
-                    </div>
-                </div>
-                @endforeach
-            @endif
+@if($orders->isEmpty())
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-16 text-center">
+        <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <i class="fas fa-clipboard-list text-gray-400 text-2xl"></i>
         </div>
+        <h3 class="font-semibold text-gray-700 mb-2">Belum Ada Pesanan</h3>
+        <p class="text-gray-400 text-sm mb-5">Anda belum pernah membuat pesanan</p>
+        <a href="{{ route('order.create') }}" class="inline-block bg-green-600 text-white text-sm font-semibold px-6 py-2 rounded-xl hover:bg-green-700 transition">
+            Buat Pesanan Pertama
+        </a>
     </div>
-</div>
+@else
+    <div class="space-y-3">
+        @foreach($orders as $order)
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 hover:shadow-md transition">
+            <div class="flex items-start justify-between gap-4">
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 bg-gradient-to-br from-green-400 to-teal-500 rounded-xl flex items-center justify-center text-white flex-shrink-0">
+                        <i class="fas fa-broom"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold text-gray-800">{{ $order->service->name ?? '-' }}</h4>
+                        <div class="flex flex-wrap gap-3 mt-1">
+                            <span class="text-xs text-gray-400">
+                                <i class="fas fa-calendar mr-1"></i>{{ $order->order_date ? date('d M Y', strtotime($order->order_date)) : '-' }}
+                            </span>
+                            <span class="text-xs text-gray-400">
+                                <i class="fas fa-credit-card mr-1"></i>{{ ucfirst($order->payment_method ?? '-') }}
+                            </span>
+                            <span class="text-xs text-gray-400">
+                                <i class="fas fa-clock mr-1"></i>{{ $order->created_at->diffForHumans() }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-right flex-shrink-0">
+                    <p class="font-bold text-gray-800">Rp {{ number_format($order->total_price, 0, ',', '.') }}</p>
+                    <span class="inline-block mt-1 text-xs px-3 py-1 rounded-full font-medium {{ $statusBadge[$order->status] ?? 'bg-gray-100 text-gray-600' }}">
+                        {{ $statusLabel[$order->status] ?? $order->status }}
+                    </span>
+                </div>
+            </div>
+        </div>
+        @endforeach
+    </div>
+@endif
 
-</body>
-</html>
+@endsection

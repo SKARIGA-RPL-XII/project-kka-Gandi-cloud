@@ -15,9 +15,11 @@ class StaffController extends Controller
         try {
             $staffId = auth()->id();
 
-            $orders = Order::with(['customer.user', 'service'])
-                ->where('staff_id', $staffId)
-                ->whereIn('status', ['pending', 'confirmed', 'in_progress'])
+            $orders = Order::with(['customer', 'service'])
+                ->where(function($q) use ($staffId) {
+                    $q->whereNull('staff_id')->orWhere('staff_id', $staffId);
+                })
+                ->whereIn('status', ['pending', 'terima', 'proses'])
                 ->latest()
                 ->limit(10)
                 ->get();
@@ -56,8 +58,10 @@ class StaffController extends Controller
     {
         $staffId = auth()->id();
         
-        $query = Order::with(['customer.user', 'service'])
-            ->where('staff_id', $staffId);
+        $query = Order::with(['customer', 'service'])
+            ->where(function($q) use ($staffId) {
+                $q->whereNull('staff_id')->orWhere('staff_id', $staffId);
+            });
         
         if ($request->has('status') && $request->status) {
             $query->where('status', $request->status);
@@ -67,47 +71,50 @@ class StaffController extends Controller
         return view('staff.orders', compact('orders'));
     }
 
-    public function acceptOrder($id)
+    public function terimaOrder($id)
     {
         try {
             $order = Order::findOrFail($id);
-            $order->update(['status' => 'confirmed']);
-            return redirect()->back()->with('success', 'Pesanan berhasil diterima. Silakan mulai pekerjaan.');
+            $order->update([
+                'status' => 'terima',
+                'staff_id' => auth()->id()
+            ]);
+            return redirect()->back()->with('success', 'Pesanan berhasil diterima. Silakan proses pekerjaan.');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Gagal menerima pesanan: ' . $e->getMessage());
         }
     }
 
-    public function startOrder($id)
+    public function prosesOrder($id)
     {
         try {
             $order = Order::findOrFail($id);
-            $order->update(['status' => 'in_progress']);
-            return redirect()->back()->with('success', 'Pekerjaan dimulai. Selesaikan pekerjaan setelah selesai.');
+            $order->update(['status' => 'proses']);
+            return redirect()->back()->with('success', 'Pesanan sedang diproses.');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Gagal memulai pekerjaan: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Gagal memproses pesanan: ' . $e->getMessage());
         }
     }
 
-    public function completeOrder($id)
+    public function selesaiOrder($id)
     {
         try {
             $order = Order::findOrFail($id);
-            $order->update(['status' => 'done']);
-            return redirect()->back()->with('success', 'Pesanan berhasil diselesaikan');
+            $order->update(['status' => 'selesai']);
+            return redirect()->back()->with('success', 'Pesanan berhasil diselesaikan!');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Gagal menyelesaikan pesanan: ' . $e->getMessage());
         }
     }
 
-    public function rejectOrder($id)
+    public function pendingOrder($id)
     {
         try {
             $order = Order::findOrFail($id);
-            $order->update(['status' => 'cancelled']);
-            return redirect()->back()->with('success', 'Pesanan ditolak');
+            $order->update(['status' => 'pending']);
+            return redirect()->back()->with('success', 'Pesanan dikembalikan ke pending.');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Gagal menolak pesanan: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Gagal mengubah status: ' . $e->getMessage());
         }
     }
 

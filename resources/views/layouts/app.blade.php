@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>@yield('title') | GOCLEAN</title>
-
+    <link rel="shortcut icon" href="{{ asset('favicon.png.png') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         body { display:flex; margin:0; font-family:Inter,sans-serif; background:#0f172a; color:white; }

@@ -2,151 +2,56 @@
 @section('title', 'Kelola Layanan')
 
 @section('content')
-    <div class="flex justify-between items-center mb-6">
-        <h2 class="text-2xl font-bold text-gray-800">Kelola Layanan</h2>
-        <a href="{{ route('admin.services.create') }}"
-            class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg">
-            Tambah Layanan
-        </a>
-        </a>
+
+<div class="flex items-center justify-between mb-6">
+    <div>
+        <h2 class="text-xl font-bold text-gray-800">Kelola Layanan</h2>
+        <p class="text-gray-500 text-sm mt-1">{{ $services->count() }} layanan tersedia</p>
     </div>
+    <a href="{{ route('admin.services.create') }}" class="bg-green-600 hover:bg-green-700 text-white text-sm font-semibold px-4 py-2 rounded-xl transition flex items-center gap-2">
+        <i class="fas fa-plus"></i> Tambah Layanan
+    </a>
+</div>
 
-    @if(session('success'))
-        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
-            <i class="fas fa-check-circle mr-2"></i>{{ session('success') }}
-        </div>
-    @endif
-
-    <div class="bg-white rounded-lg shadow overflow-hidden">
-        <div class="overflow-x-auto">
-            <table class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-gray-50">
-                    <tr>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Layanan
-                        </th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Deskripsi
-                        </th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Harga
-                        </th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Durasi
-                        </th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Status
-                        </th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Aksi
-                        </th>
-                    </tr>
-                </thead>
-                <tbody class="bg-white divide-y divide-gray-200">
-                    @forelse($services as $service)
-                        <tr class="hover:bg-gray-50">
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="flex items-center">
-                                    <div class="flex-shrink-0 h-10 w-10">
-                                        <div
-                                            class="h-10 w-10 rounded-full bg-blue-500 flex items-center justify-center text-white font-medium">
-                                            <i class="fas fa-broom"></i>
-                                        </div>
-                                    </div>
-                                    <div class="ml-4">
-                                        <div class="text-sm font-medium text-gray-900">{{ $service->name }}</div>
-                                        <div class="text-sm text-gray-500">ID: #{{ $service->id }}</div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="px-6 py-4">
-                                <div class="text-sm text-gray-900 max-w-xs">
-                                    {{ Str::limit($service->description, 50) }}
-                                </div>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm font-medium text-gray-900">
-                                    Rp {{ number_format($service->price, 0, ',', '.') }}
-                                </div>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm text-gray-900">{{ $service->duration }} menit</div>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
-                                    Aktif
-                                </span>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                <div class="flex space-x-2">
-                                    <a href="{{ route('admin.services.edit', $service->id) }}"
-                                        class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded text-xs">
-                                        <i class="fas fa-edit"></i> Edit
-                                    </a>
-
-                                    <form action="{{ route('admin.services.delete', $service->id) }}" method="POST" class="inline">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button onclick="return confirm('Yakin ingin menghapus layanan ini?')"
-                                            class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-xs">
-                                            <i class="fas fa-trash"></i> Hapus
-                                        </button>
-                                    </form>
-                                </div>
-                            </td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="6" class="px-6 py-12 text-center">
-                                <div class="text-gray-500">
-                                    <i class="fas fa-inbox text-4xl mb-4"></i>
-                                    <p class="text-lg font-medium">Belum ada layanan</p>
-                                    <p class="text-sm">Tambahkan layanan pertama Anda</p>
-                                </div>
-                            </td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
-        </div>
+@if($services->isEmpty())
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-16 text-center">
+        <i class="fas fa-broom text-4xl text-gray-300 mb-3 block"></i>
+        <p class="text-gray-500 font-medium">Belum ada layanan</p>
+        <a href="{{ route('admin.services.create') }}" class="inline-block mt-3 bg-green-600 text-white text-sm px-4 py-2 rounded-xl hover:bg-green-700 transition">Tambah Sekarang</a>
     </div>
-
-    <!-- Service Statistics -->
-    <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div class="bg-white p-6 rounded-lg shadow">
-            <div class="flex items-center">
-                <div class="p-3 bg-green-100 rounded-full">
-                    <i class="fas fa-check-circle text-green-600 text-xl"></i>
+@else
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        @foreach($services as $service)
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition">
+            <div class="bg-gradient-to-br from-green-500 to-teal-600 p-5 text-white">
+                <div class="flex items-center justify-between mb-3">
+                    <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center">
+                        <i class="fas fa-broom"></i>
+                    </div>
+                    <span class="text-xs bg-white/20 px-2 py-1 rounded-full">{{ $service->duration }} menit</span>
                 </div>
-                <div class="ml-4">
-                    <h3 class="text-gray-500 text-sm">Total Layanan</h3>
-                    <p class="text-2xl font-bold">{{ $services->count() }}</p>
+                <h3 class="font-bold text-lg">{{ $service->name }}</h3>
+                <p class="text-2xl font-extrabold mt-1">Rp {{ number_format($service->price, 0, ',', '.') }}</p>
+            </div>
+            <div class="p-5">
+                <p class="text-gray-500 text-sm leading-relaxed mb-4">{{ Str::limit($service->description, 80) }}</p>
+                <div class="flex gap-2">
+                    <a href="{{ route('admin.services.edit', $service->id) }}"
+                        class="flex-1 text-center bg-yellow-50 hover:bg-yellow-100 text-yellow-700 font-semibold py-2 rounded-xl text-sm transition">
+                        <i class="fas fa-edit mr-1"></i> Edit
+                    </a>
+                    <form action="{{ route('admin.services.delete', $service->id) }}" method="POST" class="flex-1">
+                        @csrf @method('DELETE')
+                        <button onclick="return confirm('Hapus layanan ini?')"
+                            class="w-full bg-red-50 hover:bg-red-100 text-red-600 font-semibold py-2 rounded-xl text-sm transition">
+                            <i class="fas fa-trash mr-1"></i> Hapus
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>
-
-        <div class="bg-white p-6 rounded-lg shadow">
-            <div class="flex items-center">
-                <div class="p-3 bg-blue-100 rounded-full">
-                    <i class="fas fa-star text-blue-600 text-xl"></i>
-                </div>
-                <div class="ml-4">
-                    <h3 class="text-gray-500 text-sm">Layanan Populer</h3>
-                    <p class="text-2xl font-bold">{{ $services->first()->name ?? '-' }}</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="bg-white p-6 rounded-lg shadow">
-            <div class="flex items-center">
-                <div class="p-3 bg-purple-100 rounded-full">
-                    <i class="fas fa-money-bill text-purple-600 text-xl"></i>
-                </div>
-                <div class="ml-4">
-                    <h3 class="text-gray-500 text-sm">Rata-rata Harga</h3>
-                    <p class="text-2xl font-bold">Rp {{ number_format($services->avg('price'), 0, ',', '.') }}</p>
-                </div>
-            </div>
-        </div>
+        @endforeach
     </div>
+@endif
+
 @endsection

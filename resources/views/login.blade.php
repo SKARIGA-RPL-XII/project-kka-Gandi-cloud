@@ -1,186 +1,155 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Login - GOCLEAN</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>Login — GOCLEAN</title>
+    <link rel="shortcut icon" href="{{ asset('favicon.png') }}">
+    <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #005c02 0%, #00f7ff 100%);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 1rem;
-        }
-
-        .login-container {
-            background: white;
-            padding: 2.5rem;
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-            width: 100%;
-            max-width: 420px;
-        }
-        
-        @media (max-width: 480px) {
-            .login-container {
-                padding: 1.5rem;
-            }
-            
-            .logo h1 {
-                font-size: 1.8rem;
-            }
-        }
-
-        .logo {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-
-        .logo h1 {
-            font-size: 2.2rem;
-            font-weight: 700;
-            color: #005c02;
-            margin-bottom: 0.5rem;
-        }
-
-        .logo p {
-            color: #6b7280;
-            font-size: 0.95rem;
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-group label {
-            display: block;
-            font-weight: 600;
-            color: #374151;
-            margin-bottom: 0.5rem;
-            font-size: 0.9rem;
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 0.8rem 1rem;
-            border: 2px solid #e5e7eb;
-            border-radius: 12px;
-            font-size: 0.95rem;
-            transition: all 0.3s ease;
-        }
-
-        .form-control:focus {
-            outline: none;
-            border-color: #00c853;
-            box-shadow: 0 0 0 3px rgba(0, 200, 83, 0.1);
-        }
-
-        .btn {
-            width: 100%;
-            padding: 0.8rem;
-            border: none;
-            border-radius: 12px;
-            background: linear-gradient(135deg, #00c853, #005c02);
-            color: white;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 1rem;
-        }
-
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0, 200, 83, 0.3);
-        }
-
-        .register-link {
-            text-align: center;
-            margin-top: 1.5rem;
-            font-size: 0.9rem;
-        }
-
-        .register-link a {
-            color: #00c853;
-            text-decoration: none;
-            font-weight: 600;
-        }
-
-        .error-message {
-            background: #fee2e2;
-            color: #dc2626;
-            padding: 0.8rem;
-            border-radius: 8px;
-            margin-bottom: 1rem;
-            font-size: 0.9rem;
-            display: none;
-        }
-
-        .success-message {
-            background: #d1fae5;
-            color: #059669;
-            padding: 0.8rem;
-            border-radius: 8px;
-            margin-bottom: 1rem;
-            font-size: 0.9rem;
-            display: none;
-        }
-    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>body{font-family:'Inter',sans-serif;}</style>
 </head>
+<body class="min-h-screen flex" style="background:linear-gradient(135deg,#0a3d0a,#005c02 50%,#007a7a)">
 
-<body>
-    <div class="login-container">
-        <div class="logo">
-            <h1><i class="fas fa-sparkles"></i> GOCLEAN</h1>
-            <p>Masuk ke akun Anda</p>
+{{-- Left Panel --}}
+<div class="hidden lg:flex flex-col justify-center px-16 w-1/2 text-white">
+    <div class="mb-8">
+        <div class="flex items-center gap-3 mb-10">
+            <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center">
+                <i class="fas fa-sparkles text-white"></i>
+            </div>
+            <span class="text-2xl font-bold">GOCLEAN</span>
         </div>
+        <h1 class="text-4xl font-bold leading-tight mb-4">Layanan Pembersihan<br>Profesional Terpercaya</h1>
+        <p class="text-white/70 text-lg">Solusi kebersihan rumah dan kantor Anda dengan standar kualitas tinggi.</p>
+    </div>
+    <div class="space-y-4">
+        <div class="flex items-center gap-3 bg-white/10 rounded-xl px-4 py-3">
+            <div class="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                <i class="fas fa-shield-alt text-white text-sm"></i>
+            </div>
+            <div>
+                <p class="font-semibold text-sm">Terpercaya & Profesional</p>
+                <p class="text-white/60 text-xs">Tim berpengalaman dengan standar tinggi</p>
+            </div>
+        </div>
+        <div class="flex items-center gap-3 bg-white/10 rounded-xl px-4 py-3">
+            <div class="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                <i class="fas fa-clock text-white text-sm"></i>
+            </div>
+            <div>
+                <p class="font-semibold text-sm">Tepat Waktu</p>
+                <p class="text-white/60 text-xs">Layanan sesuai jadwal yang disepakati</p>
+            </div>
+        </div>
+        <div class="flex items-center gap-3 bg-white/10 rounded-xl px-4 py-3">
+            <div class="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                <i class="fas fa-star text-white text-sm"></i>
+            </div>
+            <div>
+                <p class="font-semibold text-sm">Rating Tinggi</p>
+                <p class="text-white/60 text-xs">Dipercaya ribuan pelanggan</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{-- Right Panel --}}
+<div class="flex-1 flex items-center justify-center p-6">
+    <div class="bg-white rounded-3xl shadow-2xl w-full max-w-md p-8">
+
+        {{-- Logo mobile --}}
+        <div class="flex items-center gap-2 mb-8 lg:hidden">
+            <div class="w-8 h-8 bg-green-600 rounded-lg flex items-center justify-center">
+                <i class="fas fa-sparkles text-white text-xs"></i>
+            </div>
+            <span class="text-xl font-bold text-gray-800">GOCLEAN</span>
+        </div>
+<a href="{{ url('/') }}"
+   class="inline-flex items-center gap-2 text-sm font-semibold text-gray-600 hover:text-green-600 transition mb-5">
+    <i class="fas fa-arrow-left"></i>
+    Kembali ke Halaman Utama
+</a>
+        <h2 class="text-2xl font-bold text-gray-800 mb-1">Selamat Datang</h2>
+        <p class="text-gray-500 text-sm mb-7">Masuk ke akun Anda untuk melanjutkan</p>
 
         @if(session('error'))
-            <div class="error-message" style="display:block;">{{ session('error') }}</div>
+            <div class="flex items-center gap-2 bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-xl mb-5 text-sm">
+                <i class="fas fa-exclamation-circle"></i> {{ session('error') }}
+            </div>
         @endif
-
         @if(session('success'))
-            <div class="success-message" style="display:block;">{{ session('success') }}</div>
+            <div class="flex items-center gap-2 bg-green-50 border border-green-200 text-green-600 px-4 py-3 rounded-xl mb-5 text-sm">
+                <i class="fas fa-check-circle"></i> {{ session('success') }}
+            </div>
         @endif
 
-        <div class="error-message" id="errorMessage"></div>
-
-        <form method="POST" action="{{ route('login') }}" id="loginForm">
+        <form method="POST" action="{{ route('login.post') }}">
             @csrf
-
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email" class="form-control" placeholder="Masukkan email Anda"
-                    required autofocus>
+            <div class="mb-4">
+                <label class="block text-sm font-semibold text-gray-700 mb-2">Email</label>
+                <div class="relative">
+                    <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"><i class="fas fa-envelope text-sm"></i></span>
+                    <input type="email" name="email" value="{{ old('email') }}" required autofocus
+                        class="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-100 transition"
+                        placeholder="nama@email.com">
+                </div>
             </div>
 
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" class="form-control"
-                    placeholder="Masukkan password Anda" required>
+            <div class="mb-6">
+                <label class="block text-sm font-semibold text-gray-700 mb-2">Password</label>
+                <div class="relative">
+                    <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"><i class="fas fa-lock text-sm"></i></span>
+                    <input type="password" name="password" id="password" required
+                        class="w-full pl-10 pr-10 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-100 transition"
+                        placeholder="Masukkan password">
+                    <button type="button" onclick="togglePass()" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                        <i class="fas fa-eye text-sm" id="eyeIcon"></i>
+                    </button>
+                </div>
             </div>
 
-            <button type="submit" class="btn">
-                <i class="fas fa-sign-in-alt"></i> Masuk
+            <button type="submit" class="w-full py-3 bg-gradient-to-r from-green-600 to-teal-600 hover:from-green-700 hover:to-teal-700 text-white font-semibold rounded-xl transition shadow-lg shadow-green-200 text-sm">
+                <i class="fas fa-sign-in-alt mr-2"></i> Masuk
             </button>
         </form>
 
-        <div class="register-link">
-            <p>Belum punya akun? <a href="/register">Daftar sekarang</a></p>
+        <p class="text-center text-sm text-gray-500 mt-6">
+            Belum punya akun?
+            <a href="{{ route('register') }}" class="text-green-600 font-semibold hover:text-green-700">Daftar sekarang</a>
+        </p>
+
+        <div class="mt-6 pt-5 border-t border-gray-100">
+            <p class="text-xs text-gray-400 text-center mb-3">Demo Credentials</p>
+            <div class="grid grid-cols-3 gap-2 text-xs">
+                <div class="bg-purple-50 rounded-lg p-2 text-center">
+                    <p class="font-semibold text-purple-700">Admin</p>
+                    <p class="text-gray-500 mt-1">admin@goclean.com</p>
+                    <p class="text-gray-500">goclean</p>
+                </div>
+                <div class="bg-blue-50 rounded-lg p-2 text-center">
+                    <p class="font-semibold text-blue-700">Staff</p>
+                    <p class="text-gray-500 mt-1">Tambah via</p>
+                    <p class="text-gray-500">Admin</p>
+                </div>
+                <div class="bg-green-50 rounded-lg p-2 text-center">
+                    <p class="font-semibold text-green-700">Customer</p>
+                    <p class="text-gray-500 mt-1">Daftar via</p>
+                    <p class="text-gray-500">Register</p>
+                </div>
+            </div>
         </div>
     </div>
-</body>
+</div>
 
+<script>
+function togglePass(){
+    const p = document.getElementById('password');
+    const i = document.getElementById('eyeIcon');
+    if(p.type==='password'){ p.type='text'; i.className='fas fa-eye-slash text-sm'; }
+    else { p.type='password'; i.className='fas fa-eye text-sm'; }
+}
+</script>
+</body>
 </html>

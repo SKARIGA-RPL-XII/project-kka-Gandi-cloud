@@ -11,19 +11,10 @@ class CustomerController extends Controller
     public function dashboard()
     {
         $user = Auth::user();
-        
-        // Cari customer_id dari user_id
         $customer = \App\Models\Customer::where('user_id', Auth::id())->first();
-        
-        if ($customer) {
-            $orders = \App\Models\Order::where('customer_id', $customer->id)
-                ->with('service')
-                ->orderBy('created_at', 'desc')
-                ->get();
-        } else {
-            $orders = collect();
-        }
-        
+        $orders = $customer
+            ? \App\Models\Order::with('service')->where('customer_id', $customer->id)->latest()->get()
+            : collect();
         return view('customer.dashboard', compact('user', 'orders'));
     }
 }

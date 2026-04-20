@@ -6,19 +6,31 @@ use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
-    protected $fillable = [
-        'customer_id', 'service_id', 'staff_id',
-        'schedule', 'status', 'total', 'payment_method'
-    ];
+protected $fillable = [
+    'user_id',
+    'service_id',
+    'staff_id',
+    'order_date',
+    'address',
+    'total_price',
+    'status',
+    'payment_status',
+    'payment_method'
+];
 
     protected $casts = [
-        'schedule' => 'date',
-        'total'    => 'decimal:2',
+        'order_date' => 'date',
+        'total_price' => 'decimal:2',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 
     public function customer()
     {
-        return $this->belongsTo(Customer::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function service()

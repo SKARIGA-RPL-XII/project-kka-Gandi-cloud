@@ -14,8 +14,8 @@ class AdminSeeder extends Seeder
         DB::table('users')->where('role', 'admin')->delete();
 
         DB::table('users')->insert([
-            'name'       => 'Admin GOCLEAN',
-            'email'      => 'admin@goclean.com',
+'name'       => 'Admin Goclean',
+'email'      => 'admin@goclean.com',
             'password'   => Hash::make('goclean'),
             'role'       => 'admin',
             'is_active'  => true,

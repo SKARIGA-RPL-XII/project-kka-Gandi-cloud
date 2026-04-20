@@ -17,7 +17,7 @@ use App\Http\Controllers\OrderController;
 Route::get('/', fn() => view('welcome'));
 Route::get('/about', fn() => view('about'));
 
-Route::get('/contact', fn() => view('contact'));
+Route::get('/contact', fn() => view('contact'))->name('contact');
 Route::post('/contact', function (Request $request) {
     $request->validate([
         'name'    => 'required|string|max:255',
@@ -134,10 +134,10 @@ Route::middleware(['auth', 'staff'])->group(function () {
     Route::get('/staff/profile', [StaffController::class, 'profile'])->name('staff.profile');
     Route::put('/staff/profile/update', [StaffController::class, 'updateProfile'])->name('staff.profile.update');
 
-    Route::post('/staff/order/{id}/accept', [StaffController::class, 'acceptOrder'])->name('staff.order.accept');
-    Route::post('/staff/order/{id}/start', [StaffController::class, 'startOrder'])->name('staff.order.start');
-    Route::post('/staff/order/{id}/complete', [StaffController::class, 'completeOrder'])->name('staff.order.complete');
-    Route::post('/staff/order/{id}/reject', [StaffController::class, 'rejectOrder'])->name('staff.order.reject');
+    Route::post('/staff/order/{id}/terima', [StaffController::class, 'terimaOrder'])->name('staff.order.terima');
+    Route::post('/staff/order/{id}/proses', [StaffController::class, 'prosesOrder'])->name('staff.order.proses');
+    Route::post('/staff/order/{id}/selesai', [StaffController::class, 'selesaiOrder'])->name('staff.order.selesai');
+    Route::post('/staff/order/{id}/pending', [StaffController::class, 'pendingOrder'])->name('staff.order.pending');
     Route::delete('/staff/order/{id}', [StaffController::class, 'deleteOrder'])->name('staff.order.delete');
 });
 
