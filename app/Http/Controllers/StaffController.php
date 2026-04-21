@@ -13,38 +13,39 @@ class StaffController extends Controller
     public function dashboard()
     {
         try {
-            $staffId = auth()->id();
+            $staffId = auth()->user()->id;
 
             $orders = Order::with(['customer', 'service'])
+                ->where('payment_status', 'paid')
                 ->where(function($q) use ($staffId) {
                     $q->whereNull('staff_id')->orWhere('staff_id', $staffId);
                 })
-                ->whereIn('status', ['pending', 'terima', 'proses'])
+                ->whereIn('status', ['pending', 'terima', 'mulai'])
                 ->latest()
                 ->limit(10)
                 ->get();
             
             $stats = [
                 'pending_orders' => Order::where('staff_id', $staffId)->where('status', 'pending')->count(),
-                'confirmed' => Order::where('staff_id', $staffId)->where('status', 'confirmed')->count(),
-                'in_progress' => Order::where('staff_id', $staffId)->where('status', 'in_progress')->count(),
-                'completed_today' => Order::where('staff_id', $staffId)
-                    ->where('status', 'done')
+                'terima_count' => Order::where('staff_id', $staffId)->where('status', 'terima')->count(),
+                'mulai_count' => Order::where('staff_id', $staffId)->where('status', 'mulai')->count(),
+                'selesai_today' => Order::where('staff_id', $staffId)
+                    ->where('status', 'selesai')
                     ->whereDate('updated_at', today())
                     ->count(),
-                'completed_week' => Order::where('staff_id', $staffId)
-                    ->where('status', 'done')
+                'selesai_week' => Order::where('staff_id', $staffId)
+                    ->where('status', 'selesai')
                     ->whereBetween('updated_at', [now()->startOfWeek(), now()->endOfWeek()])
                     ->count(),
-                'completed_month' => Order::where('staff_id', $staffId)
-                    ->where('status', 'done')
+                'selesai_month' => Order::where('staff_id', $staffId)
+                    ->where('status', 'selesai')
                     ->whereMonth('updated_at', now()->month)
                     ->count(),
-                'cancelled' => Order::where('staff_id', $staffId)->where('status', 'cancelled')->count(),
-                'total_orders' => Order::where('staff_id', $staffId)->count(),
+                'tolak_count' => Order::where('staff_id', $staffId)->where('status', 'tolak')->count(),
+                'total_orders' => Order::where('staff_id', $staffId)->where('payment_status', 'paid')->count(),
                 'total_earnings' => Order::where('staff_id', $staffId)
-                    ->where('status', 'done')
-                    ->sum('total') ?? 0
+                    ->where('status', 'selesai')
+                    ->sum('total_price') ?? 0
             ];
             
             return view('staff.dashboard', compact('stats', 'orders'));
@@ -56,9 +57,10 @@ class StaffController extends Controller
 
     public function orders(Request $request)
     {
-        $staffId = auth()->id();
+        $staffId = auth()->user()->id();
         
         $query = Order::with(['customer', 'service'])
+            ->where('payment_status', 'paid')
             ->where(function($q) use ($staffId) {
                 $q->whereNull('staff_id')->orWhere('staff_id', $staffId);
             });
@@ -85,14 +87,14 @@ class StaffController extends Controller
         }
     }
 
-    public function prosesOrder($id)
+    public function mulaiOrder($id)
     {
         try {
             $order = Order::findOrFail($id);
-            $order->update(['status' => 'proses']);
-            return redirect()->back()->with('success', 'Pesanan sedang diproses.');
+            $order->update(['status' => 'mulai']);
+            return redirect()->back()->with('success', 'Pesanan mulai diproses.');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Gagal memproses pesanan: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Gagal memulai pesanan: ' . $e->getMessage());
         }
     }
 
@@ -118,6 +120,17 @@ class StaffController extends Controller
         }
     }
 
+    public function tolakOrder($id)
+    {
+        try {
+            $order = Order::findOrFail($id);
+            $order->update(['status' => 'tolak']);
+            return redirect()->back()->with('success', 'Pesanan berhasil ditolak.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Gagal menolak pesanan: ' . $e->getMessage());
+        }
+    }
+
     public function deleteOrder($id)
     {
         try {
@@ -135,10 +148,10 @@ class StaffController extends Controller
         $staffId = auth()->id();
 
         $stats = [
-            'total_completed' => Order::where('staff_id', $staffId)->where('status', 'done')->count(),
-            'total_earnings' => Order::where('staff_id', $staffId)->where('status', 'done')->sum('total') ?? 0,
+            'total_completed' => Order::where('staff_id', $staffId)->where('status', 'selesai')->count(),
+            'total_earnings' => Order::where('staff_id', $staffId)->where('status', 'selesai')->sum('total_price') ?? 0,
             'pending' => Order::where('staff_id', $staffId)->where('status', 'pending')->count(),
-            'in_progress' => Order::where('staff_id', $staffId)->where('status', 'in_progress')->count()
+            'mulai' => Order::where('staff_id', $staffId)->where('status', 'mulai')->count()
         ];
 
         return view('staff.profile', compact('user', 'stats'));
@@ -171,4 +184,22 @@ class StaffController extends Controller
             return redirect()->back()->with('error', 'Gagal memperbarui profil: ' . $e->getMessage());
         }
     }
+    public function store(Request $request)
+{
+    $request->validate([
+        'name' => 'required',
+        'email' => 'required|email|unique:users,email',
+    ]);
+
+    User::create([
+        'name' => $request->name,
+        'email' => $request->email,
+        'password' => Hash::make($request->email), // password awal
+        'role' => 'staff',
+        'first_login' => true,
+        'is_active' => true,
+    ]);
+
+    return back()->with('success', 'Staff berhasil ditambahkan');
+}
 }

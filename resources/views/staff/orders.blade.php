@@ -7,22 +7,22 @@
     $badge = [
         'pending'=>'bg-yellow-100 text-yellow-700',
         'terima'=>'bg-blue-100 text-blue-700', 
-        'proses'=>'bg-indigo-100 text-indigo-700',
+'mulai'=>'bg-indigo-100 text-indigo-700',
         'selesai'=>'bg-green-100 text-green-700',
-        'batal'=>'bg-red-100 text-red-700'
+        'tolak'=>'bg-red-100 text-red-700'
     ];
     $label = [
         'pending'=>'Pending',
         'terima'=>'Diterima',
-        'proses'=>'Diproses', 
+        'mulai'=>'Diproses', 
         'selesai'=>'Selesai',
-        'batal'=>'Batal'
+        'tolak'=>'Ditolak'
     ];
 @endphp
 
 {{-- Filter Tabs --}}
 <div class="flex flex-wrap gap-2 mb-5">
-    @foreach([''=>'Semua','pending'=>'Pending','confirmed'=>'Dikonfirmasi','in_progress'=>'Dikerjakan','done'=>'Selesai','cancelled'=>'Batal'] as $val=>$lbl)
+@foreach([''=>'Semua','pending'=>'Pending','terima'=>'Diterima','mulai'=>'Diproses','selesai'=>'Selesai','tolak'=>'Ditolak'] as $val=>$lbl)
     <a href="{{ route('staff.orders', $val ? ['status'=>$val] : []) }}"
         class="px-4 py-2 rounded-xl text-sm font-medium transition
         {{ request('status') == $val ? 'bg-gray-800 text-white' : 'bg-white text-gray-600 border border-gray-200 hover:bg-gray-50' }}">
@@ -46,7 +46,7 @@
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div class="flex items-center gap-4">
                     <div class="w-12 h-12 bg-gradient-to-br from-blue-400 to-indigo-500 rounded-xl flex items-center justify-center text-white font-bold text-lg flex-shrink-0">
-                        {{ strtoupper(substr($order->customer->name ?? 'U', 0, 1)) }}
+{{ strtoupper(substr($order->customer->name ?? $order->user->name ?? 'U', 0, 1)) }}
                     </div>
                     <div>
                         <div class="flex items-center gap-2 flex-wrap">
@@ -84,21 +84,28 @@
                                     <i class="fas fa-pause mr-1"></i>Pending
                                 </button>
                             </form>
-                        @elseif($order->status == 'terima')
-                            <form action="{{ route('staff.order.proses', $order->id) }}" method="POST">
+@elseif($order->status == 'terima')
+                            <form action="{{ route('staff.order.mulai', $order->id) }}" method="POST">
                                 @csrf
                                 <button class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-xl text-xs font-semibold transition">
-                                    <i class="fas fa-play mr-1"></i>Proses
+                                    <i class="fas fa-play mr-1"></i>Mulai
                                 </button>
                             </form>
-                        @elseif($order->status == 'proses')
+                        @elseif($order->status == 'mulai')
                             <form action="{{ route('staff.order.selesai', $order->id) }}" method="POST">
                                 @csrf
                                 <button onclick="return confirm('Tandai selesai?')" class="bg-purple-500 hover:bg-purple-600 text-white px-3 py-2 rounded-xl text-xs font-semibold transition">
                                     <i class="fas fa-check-circle mr-1"></i>Selesai
                                 </button>
                             </form>
-                        @elseif(in_array($order->status, ['selesai','pending']))
+                        @elseif($order->status == 'pending')
+                            <form action="{{ route('staff.order.tolak', $order->id) }}" method="POST">
+                                @csrf
+                                <button onclick="return confirm('Tolak pesanan?')" class="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-xl text-xs font-semibold transition">
+                                    <i class="fas fa-times mr-1"></i>Tolak
+                                </button>
+                            </form>
+                        @elseif(in_array($order->status, ['selesai','tolak']))
                             <form action="{{ route('staff.order.delete', $order->id) }}" method="POST">
                                 @csrf @method('DELETE')
                                 <button onclick="return confirm('Hapus pesanan ini?')" class="bg-gray-400 hover:bg-gray-500 text-white px-3 py-2 rounded-xl text-xs font-semibold transition">

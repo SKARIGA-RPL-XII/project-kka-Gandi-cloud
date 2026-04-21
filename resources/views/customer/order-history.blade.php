@@ -7,14 +7,16 @@
     $statusBadge = [
         'pending'=>'bg-yellow-100 text-yellow-700',
         'terima'=>'bg-blue-100 text-blue-700', 
-        'proses'=>'bg-indigo-100 text-indigo-700',
-        'selesai'=>'bg-green-100 text-green-700'
+'mulai'=>'bg-indigo-100 text-indigo-700',
+        'selesai'=>'bg-green-100 text-green-700',
+        'tolak'=>'bg-red-100 text-red-700'
     ];
     $statusLabel = [
         'pending'=>'Menunggu',
         'terima'=>'Diterima',
-        'proses'=>'Diproses', 
-        'selesai'=>'Selesai'
+        'mulai'=>'Diproses', 
+        'selesai'=>'Selesai',
+        'tolak'=>'Ditolak'
     ];
 @endphp
 

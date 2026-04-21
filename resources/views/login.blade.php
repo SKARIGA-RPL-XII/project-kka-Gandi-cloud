@@ -135,8 +135,8 @@
                 </div>
                 <div class="bg-green-50 rounded-lg p-2 text-center">
                     <p class="font-semibold text-green-700">Customer</p>
-                    <p class="text-gray-500 mt-1">Daftar via</p>
-                    <p class="text-gray-500">Register</p>
+                    <p class="text-gray-500 mt-1">customer@goclean.com</p>
+                    <p class="text-gray-500">customer123</p>
                 </div>
             </div>
         </div>

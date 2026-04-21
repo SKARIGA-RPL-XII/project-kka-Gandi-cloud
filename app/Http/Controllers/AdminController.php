@@ -23,12 +23,12 @@ class AdminController extends Controller
             'pending_orders' => \App\Models\Order::where('status', 'pending')->count(),
             'completed_orders' => \App\Models\Order::where('status', 'done')->count(),
             'total_services' => \App\Models\Service::count(),
-            'total_revenue' => \App\Models\Order::where('status', 'done')->sum('total_price') ?? 0,
-'revenue_today' => \App\Models\Order::where('status', 'done')->whereDate('updated_at', today())->sum('total_price') ?? 0,
-'revenue_month' => \App\Models\Order::where('status', 'done')->whereMonth('updated_at', now()->month)->sum('total_price') ?? 0
+'total_revenue' => 0,
+'revenue_today' => 0,
+'revenue_month' => 0
         ];
         
-        $recentOrders = \App\Models\Order::with(['customer.user', 'service'])
+$recentOrders = \App\Models\Order::with(['user', 'service', 'staff'])
             ->orderBy('created_at', 'desc')
             ->limit(5)
             ->get();
@@ -95,45 +95,63 @@ class AdminController extends Controller
         return view('admin.users', compact('users'));
     }
 
-    public function storeStaff(Request $request)
+public function storeStaff(Request $request)
     {
         $validated = $request->validate([
             'name'     => 'required|string|max:255',
             'email'    => 'required|email|unique:users,email',
-            'password' => 'required|min:8|confirmed',
         ]);
 
         User::create([
             'name'      => $validated['name'],
             'email'     => $validated['email'],
-            'password'  => Hash::make($validated['password']),
+            'password'  => Hash::make($validated['email']), // Password awal = email
             'role'      => 'staff',
             'is_active' => true,
         ]);
 
-        return redirect()->route('admin.users')->with('success', 'Staff berhasil ditambahkan!');
+        return redirect()->route('admin.users')->with('success', 'Staff berhasil ditambahkan! Password awal: ' . $validated['email']);
     }
 
     public function editUser($id)
     {
         $user = \App\Models\User::findOrFail($id);
+        
+        // Protect admin account
+        if ($user->role === 'admin') {
+            return response()->json(['error' => 'Admin account cannot be edited.'], 403);
+        }
+        
         return response()->json($user);
     }
 
     public function updateUser(Request $request, $id)
     {
+        $user = \App\Models\User::findOrFail($id);
+        
+        // Protect admin account
+        if ($user->role === 'admin') {
+            return redirect()->route('admin.users')->with('error', 'Admin account cannot be modified.');
+        }
+        
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,'.$id
         ]);
 
-        \App\Models\User::findOrFail($id)->update($validated);
+        $user->update($validated);
         return redirect()->route('admin.users')->with('success', 'User berhasil diperbarui!');
     }
 
     public function toggleUserStatus($id)
     {
         $user = \App\Models\User::findOrFail($id);
+        
+        // Protect admin account
+        if ($user->role === 'admin') {
+            return redirect()->route('admin.users')->with('error', 'Admin account status cannot be changed.');
+        }
+        
         $user->update(['is_active' => !$user->is_active]);
         $status = $user->is_active ? 'diaktifkan' : 'dinonaktifkan';
         return redirect()->route('admin.users')->with('success', 'User berhasil '.$status.'!');
@@ -141,13 +159,20 @@ class AdminController extends Controller
 
     public function deleteUser($id)
     {
-        \App\Models\User::findOrFail($id)->delete();
+        $user = \App\Models\User::findOrFail($id);
+        
+        // Protect admin account
+        if ($user->role === 'admin') {
+            return redirect()->route('admin.users')->with('error', 'Admin account cannot be deleted.');
+        }
+        
+        $user->delete();
         return redirect()->route('admin.users')->with('success', 'User berhasil dihapus!');
     }
 
     public function orders()
     {
-        $orders = \App\Models\Order::with(['customer', 'service', 'staff'])
+$orders = \App\Models\Order::with(['user', 'service', 'staff'])
             ->orderBy('created_at', 'desc')
             ->get();
         return view('admin.orders', compact('orders'));

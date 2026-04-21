@@ -10,11 +10,12 @@ use App\Http\Controllers\StaffController;
 use App\Http\Controllers\OrderController;
 
 /*
-|--------------------------------------------------------------------------
+|-------------------------------------------------------------------------- 
 | Public Routes
-|--------------------------------------------------------------------------
+|-------------------------------------------------------------------------- 
 */
 Route::get('/', fn() => view('welcome'));
+Route::get('/order', [OrderController::class, 'index'])->name('order.index');
 Route::get('/about', fn() => view('about'));
 
 Route::get('/contact', fn() => view('contact'))->name('contact');
@@ -30,13 +31,13 @@ Route::post('/contact', function (Request $request) {
 })->name('contact.store');
 
 /*
-|--------------------------------------------------------------------------
+|-------------------------------------------------------------------------- 
 | Auth: Login & Logout
-|--------------------------------------------------------------------------
+|-------------------------------------------------------------------------- 
 */
-Route::get('/login', fn() => view('login'))->name('login')->middleware('guest');
+Route::get('login', fn() => view('login'))->name('login')->middleware('guest');
 
-Route::post('/login', function (Request $request) {
+Route::post('login', function (Request $request) {
     $credentials = $request->validate([
         'email'    => 'required|email',
         'password' => 'required',
@@ -70,9 +71,9 @@ Route::post('/logout', function (Request $request) {
 })->name('logout');
 
 /*
-|--------------------------------------------------------------------------
+|-------------------------------------------------------------------------- 
 | Auth: Register (hanya untuk customer)
-|--------------------------------------------------------------------------
+|-------------------------------------------------------------------------- 
 */
 Route::get('/register', fn() => view('auth.register'))->name('register')->middleware('guest');
 
@@ -108,9 +109,9 @@ Route::post('/register/process', function (Request $request) {
 })->name('register.process');
 
 /*
-|--------------------------------------------------------------------------
+|-------------------------------------------------------------------------- 
 | Customer Routes
-|--------------------------------------------------------------------------
+|-------------------------------------------------------------------------- 
 */
 Route::middleware(['auth', 'customer'])->group(function () {
     Route::get('/customer/dashboard', [CustomerController::class, 'dashboard'])->name('customer.dashboard');
@@ -124,9 +125,9 @@ Route::middleware(['auth', 'customer'])->group(function () {
 });
 
 /*
-|--------------------------------------------------------------------------
+|-------------------------------------------------------------------------- 
 | Staff Routes
-|--------------------------------------------------------------------------
+|-------------------------------------------------------------------------- 
 */
 Route::middleware(['auth', 'staff'])->group(function () {
     Route::get('/staff/dashboard', [StaffController::class, 'dashboard'])->name('staff.dashboard');
@@ -135,16 +136,17 @@ Route::middleware(['auth', 'staff'])->group(function () {
     Route::put('/staff/profile/update', [StaffController::class, 'updateProfile'])->name('staff.profile.update');
 
     Route::post('/staff/order/{id}/terima', [StaffController::class, 'terimaOrder'])->name('staff.order.terima');
-    Route::post('/staff/order/{id}/proses', [StaffController::class, 'prosesOrder'])->name('staff.order.proses');
+    Route::post('/staff/order/{id}/mulai', [StaffController::class, 'mulaiOrder'])->name('staff.order.mulai');
+    Route::post('/staff/order/{id}/tolak', [StaffController::class, 'tolakOrder'])->name('staff.order.tolak');
     Route::post('/staff/order/{id}/selesai', [StaffController::class, 'selesaiOrder'])->name('staff.order.selesai');
     Route::post('/staff/order/{id}/pending', [StaffController::class, 'pendingOrder'])->name('staff.order.pending');
     Route::delete('/staff/order/{id}', [StaffController::class, 'deleteOrder'])->name('staff.order.delete');
 });
 
 /*
-|--------------------------------------------------------------------------
+|-------------------------------------------------------------------------- 
 | Admin Routes
-|--------------------------------------------------------------------------
+|-------------------------------------------------------------------------- 
 */
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');

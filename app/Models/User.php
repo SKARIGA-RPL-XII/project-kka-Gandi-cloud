@@ -23,15 +23,15 @@ class User extends Authenticatable
         ];
     }
 
-    // Relasi: user sebagai staff → pesanan yang di-assign ke dia
-    public function orders()
+    // Customer orders (belongs to user_id)
+    public function customerOrders()
     {
-        return $this->hasMany(Order::class, 'staff_id');
+        return $this->hasMany(Order::class, 'user_id');
     }
 
-    // Relasi: user sebagai customer
-    public function customer()
+    // Staff assigned orders (belongs to staff_id)
+    public function staffOrders()
     {
-        return $this->hasOne(Customer::class);
+        return $this->hasMany(Order::class, 'staff_id');
     }
 }

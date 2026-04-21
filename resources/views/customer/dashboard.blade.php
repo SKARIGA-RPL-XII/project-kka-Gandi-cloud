@@ -20,12 +20,13 @@
 
 {{-- Stats --}}
 <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-    @php
-        $orders = auth()->user()->orders ?? collect();
+@php
+        $user = auth()->user();
+        $orders = \App\Models\Order::where('user_id', $user->id)->get();
         $total    = $orders->count();
-        $aktif    = $orders->whereIn('status', ['pending','confirmed','in_progress'])->count();
-        $selesai  = $orders->where('status','done')->count();
-        $batal    = $orders->where('status','cancelled')->count();
+        $aktif    = $orders->whereIn('status', ['pending','terima','mulai'])->count();
+        $selesai  = $orders->where('status','selesai')->count();
+        $batal    = $orders->where('status','tolak')->count();
     @endphp
     <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
         <div class="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center mb-3">
